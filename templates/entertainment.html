@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirava — Развлечения</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/entertainment.css' %}">
+    <link rel="icon" href="{% static 'images/VrLogo.png' %}" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <div class="left-header">
+            <img src="{% static 'images/Kirava-logo.png' %}" alt="Логотип" class="logo">
+            <div class="logo-text">Kirava</div>
+            <nav>
+                <a href="{% url 'home' %}">Главное</a>
+                <a href="{% url 'entertainment' %}" class="active">Развлечения</a>
+                <a href="{% url 'education' %}">Обучение</a>
+                <a href="{% url 'rating' %}">Топ пользователей</a>
+                <a href="{% url 'community' %}">Сообщество</a>
+            </nav>
+        </div>
+
+        <div class="header-actions">
+            <!-- Переключатель темы -->
+            <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+                <div class="theme-toggle-inner">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </button>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="btn-profile">
+                    <i class="fas fa-user"></i> Мой профиль
+                </a>
+                <a href="{% url 'logout' %}" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-login">
+                    <i class="fas fa-user"></i> Войти
+                </a>
+                <a href="{% url 'register' %}" class="btn-register">
+                    <i class="fas fa-user-plus"></i> Регистрация
+                </a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- SLIDER -->
+        <div class="slider-container">
+            <!-- Фон первого слайда -->
+            <div class="slide-bg active"
+                 style="background-image: url('https://wallpapersbq.com/images/my-hero-academia/my-hero-academia-wallpaper-17.webp')">
+            </div>
+
+            <div class="slider-content">
+                <!-- Слайд 1 -->
+                <div class="slide active">
+                    <div class="slide-info">
+                        <h2 class="section-title">
+                            Мир <span class="highlight">аниме-развлечений</span> ждет тебя!
+                        </h2>
+                        <p class="anime-description">
+                            Погрузись в захватывающий мир аниме-игр, викторин и головоломок.
+                            Соревнуйся с друзьями, зарабатывай достижения и становись лучшим
+                            в сообществе отаку. Каждая игра — это новое приключение с
+                            твоими любимыми персонажами! Открой для себя уникальные испытания,
+                            созданные специально для настоящих ценителей японской анимации.
+                        </p>
+                        <div class="slide-buttons">
+                            {% if user.is_authenticated %}
+                                <!-- ВАЖНО: имя маршрута берём из urls.py: name='mingames' -->
+                                <a href="{% url 'minigames' %}" class="btn-primary">
+                                    <i class="fas fa-play"></i>
+                                    Начать играть
+                                </a>
+                            {% else %}
+                                <a href="{% url 'register' %}" class="btn-primary">
+                                    <i class="fas fa-play"></i>
+                                    Начать играть
+                                </a>
+                            {% endif %}
+                            <a href="#categories" class="btn-secondary">
+                                <i class="fas fa-compass"></i>
+                                Исследовать
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- КАТЕГОРИИ РАЗВЛЕЧЕНИЙ -->
+        <section class="categories-section" id="categories">
+            <div class="container">
+                <h2 class="section-title">
+                    Выбери <span class="highlight">Категорию</span>
+                </h2>
+                <p class="section-subtitle">
+                    Открой для себя разнообразные развлечения в мире аниме
+                </p>
+
+                <div class="categories-grid">
+                    <!-- АНИМЕ -->
+                    <a href="{% url 'anime' %}" class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3>Аниме Коллекция</h3>
+                            <p>
+                                Исследуйте нашу обширную коллекцию аниме-контента с подробными
+                                описаниями, рецензиями и рекомендациями. От классических шедевров
+                                до новейших релизов — каждый найдёт что-то по своему вкусу.
+                                Мы регулярно обновляем каталог и предоставляем эксклюзивные материалы.
+                            </p>
+                            <div class="category-features">
+                                <span><i class="fas fa-check"></i> Подробные обзоры</span>
+                                <span><i class="fas fa-check"></i> Рекомендации</span>
+                                <span><i class="fas fa-check"></i> Эксклюзивный контент</span>
+                            </div>
+                        </div>
+                        <div class="category-hover">
+                            <span>Исследовать коллекцию →</span>
+                        </div>
+                    </a>
+
+                    <!-- МИНИ-ИГРЫ -->
+                    <a href="{% url 'minigames' %}" class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3>Мини-Игры</h3>
+                            <p>
+                                Погрузитесь в мир увлекательных аниме-игр, разработанных
+                                специально для фанатов. От быстрых аркадных испытаний
+                                до сложных стратегических головоломок — каждая игра предлагает
+                                уникальный опыт с вашими любимыми персонажами.
+                            </p>
+                            <div class="category-features">
+                                <span><i class="fas fa-check"></i> Разные жанры</span>
+                                <span><i class="fas fa-check"></i> Ежедневные награды</span>
+                                <span><i class="fas fa-check"></i> Прогрессия</span>
+                            </div>
+                        </div>
+                        <div class="category-hover">
+                            <span>Начать играть →</span>
+                        </div>
+                    </a>
+
+                    <!-- ВИКТОРИНЫ -->
+                    <a href="{% url 'quizzes' %}" class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3>Викторины и Тесты</h3>
+                            <p>
+                                Проверьте свои знания аниме в увлекательных викторинах и тестах.
+                                Соревнуйтесь с другими фанатами, поднимайтесь в рейтинге и докажите,
+                                что вы — настоящий эксперт в мире японской анимации.
+                            </p>
+                            <div class="category-features">
+                                <span><i class="fas fa-check"></i> Разные сложности</span>
+                                <span><i class="fas fa-check"></i> Рейтинговые игры</span>
+                                <span><i class="fas fa-check"></i> Еженедельные турниры</span>
+                            </div>
+                        </div>
+                        <div class="category-hover">
+                            <span>Участвовать →</span>
+                        </div>
+                    </a>
+
+                    <!-- СООБЩЕСТВО -->
+                    <a href="{% url 'community' %}" class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="category-content">
+                            <h3>Сообщество</h3>
+                            <p>
+                                Присоединяйтесь к активному сообществу фанатов аниме.
+                                Обсуждайте любимые сериалы, делитесь впечатлениями,
+                                находите единомышленников и участвуйте в совместных
+                                мероприятиях и марафонах просмотра.
+                            </p>
+                            <div class="category-features">
+                                <span><i class="fas fa-check"></i> Форумы</span>
+                                <span><i class="fas fa-check"></i> Группы</span>
+                                <span><i class="fas fa-check"></i> Мероприятия</span>
+                            </div>
+                        </div>
+                        <div class="category-hover">
+                            <span>Присоединиться →</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Футер -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      
+      <div class="footer-section">
+        <div class="footer-logo">
+          <img src="/static/images/Kirava-logo.png" alt="Kirava Logo" class="logo-image-footer">
+          <div class="footer-logo-text">
+            <span class="logo-main">Kirava</span>
+          </div>
+        </div>
+        <p>Образовательно-развлекательная платформа</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Разделы</h4>
+        <a href="{% url 'home' %}">
+          <i class="fas fa-chevron-right"></i> Главная
+        </a>
+        <a href="{% url 'entertainment' %}" class="active">
+          <i class="fas fa-chevron-right"></i> Развлечения
+        </a>
+        <a href="{% url 'education' %}">
+          <i class="fas fa-chevron-right"></i> Обучение
+        </a>
+        <a href="{% url 'rating' %}">
+          <i class="fas fa-chevron-right"></i> Топ пользователей
+        </a>
+        <a href="{% url 'community' %}">
+          <i class="fas fa-chevron-right"></i> Сообщество
+        </a>
+      </div>
+
+      <div class="footer-section">
+        <h4>Поддержка</h4>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Помощь
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Контакты
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> FAQ
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Сообщество
+        </a>
+      </div>
+
+      <div class="footer-section">
+        <h4>Контакты</h4>
+
+        <p>
+          <a 
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=the.kirava.official@gmail.com"
+            target="_blank"
+            class="email-link"
+          >
+            <i class="fas fa-envelope"></i> the.kirava.official@gmail.com
+          </a>
+        </p>
+
+        <p><i class="fas fa-headset"></i> Поддержка 24/7</p>
+        <p><i class="fas fa-globe"></i> Казахстан, Астана</p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Kirava - Аниме Викторины и Обучение. Все права защищены.</p>
+      <p>Сделано с ❤️ для сообщества отаку</p>
+    </div>
+  </div>
+</footer>
+
+    <script src="{% static 'javascript/entertainment.js' %}"></script>
+    <script src="{% static 'javascript/theme.js' %}"></script>
+    
+</body>
+</html>

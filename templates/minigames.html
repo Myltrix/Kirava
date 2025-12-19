@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirava — Мини-игры</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="/static/css/minigames.css">
+    <link rel="icon" href="/static/images/VrLogo.png" type="image/x-icon">
+</head>
+
+<body>
+<header>
+    <div class="left-header">
+        <img src="/static/images/Kirava-logo.png" alt="Логотип" class="logo">
+        <div class="logo-text">Kirava</div>
+
+        <nav>
+            <a href="{% url 'home' %}">Главное</a>
+            <a href="{% url 'entertainment' %}">Развлечения</a>
+            <a href="{% url 'education' %}">Обучение</a>
+            <a href="{% url 'rating' %}">Топ пользователей</a>
+            <a href="{% url 'community' %}">Сообщество</a>
+        </nav>
+    </div>
+
+    <div class="header-actions">
+        <!-- Кнопка переключения темы -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+            <div class="theme-toggle-inner">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+            </div>
+        </button>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}" class="btn-login">
+                <i class="fas fa-user"></i> Мой профиль
+            </a>
+            <a href="{% url 'logout' %}" class="btn-register">
+                <i class="fas fa-sign-out-alt"></i> Выйти
+            </a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn-login">
+                <i class="fas fa-user"></i> Войти
+            </a>
+            <a href="{% url 'register' %}" class="btn-register">
+                <i class="fas fa-user-plus"></i> Регистрация
+            </a>
+        {% endif %}
+    </div>
+</header>
+
+{% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Основной контент -->
+<main class="main-content">
+    <section class="page-header">
+        <div class="container">
+            <div class="page-title-container">
+                <h1 class="page-title">Аниме <span class="highlight">Мини-игры</span></h1>
+                <p class="page-subtitle">Тренируйте мозг вместе с любимыми аниме-персонажами</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Сетка игр -->
+<section class="games-grid-section">
+    <div class="container">
+        <div class="games-grid" id="gamesGrid">
+
+            <!-- Игра 1 -->
+            <div class="game-card" data-category="memory">
+                <div class="game-image">
+                    <img src="https://pikuco.ru/upload/test_stable/306/30655ef4fe21e0c8d449bc458c260e30.webp" alt="Аниме Мемори" class="game-poster">
+                    <div class="game-badge">Память</div>
+                </div>
+                <div class="game-content">
+                    <h3>Угадай аниме: Кадр за кадром</h3>
+                    <p>Смотрите на кадр и угадывайте, из какого он аниме. Тренирует визуальную память.</p>
+                    <div class="game-meta">
+                        <span class="difficulty easy">Простая</span>
+                    </div>
+                    <a href="{% url 'game1' %}" class="btn-quiz">Играть</a>
+                </div>
+            </div>
+
+            <!-- Игра 2 -->
+            <div class="game-card" data-category="clicker">
+                <div class="game-image">
+                    <img src="https://i.redd.it/ddnn68ir0cka1.jpg" alt="Аниме Спид-Клик" class="game-poster">
+                    <div class="game-badge">Реакция</div>
+                </div>
+                <div class="game-content">
+                    <h3>Узнай персонажа: Быстрый взгляд</h3>
+                    <p>За ограниченное время угадайте, кто этот аниме-герой. Развивает скорость узнавания.</p>
+                    <div class="game-meta">
+                        <span class="difficulty easy">Простая</span>
+                    </div>
+                    <a href="{% url 'game2' %}" class="btn-quiz">Играть</a>
+                </div>
+            </div>
+
+            <!-- Игра 3 -->
+            <div class="game-card" data-category="anime">
+                    <div class="game-image">
+                        <img src="https://static.tildacdn.com/tild3635-6538-4332-a333-376333313632/-3.png" alt="Аниме Брейн-Тест" class="game-poster">
+                        <div class="game-badge">Эрудиция</div>
+                    </div>
+                    <div class="game-content">
+                        <h3>Чья это фраза?: Цитаты героев</h3>
+                        <p>Читайте известную фразу и угадывайте, какой аниме-персонаж её сказал.</p>
+                        <div class="game-meta">
+                            <span class="difficulty medium">Средняя</span>
+                        </div>
+                        <a href="{% url 'game3' %}" class="btn-quiz">Играть</a>
+                    </div>
+            </div>
+
+            <!-- Игра 4 -->
+            <div class="game-card" data-category="anime">
+                <div class="game-image">
+                    <img src="https://avatars.mds.yandex.net/i?id=a3828d30b342aa0cba44366f8bc3253c7a23f83f-5232177-images-thumbs&n=13" alt="Аниме Логик" class="game-poster">
+                    <div class="game-badge">Логика</div>
+                </div>
+                <div class="game-content">
+                    <h3>Кто сильнее?: Силовое сравнение</h3>
+                    <p>Двум персонажам — один вопрос: кто победит? Угадывайте, используя логику.</p>
+                    <div class="game-meta">
+                        <span class="difficulty easy">Простая</span>
+                    </div>
+                    <a href="{% url 'game4' %}" class="btn-quiz">Играть</a>
+                </div>
+            </div>
+
+            <!-- Игра 5 -->
+            <div class="game-card" data-category="memory">
+                <div class="game-image">
+                    <img src="https://winzoro.net/uploads/posts/2021-03/1615538229_preview.jpg" alt="Аниме Фокус" class="game-poster">
+                    <div class="game-badge">Концентрация</div>
+                </div>
+                <div class="game-content">
+                    <h3>Узнай по детали: Мир Наруто</h3>
+                    <p>По одной детали (глаз, оружие, символ) угадайте персонажа из вселенной Наруто.</p>
+                    <div class="game-meta">
+                        <span class="difficulty hard">Сложная</span>
+                    </div>
+                    <a href="{% url 'game5' %}" class="btn-quiz">Играть</a>
+                </div>
+            </div>
+
+            <!-- Игра 6 -->
+            <div class="game-card" data-category="clicker">
+                <div class="game-image">
+                    <img src="https://www.maketprint.ru/upload/iblock/4d7/74kpumu3wvmodtcnhpapcquiv3n4nz0s.jpg" alt="Аниме Стратег" class="game-poster">
+                    <div class="game-badge">Стратегия</div>
+                </div>
+                <div class="game-content">
+                    <h3>Угадай лого: Студии и тайтлы</h3>
+                    <p>Перед вами логотип — угадайте, какой это аниме-сериал или студия.</p>
+                    <div class="game-meta">
+                        <span class="difficulty medium">Средняя</span>
+                    </div>
+                    <a href="{% url 'game6' %}" class="btn-quiz">Играть</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+
+<!-- Футер -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="/static/images/Kirava-logo.png" alt="Kirava Logo" class="logo-image-footer">
+                    <div class="footer-logo-text">
+                        <span class="logo-main">Kirava</span>
+                    </div>
+                </div>
+                <p>Образовательно-развлекательная платформа</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Разделы</h4>
+                <a href="{% url 'home' %}"><i class="fas fa-chevron-right"></i> Главная</a>
+                <a href="{% url 'entertainment' %}"><i class="fas fa-chevron-right"></i> Развлечения</a>
+                <a href="{% url 'education' %}"><i class="fas fa-chevron-right"></i> Обучение</a>
+                <a href="{% url 'rating' %}"><i class="fas fa-chevron-right"></i> Топ пользователей</a>
+                <a href="{% url 'community' %}"><i class="fas fa-chevron-right"></i> Сообщество</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Поддержка</h4>
+                <a href="#"><i class="fas fa-chevron-right"></i> Помощь</a>
+                <a href="#"><i class="fas fa-chevron-right"></i> Контакты</a>
+                <a href="#"><i class="fas fa-chevron-right"></i> FAQ</a>
+                <a href="#"><i class="fas fa-chevron-right"></i> Сообщество</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=the.kirava.official@gmail.com"
+                       target="_blank"
+                       class="email-link">
+                        <i class="fas fa-envelope"></i> the.kirava.official@gmail.com
+                    </a>
+                </p>
+                <p><i class="fas fa-headset"></i> Поддержка 24/7</p>
+                <p><i class="fas fa-globe"></i> Казахстан, Астана</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Kirava - Аниме Викторины и Обучение. Все права защищены.</p>
+            <p>Сделано с ❤️ для сообщества отаку</p>
+        </div>
+    </div>
+</footer>
+
+<script src="/static/javascript/minigames.js"></script>
+<script src="/static/javascript/theme.js"></script>
+</body>
+</html>

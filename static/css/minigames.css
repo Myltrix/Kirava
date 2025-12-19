@@ -1,0 +1,867 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+    color: white;
+    overflow-x: hidden;
+    line-height: 1.6;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Светлая тема */
+body.light-theme {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: #000;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #333;
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+/* Header для светлой темы */
+body.light-theme header {
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 55, 172, 0.12);
+}
+
+.left-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex: 1;
+}
+
+.logo {
+    height: 70px;
+    width: 70px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.logo-text {
+    font-weight: bold;
+    font-size: 24px;
+    color: #0037ac;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+/* Навигация для темной темы */
+body:not(.light-theme) nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 5px;
+    position: relative;
+}
+
+body:not(.light-theme) nav a:hover,
+body:not(.light-theme) nav a.active {
+    color: #0037ac;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+body:not(.light-theme) nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -17px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #0037ac;
+    border-radius: 50%;
+}
+
+/* Навигация для светлой темы */
+body.light-theme nav a {
+    color: #34495e;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 5px;
+    position: relative;
+}
+
+body.light-theme nav a:hover,
+body.light-theme nav a.active {
+    color: #0037ac;
+    background-color: rgba(0, 55, 172, 0.08);
+}
+
+body.light-theme nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -17px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #0037ac;
+    border-radius: 50%;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+/* Кнопка переключения темы */
+.theme-toggle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #0037ac;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 55, 172, 0.3);
+    background: linear-gradient(135deg, #002a8a, #001f66);
+}
+
+.theme-toggle-inner {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    transition: all 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    will-change: transform, opacity;
+    z-index: 2;
+}
+
+/* ТЕМНАЯ ТЕМА: показываем луну */
+.theme-toggle .fa-sun {
+    color: #FFD700;
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(180deg) scale(0.5);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+}
+
+.theme-toggle .fa-moon {
+    color: #F0F0F0;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    text-shadow: 0 0 10px rgba(240, 240, 240, 0.5);
+}
+
+/* СВЕТЛАЯ ТЕМА: показываем солнце */
+body.light-theme .theme-toggle .fa-sun {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+body.light-theme .theme-toggle .fa-moon {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-180deg) scale(0.5);
+}
+
+/* Кнопка в светлой теме */
+body.light-theme .theme-toggle {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    border-color: #0037ac;
+}
+
+.btn-login, .btn-register {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    color: white;
+    border: 2px solid #0037ac;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-login:hover, .btn-register:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+    background: linear-gradient(135deg, #002a8a, #0037ac);
+}
+
+/* Page Header */
+.page-header {
+    margin-top: 70px;
+    padding: 40px 0;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    transition: background 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Градиентный фон для темной темы */
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Заголовок страницы в светлой теме */
+body.light-theme .page-header {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+/* Градиентный фон для светлой темы */
+body.light-theme .page-header::before {
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.08) 0%, transparent 50%);
+}
+
+.page-title-container {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+    color: #fff;
+    transition: color 0.4s ease;
+}
+
+/* Заголовок в светлой теме */
+body.light-theme .page-title {
+    color: #2c3e50;
+}
+
+.highlight {
+    color: #0037ac;
+}
+
+.page-subtitle {
+    color: #ccc;
+    font-size: 1.1rem;
+    transition: color 0.4s ease;
+}
+
+/* Подзаголовок в светлой теме */
+body.light-theme .page-subtitle {
+    color: #5d6d7e;
+}
+
+/* Герой секция */
+.games-hero {
+    padding: 60px 0 40px;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    text-align: center;
+    transition: background 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Градиентный фон для темной темы */
+.games-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Герой секция в светлой теме */
+body.light-theme .games-hero {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+/* Градиентный фон для светлой темы */
+body.light-theme .games-hero::before {
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.08) 0%, transparent 50%);
+}
+
+/* Контент поверх фона */
+.games-hero .page-title-container,
+.games-hero .hero-subtitle,
+.games-hero .games-filters {
+    position: relative;
+    z-index: 2;
+}
+
+.section-title {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #fff;
+    font-weight: 900;
+    transition: color 0.4s ease;
+}
+
+/* Заголовок в светлой теме */
+body.light-theme .section-title {
+    color: #2c3e50;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    transition: color 0.4s ease;
+}
+
+/* Подзаголовок в светлой теме */
+body.light-theme .hero-subtitle {
+    color: #5d6d7e;
+}
+
+/* Фильтры */
+.games-filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.filter-btn {
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #333;
+    border-radius: 25px;
+    color: #ccc;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+/* Кнопки фильтров в светлой теме */
+body.light-theme .filter-btn {
+    background: rgba(0, 55, 172, 0.05);
+    border: 1px solid rgba(224, 230, 237, 0.8);
+    color: #5d6d7e;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: #0037ac;
+    border-color: #0037ac;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.3);
+}
+
+/* Ховер в светлой теме */
+body.light-theme .filter-btn:hover,
+body.light-theme .filter-btn.active {
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.2);
+}
+
+/* Сетка игр */
+.games-grid-section {
+    padding: 60px 0;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    transition: background 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Градиентный фон для темной темы */
+.games-grid-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Сетка игр в светлой теме */
+body.light-theme .games-grid-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+/* Градиентный фон для светлой темы */
+body.light-theme .games-grid-section::before {
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.08) 0%, transparent 50%);
+}
+
+/* Контент поверх фона */
+.games-grid-section .container,
+.games-grid-section .section-title,
+.games-grid-section .games-grid,
+.games-grid-section .game-card {
+    position: relative;
+    z-index: 2;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+/* Карточки игр */
+.game-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #333;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    height: 400px; /* Фиксированная высота для единообразия */
+}
+
+/* Карточки игр в светлой теме */
+body.light-theme .game-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(224, 230, 237, 0.8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.game-card:hover {
+    transform: translateY(-8px);
+    border-color: #0037ac;
+    box-shadow: 0 15px 35px rgba(0, 55, 172, 0.25);
+}
+
+/* Ховер в светлой теме */
+body.light-theme .game-card:hover {
+    box-shadow: 0 15px 35px rgba(0, 55, 172, 0.15);
+}
+
+.game-image {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.game-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+.game-card:hover .game-poster {
+    transform: scale(1.05);
+}
+
+.game-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
+/* Убираем старые кнопки и оверлей */
+.game-overlay {
+    display: none; /* Скрываем оверлей с кнопками */
+}
+
+.play-btn {
+    display: none; /* Скрываем старые кнопки */
+}
+
+.game-content {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Распределяем элементы */
+}
+
+.game-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #fff;
+    text-align: center;
+    transition: color 0.4s ease;
+    min-height: 2.8em; /* Фиксированная высота для заголовка */
+}
+
+/* Заголовки карточек в светлой теме */
+body.light-theme .game-content h3 {
+    color: #2c3e50;
+}
+
+.game-content p {
+    color: #ccc;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    text-align: center;
+    flex: 1;
+    font-size: 0.9rem;
+    transition: color 0.4s ease;
+    min-height: 2.8em; /* Фиксированная высота для описания */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Ограничиваем 2 строками */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Описание в светлой теме */
+body.light-theme .game-content p {
+    color: #5d6d7e;
+}
+
+.game-meta {
+    display: flex;
+    justify-content: center; /* Центрируем сложность */
+    margin-bottom: 15px;
+    font-size: 0.8rem;
+}
+
+.difficulty {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.difficulty.easy {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+}
+
+.difficulty.medium {
+    background: rgba(255, 152, 0, 0.2);
+    color: #ff9800;
+}
+
+.difficulty.hard {
+    background: rgba(244, 67, 54, 0.2);
+    color: #f44336;
+}
+
+/* Сложность в светлой теме */
+body.light-theme .difficulty.easy {
+    background: rgba(76, 175, 80, 0.12);
+    color: #2e7d32;
+}
+
+body.light-theme .difficulty.medium {
+    background: rgba(255, 152, 0, 0.12);
+    color: #ef6c00;
+}
+
+body.light-theme .difficulty.hard {
+    background: rgba(244, 67, 54, 0.12);
+    color: #d32f2f;
+}
+
+/* Удаляем ненужные элементы */
+.players {
+    display: none;
+}
+
+.game-stats {
+    display: none; /* Скрываем рейтинг и время */
+}
+
+/* Кнопка Играть в стиле страницы аниме */
+.btn-quiz {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    color: white;
+    border: none;
+    border-radius: 8px; /* Округленный квадрат */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: auto;
+    font-size: 0.95rem;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none; /* Для ссылок */
+}
+
+.btn-quiz:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+    background: linear-gradient(135deg, #002a8a, #0037ac);
+}
+
+/* Кнопка в светлой теме */
+body.light-theme .btn-quiz {
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    color: white;
+}
+
+body.light-theme .btn-quiz:hover {
+    background: linear-gradient(135deg, #002a8a, #0037ac);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.3);
+}
+
+/* Footer */
+.footer {
+    background-color: #000;
+    padding: 60px 0 20px;
+    border-top: 1px solid #333;
+    position: relative;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section h4 {
+    color: #0037ac;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.footer-section p {
+    color: #ccc;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.footer-section a {
+    color: #ccc;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-section a:hover,
+.footer-section a.active {
+    color: #0037ac;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid #333;
+    color: #666;
+}
+
+.footer-bottom p {
+    margin-bottom: 10px;
+}
+
+.logo-image-footer {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: contain;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.footer-logo-text {
+    font-weight: bold;
+    font-size: 24px;
+    color: #0037ac;
+}
+
+/* Футер в светлой теме */
+body.light-theme .footer {
+    background-color: #ffffff;
+    border-top: 1px solid rgba(0, 55, 172, 0.08);
+    transition: all 0.4s ease;
+}
+
+body.light-theme .footer-section p {
+    color: #5a6c7d;
+}
+
+body.light-theme .footer-section a {
+    color: #5a6c7d;
+    transition: color 0.3s ease;
+}
+
+body.light-theme .footer-section a:hover,
+body.light-theme .footer-section a.active {
+    color: #0037ac;
+}
+
+body.light-theme .footer-section h4 {
+    color: #0037ac;
+}
+
+body.light-theme .footer-bottom {
+    border-top: 1px solid rgba(0, 55, 172, 0.08);
+    color: #7b8895;
+}
+    
+/* Адаптивность для фонов */
+.games-hero::before,
+.games-grid-section::before,
+.page-header::before {
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.12) 0%, transparent 60%);
+}
+
+body.light-theme .games-hero::before,
+body.light-theme .games-grid-section::before,
+body.light-theme .page-header::before {
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.06) 0%, transparent 60%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.06) 0%, transparent 60%);
+}
+
+/* Адаптивность для карточек */
+@media (max-width: 768px) {
+    .games-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    
+    .game-card {
+        height: 380px;
+    }
+    
+    .game-content h3 {
+        font-size: 1.1rem;
+    }
+    
+    .game-content p {
+        font-size: 0.85rem;
+    }
+    
+    .btn-quiz {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .games-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .game-card {
+        height: 360px;
+    }
+    
+    header {
+        padding: 10px 3%;
+    }
+    
+    .left-header {
+        gap: 15px;
+    }
+    
+    nav {
+        gap: 10px;
+    }
+    
+    nav a {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+    
+    .logo {
+        height: 50px;
+        width: 50px;
+    }
+    
+    .logo-text {
+        font-size: 20px;
+    }
+    
+    .theme-toggle {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .btn-login, .btn-register {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+}

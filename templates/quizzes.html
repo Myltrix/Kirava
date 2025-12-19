@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kirava — Викторины</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  {% load static %}
+  <link rel="stylesheet" href="/static/css/quizzes.css">
+  <link rel="icon" href="/static/images/VrLogo.png" type="image/x-icon">
+</head>
+
+<body>
+<header>
+  <div class="left-header">
+    <img src="/static/images/Kirava-logo.png" alt="Логотип" class="logo">
+    <div class="logo-text">Kirava</div>
+    <nav>
+      <a href="{% url 'home' %}">Главное</a>
+      <a href="{% url 'entertainment' %}">Развлечения</a>
+      <a href="{% url 'education' %}">Обучение</a>
+      <a href="{% url 'rating' %}">Топ пользователей</a>
+      <a href="{% url 'community' %}">Сообщество</a>
+    </nav>
+  </div>
+
+  <div class="header-actions">
+    <!-- Кнопка переключения темы -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+      <div class="theme-toggle-inner">
+        <i class="fas fa-sun"></i>
+        <i class="fas fa-moon"></i>
+      </div>
+    </button>
+
+    {% if user.is_authenticated %}
+      <a href="{% url 'profile' %}" class="btn-login">
+        <i class="fas fa-user"></i> Мой профиль
+      </a>
+      <a href="{% url 'logout' %}" class="btn-register">
+        <i class="fas fa-sign-out-alt"></i> Выйти
+      </a>
+    {% else %}
+      <a href="{% url 'login' %}" class="btn-login">
+        <i class="fas fa-user"></i> Войти
+      </a>
+      <a href="{% url 'register' %}" class="btn-register">
+        <i class="fas fa-user-plus"></i> Регистрация
+      </a>
+    {% endif %}
+  </div>
+</header>
+
+{% if messages %}
+<div class="messages-container">
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="main-content">
+  <section class="page-header">
+    <div class="container">
+      <div class="page-title-container">
+        <h1 class="page-title">Аниме <span class="highlight">Викторины</span></h1>
+        <p class="page-subtitle">Проверьте свои знания о любимых аниме и откройте для себя новые</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Навигационные точки -->
+  <div class="section-nav">
+    <div class="nav-dot active" data-section="best" data-title="Лучшее для вас"></div>
+    <div class="nav-dot" data-section="popular" data-title="Популярные"></div>
+    <div class="nav-dot" data-section="isekai" data-title="Исекай"></div>
+    <div class="nav-dot" data-section="romance" data-title="Романтика"></div>
+    <div class="nav-dot" data-section="comedy" data-title="Комедия"></div>
+  </div>
+
+  <!-- Секция 1 -->
+  <section class="quizzes" id="best">
+    <div class="container">
+      <h2 class="section-title">Лучшее <span class="highlight">для вас</span></h2>
+
+      <div class="carousel-container">
+        <button class="carousel-btn carousel-prev">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="quizzes-carousel">
+          <div class="quiz-card">
+            <div class="quiz-badge">Популярное</div>
+            <div class="quiz-image">
+              <img src="https://image.tmdb.org/t/p/original/ssRVaqKvbGF3N7oOQfFjFptinVH.jpg" alt="Атака титанов" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Атака титанов</h3>
+              <p>Эпическая история о выживании человечества</p>
+              <div class="quiz-meta">
+                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-ataka-titanov' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Хит</div>
+            <div class="quiz-image">
+              <img src="https://papik.pro/grafic/uploads/posts/2023-03/thumbs/1680146337_papik-pro-p-klinok-rassekayushchii-demonov-poster-16.jpg" alt="Клинок рассекающий демонов" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Клинок рассекающий демонов</h3>
+              <p>История Танджиро и его сестры Незуко</p>
+              <div class="quiz-meta">
+                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-klinok-rassekayushchiy-demonov' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Наука</div>
+            <div class="quiz-image">
+              <img src="https://media.kg-portal.ru/anime/d/drstone3/posters/drstone3_3.jpg" alt="Доктор Стоун" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Доктор Стоун</h3>
+              <p>Восстановление цивилизации с помощью науки</p>
+              <div class="quiz-meta">
+                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-doktor-stoun' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Классика</div>
+            <div class="quiz-image">
+              <img src="https://cdn.kanobu.ru/anime/anime/a88d6a18-0699-4d24-ad30-c37bbd1da72f.jpg" alt="Тетрадь смерти" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Тетрадь смерти</h3>
+              <p>Психологическая битва между Лайтом и L</p>
+              <div class="quiz-meta">
+                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-tetrad-smerti' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Приключения</div>
+            <div class="quiz-image">
+              <img src="https://m.media-amazon.com/images/I/71aoeOhdNnL._UF1000,1000_QL80_.jpg" alt="Хантер х хантер" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Хантер х хантер</h3>
+              <p>Путешествие Гона в поисках отца</p>
+              <div class="quiz-meta">
+                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-hanter-h-hanter' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+        </div>
+
+        <button class="carousel-btn carousel-next">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Секция 2 -->
+  <section class="quizzes" id="popular">
+    <div class="container">
+      <h2 class="section-title">Популярные <span class="highlight">аниме</span></h2>
+
+      <div class="carousel-container">
+        <button class="carousel-btn carousel-prev">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="quizzes-carousel">
+          <div class="quiz-card">
+            <div class="quiz-badge">Новое</div>
+            <div class="quiz-image">
+              <img src="https://www.kino-teatr.ru/movie/poster/158790/173611.jpg" alt="Поднятие уровня в одиночку" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Поднятие уровня в одиночку</h3>
+              <p>Сун Джин Ву в смертельной игре</p>
+              <div class="quiz-meta">
+                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-podnyatie-urovnya-v-odinochku' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Хит</div>
+            <div class="quiz-image">
+              <img src="https://image.tmdb.org/t/p/original/nVm83LRrhjbFNWzRO8IQuuQBfyd.jpg" alt="Реанкарнация безработного" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Реанкарнация безработного</h3>
+              <p>Вторая жизнь в мире магии</p>
+              <div class="quiz-meta">
+                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-reankarnatsiya-bezrabotnogo' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Экшен</div>
+            <div class="quiz-image">
+              <img src="https://m.media-amazon.com/images/I/81iZCUeRLXL.jpg" alt="Человек бензопила" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Человек бензопила</h3>
+              <p>Денджи и его демон-бензопила Почита</p>
+              <div class="quiz-meta">
+                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-chelovek-benzopila' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Новое</div>
+            <div class="quiz-image">
+              <img src="https://m.media-amazon.com/images/I/81fSBDeWAPL.jpg" alt="Кайдзю №8" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Кайдзю №8</h3>
+              <p>Борьба с монстрами в современной Японии</p>
+              <div class="quiz-meta">
+                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-kaydzhu-8' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Драма</div>
+            <div class="quiz-image">
+              <img src="https://cdn.ananasposter.ru/image/cache/catalog/poster/pos23/64/80813-1000x830.jpg" alt="Провожающая в последний путь Фрирен" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Провожающая в последний путь Фрирен</h3>
+              <p>Путешествие эльфийки по следам героев</p>
+              <div class="quiz-meta">
+                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-provozhayushchaya-v-posledniy-put-friren' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+        </div>
+
+        <button class="carousel-btn carousel-next">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Секция 3 -->
+  <section class="quizzes" id="isekai">
+    <div class="container">
+      <h2 class="section-title">Лучшие <span class="highlight">исекай</span></h2>
+
+      <div class="carousel-container">
+        <button class="carousel-btn carousel-prev">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="quizzes-carousel">
+          <div class="quiz-card">
+            <div class="quiz-badge">Комедия</div>
+            <div class="quiz-image">
+              <img src="https://static.wikia.nocookie.net/ani-manga/images/9/9a/KonoSuba_Poster.jpg/revision/latest/thumbnail/width/360/height/360?cb=20210517162553&path-prefix=ru" alt="Этот замечательный мир" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Этот замечательный мир</h3>
+              <p>Веселое приключение Кадзумы в фэнтези мире</p>
+              <div class="quiz-meta">
+                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-etot-zamechatelnyy-mir' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Драма</div>
+            <div class="quiz-image">
+              <img src="https://image.tmdb.org/t/p/original/nVm83LRrhjbFNWzRO8IQuuQBfyd.jpg" alt="Реанкарнация безработного" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Реанкарнация безработного</h3>
+              <p>Совершенствование магии в новом мире</p>
+              <div class="quiz-meta">
+                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-reankarnatsiya-bezrabotnogo' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Фэнтези</div>
+            <div class="quiz-image">
+              <img src="https://lh3.googleusercontent.com/proxy/41nRyMguqqqHlV4Gtn0INbphEaQRi0OoZlXgBalRWwGKJfe0louQ4rnvleg0rEtjHTxWDb6gElLy6boP9cCLMYeWOXQ4yNT7IQ" alt="О моём перерождении в слизь" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>О моём перерождении в слизь</h3>
+              <p>Приключения слизня Римуру в новом мире</p>
+              <div class="quiz-meta">
+                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-o-moem-pererozhdenii-v-sliz' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Психология</div>
+            <div class="quiz-image">
+              <img src="https://ogre.natalie.mu/media/news/comic/2024/1120/REZ3_hangeki_B2.jpg?imwidth=750&imdensity=1" alt="Re:Zero" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Re:Zero</h3>
+              <p>Способность возвращаться к точке сохранения</p>
+              <div class="quiz-meta">
+                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-re-zero-zhizn-s-nulya-v-alternativnom-mire' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Комедия</div>
+            <div class="quiz-image">
+              <img src="https://static0.cbrimages.com/wordpress/wp-content/uploads/sharedimages/2024/05/the-eminence-in-shadow-2022.jpg" alt="Восхождение в тени" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Восхождение в тени</h3>
+              <p>Сид Кэйджо и его тайная организация</p>
+              <div class="quiz-meta">
+                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-voshozhdenie-v-teni' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+        </div>
+
+        <button class="carousel-btn carousel-next">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Секция 4 -->
+  <section class="quizzes" id="romance">
+    <div class="container">
+      <h2 class="section-title">Романтические <span class="highlight">аниме</span></h2>
+
+      <div class="carousel-container">
+        <button class="carousel-btn carousel-prev">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="quizzes-carousel">
+          <div class="quiz-card">
+            <div class="quiz-badge">Классика</div>
+            <div class="quiz-image">
+              <img src="https://m.media-amazon.com/images/I/51nfGthjluL._AC_UF1000,1000_QL80_.jpg" alt="Торадора" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Торадора</h3>
+              <p>История Рюджи и Тайги</p>
+              <div class="quiz-meta">
+                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-toradora' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Романтика</div>
+            <div class="quiz-image">
+              <img src="https://avatars.mds.yandex.net/get-kinopoisk-image/1773646/cf62448d-7dd1-4549-8d3c-0f5cfa69b7df/576x" alt="Хоримия" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Хоримия</h3>
+              <p>Миямура и Хори открывают свои секреты</p>
+              <div class="quiz-meta">
+                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-horimiya' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Драма</div>
+            <div class="quiz-image">
+              <img src="https://gamemag.ru/images/imagemanager/cache/2e/1080/2e1080_1.png" alt="Дотянуться до тебя" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Дотянуться до тебя</h3>
+              <p>Трогательная история любви и потерь</p>
+              <div class="quiz-meta">
+                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-dotyanutsya-do-tebya' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Музыка</div>
+            <div class="quiz-image">
+              <img src="https://static.hdrezka.ac/i/2022/8/29/x431b482f131aqk30y58g.jpg" alt="Твоя апрельская ложь" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Твоя апрельская ложь</h3>
+              <p>Музыка, любовь и жизненные испытания</p>
+              <div class="quiz-meta">
+                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-tvoya-aprelskaya-lozh' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Комедия</div>
+            <div class="quiz-image">
+              <img src="https://image.tmdb.org/t/p/original/luFcIT4xZlhcojVbqbB3PPmAqVB.jpg" alt="Кагуя: В любви как на войне" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Кагуя: В любви как на войне</h3>
+              <p>Психологическая битва двух гениев</p>
+              <div class="quiz-meta">
+                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-kaguya-v-lyubvi-kak-na-voyne' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+        </div>
+
+        <button class="carousel-btn carousel-next">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Секция 5 -->
+  <section class="quizzes" id="comedy">
+    <div class="container">
+      <h2 class="section-title">Комедийные <span class="highlight">аниме</span></h2>
+
+      <div class="carousel-container">
+        <button class="carousel-btn carousel-prev">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="quizzes-carousel">
+          <div class="quiz-card">
+            <div class="quiz-badge">Комедия</div>
+            <div class="quiz-image">
+              <img src="https://image.tmdb.org/t/p/original/pGBniz9eNuCB0yjfJAkivUq6io8.jpg" alt="Необъятный океан" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Необъятный океан</h3>
+              <p>Веселые приключения в подводном мире</p>
+              <div class="quiz-meta">
+                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-neobyyatnyy-okean' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Классика</div>
+            <div class="quiz-image">
+              <img src="https://cdn.ananasposter.ru/image/cache/catalog/poster/pos23/8/62029-1000x830.jpg" alt="Гинтама" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Гинтама</h3>
+              <p>Самурайский абсурд в эпоху реставрации Мэйдзи</p>
+              <div class="quiz-meta">
+                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-gintama' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Повседневность</div>
+            <div class="quiz-image">
+              <img src="https://images.justwatch.com/poster/306107955/s332/%D1%81%D0%B5%D0%B7%D0%BE%D0%BD-2" alt="Несчастная жизнь Сайки Кусуо" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Несчастная жизнь Сайки Кусуо</h3>
+              <p>Психические силы и школьные будни</p>
+              <div class="quiz-meta">
+                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-neschastnaya-zhizn-sayki-kusuo' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Повседневность</div>
+            <div class="quiz-image">
+              <img src="https://images.justwatch.com/poster/311327503/s718/povsednevnaia-zhizn-starsheklassnikov.jpg" alt="Обычная жизнь старшеклассников" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Обычная жизнь старшеклассников</h3>
+              <p>Абсурдный юмор школьного клуба</p>
+              <div class="quiz-meta">
+                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-obychnaya-zhizn-starsheklassnikov' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-badge">Комедия</div>
+            <div class="quiz-image">
+              <img src="https://www.kino-teatr.ru/movie/poster/148641/113387.jpg" alt="Сатана на подработке" class="quiz-poster">
+            </div>
+            <div class="quiz-content">
+              <h3>Сатана на подработке</h3>
+              <p>Повседневная жизнь повелителя тьмы</p>
+              <div class="quiz-meta">
+                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+              </div>
+              <a href="{% url 'quiz_detail' 'quiz-satana-na-podrabotke' %}" class="btn-quiz">Подробнее</a>
+            </div>
+          </div>
+        </div>
+
+        <button class="carousel-btn carousel-next">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Футер -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <img src="/static/images/Kirava-logo.png" alt="Kirava Logo" class="logo-image-footer">
+            <div class="footer-logo-text">
+              <span class="logo-main">Kirava</span>
+            </div>
+          </div>
+          <p>Образовательно-развлекательная платформа</p>
+        </div>
+
+        <div class="footer-section">
+          <h4>Разделы</h4>
+          <a href="{% url 'home' %}"><i class="fas fa-chevron-right"></i> Главная</a>
+          <a href="{% url 'entertainment' %}"><i class="fas fa-chevron-right"></i> Развлечения</a>
+          <a href="{% url 'education' %}"><i class="fas fa-chevron-right"></i> Обучение</a>
+          <a href="{% url 'rating' %}"><i class="fas fa-chevron-right"></i> Топ пользователей</a>
+          <a href="{% url 'community' %}"><i class="fas fa-chevron-right"></i> Сообщество</a>
+        </div>
+
+        <div class="footer-section">
+          <h4>Поддержка</h4>
+          <a href="#"><i class="fas fa-chevron-right"></i> Помощь</a>
+          <a href="#"><i class="fas fa-chevron-right"></i> Контакты</a>
+          <a href="#"><i class="fas fa-chevron-right"></i> FAQ</a>
+          <a href="#"><i class="fas fa-chevron-right"></i> Сообщество</a>
+        </div>
+
+        <div class="footer-section">
+          <h4>Контакты</h4>
+          <p>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=the.kirava.official@gmail.com"
+               target="_blank"
+               class="email-link">
+              <i class="fas fa-envelope"></i> the.kirava.official@gmail.com
+            </a>
+          </p>
+          <p><i class="fas fa-headset"></i> Поддержка 24/7</p>
+          <p><i class="fas fa-globe"></i> Казахстан, Астана</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Kirava - Аниме Викторины и Обучение. Все права защищены.</p>
+        <p>Сделано с ❤️ для сообщества отаку</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="/static/javascript/quizzes.js"></script>
+<script src="/static/javascript/theme.js"></script>
+</body>
+</html>

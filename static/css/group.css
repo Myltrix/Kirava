@@ -1,0 +1,1307 @@
+/* ===== СТИЛИ ДЛЯ СТРАНИЦЫ ГРУППЫ - group.css ===== */
+/* Этот файл должен подключаться только для страниц групп */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.group-page {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+    color: white;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* Header (используем стили из community.css) */
+.group-page header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: #000;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #333;
+}
+
+.group-page .left-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex: 1;
+}
+
+.group-page .logo {
+    height: 70px;
+    width: 70px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.group-page .logo-text {
+    font-weight: bold;
+    font-size: 24px;
+    color: #0037ac;
+}
+
+.group-page nav {
+    display: flex;
+    gap: 20px;
+}
+
+.group-page nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.group-page nav a:hover,
+.group-page nav a.active {
+    color: #0037ac;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.group-page nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -17px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #0037ac;
+    border-radius: 50%;
+}
+
+.group-page .header-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.group-page .btn-login,
+.group-page .btn-register,
+.group-page .btn-profile,
+.group-page .btn-logout {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    color: white;
+    border: 2px solid #0037ac;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.group-page .btn-login:hover,
+.group-page .btn-register:hover,
+.group-page .btn-profile:hover,
+.group-page .btn-logout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+    background: linear-gradient(135deg, #002a8a, #0037ac);
+}
+
+/* Шапка группы */
+.group-header-section {
+    margin-top: 70px;
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    overflow: hidden;
+}
+
+.group-header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+
+.group-header-content {
+    position: relative;
+    z-index: 2;
+    padding: 60px 5%;
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.9));
+}
+
+.group-header-info {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.group-header-avatar-large {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: white;
+    border: 5px solid white;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.group-header-avatar-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.group-header-details {
+    flex: 1;
+}
+
+.group-title {
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 15px;
+    font-weight: 900;
+}
+
+.group-meta {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.group-category-tag {
+    background: #0037ac;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.group-members,
+.group-privacy {
+    color: #ccc;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.group-description-full {
+    color: #eee;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    max-width: 800px;
+}
+
+.group-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.group-action-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* Основной контейнер группы */
+.group-main-container {
+    padding: 40px 5%;
+    background: #0a0a0a;
+}
+
+.group-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Боковая панель */
+.group-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.sidebar-section {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 15px;
+    padding: 25px;
+    border: 1px solid #333;
+}
+
+.sidebar-title {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Список участников */
+.members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.member-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.member-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.member-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.member-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.member-item.admin .member-avatar {
+    background: linear-gradient(135deg, #ffd700, #ffaa00);
+}
+
+.member-item.moderator .member-avatar {
+    background: linear-gradient(135deg, #00a86b, #008055);
+}
+
+.member-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.member-name {
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.member-role {
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.show-all-members {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: #0037ac;
+    border: 2px solid #0037ac;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.show-all-members:hover {
+    background: rgba(0, 55, 172, 0.1);
+}
+
+/* Правила группы */
+.group-rules ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.group-rules li {
+    color: #ccc;
+    padding: 8px 0;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.group-rules li:before {
+    content: '•';
+    color: #0037ac;
+    position: absolute;
+    left: 0;
+}
+
+/* Статистика группы */
+.group-info-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.stat-item i {
+    color: #0037ac;
+    width: 20px;
+}
+
+/* Основной контент группы */
+.group-content {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Форма отправки сообщения */
+.message-form-container {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 15px;
+    padding: 25px;
+    border: 1px solid #333;
+}
+
+.message-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-header {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.user-avatar-small {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.user-avatar-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.form-inputs {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message-textarea {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid #333;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
+    resize: vertical;
+    min-height: 80px;
+    max-height: 200px;
+    font-family: 'Arial', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.message-textarea:focus {
+    outline: none;
+    border-color: #0037ac;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 55, 172, 0.3);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.attachment-options {
+    display: flex;
+    gap: 10px;
+}
+
+.attachment-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid #333;
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.attachment-btn:hover {
+    background: #0037ac;
+    border-color: #0037ac;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.send-btn {
+    padding: 10px 25px;
+    background: #0037ac;
+    color: white;
+    border: 2px solid #0037ac;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.send-btn:hover {
+    background: #002a8a;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.3);
+}
+
+/* Лента сообщений */
+.messages-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.messages-feed::-webkit-scrollbar {
+    width: 6px;
+}
+
+.messages-feed::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.messages-feed::-webkit-scrollbar-thumb {
+    background: #0037ac;
+    border-radius: 3px;
+}
+
+/* Разделитель даты */
+.date-divider {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.date-divider:before,
+.date-divider:after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #333;
+}
+
+.date-divider span {
+    color: #888;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Элемент сообщения */
+.message-item {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.message-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.message-item.current-user {
+    background: rgba(0, 55, 172, 0.1);
+    border-color: rgba(0, 55, 172, 0.3);
+}
+
+.message-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.message-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.message-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.message-author {
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.message-time {
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.message-text {
+    color: #ccc;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+/* Сообщение с фото */
+.message-item.with-photo .message-photo {
+    margin-top: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 400px;
+    border: 1px solid #333;
+}
+
+.message-photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.message-photo img:hover {
+    transform: scale(1.02);
+}
+
+/* Действия с сообщением */
+.message-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 5px;
+}
+
+.like-btn,
+.reply-btn {
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.like-btn:hover,
+.reply-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #0037ac;
+}
+
+.like-btn.liked {
+    color: #ff6b6b;
+}
+
+.like-btn.liked i {
+    color: #ff6b6b;
+}
+
+/* Ответы на сообщения */
+.message-replies {
+    margin-top: 15px;
+    padding-left: 15px;
+    border-left: 2px solid #333;
+}
+
+.reply-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    margin-top: 5px;
+}
+
+.reply-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.reply-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.reply-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.reply-author {
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.reply-text {
+    color: #aaa;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Footer (используем стили из community.css) */
+.group-page .footer {
+    background-color: #000;
+    padding: 60px 0 20px;
+    border-top: 1px solid #333;
+    position: relative;
+}
+
+.group-page .footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.group-page .footer-section h4 {
+    color: #0037ac;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.group-page .footer-section p {
+    color: #ccc;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.group-page .footer-section a {
+    color: #ccc;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.group-page .footer-section a:hover,
+.group-page .footer-section a.active {
+    color: #0037ac;
+}
+
+.group-page .footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid #333;
+    color: #666;
+}
+
+.group-page .footer-bottom p {
+    margin-bottom: 10px;
+}
+
+.group-page .logo-image-footer {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: contain;
+}
+
+.group-page .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.group-page .footer-logo-text {
+    font-weight: bold;
+    font-size: 24px;
+    color: #0037ac;
+}
+
+/* Общие стили кнопок */
+.group-page .btn-primary {
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    color: white;
+    border: 2px solid #0037ac;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.group-page .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+    background: linear-gradient(135deg, #002a8a, #0037ac);
+}
+
+.group-page .btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid #333;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.group-page .btn-secondary:hover {
+    border-color: #0037ac;
+    color: #0037ac;
+    transform: translateY(-2px);
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .group-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .group-header-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .group-header-avatar-large {
+        width: 120px;
+        height: 120px;
+        font-size: 3rem;
+    }
+    
+    .group-title {
+        font-size: 2rem;
+    }
+    
+    .group-meta {
+        justify-content: center;
+    }
+    
+    .group-actions {
+        justify-content: center;
+    }
+    
+    .group-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .sidebar-section {
+        padding: 20px;
+    }
+    
+    .message-form-container {
+        padding: 20px;
+    }
+    
+    .form-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .user-avatar-small {
+        align-self: flex-start;
+    }
+    
+    .group-page .footer-content {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .group-header-section {
+        min-height: 350px;
+    }
+    
+    .group-header-avatar-large {
+        width: 100px;
+        height: 100px;
+        font-size: 2.5rem;
+    }
+    
+    .group-title {
+        font-size: 1.8rem;
+    }
+    
+    .group-meta {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .group-action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .attachment-options {
+        justify-content: center;
+    }
+    
+    .send-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .group-page .footer-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .group-page nav {
+        display: none; /* Скрываем навигацию на очень маленьких экранах */
+    }
+}
+
+/* Анимации */
+@keyframes messageAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-item {
+    animation: messageAppear 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Светлая тема для страницы группы */
+.group-page.light-theme {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+}
+
+.group-page.light-theme header {
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 55, 172, 0.12);
+}
+
+.group-page.light-theme nav a {
+    color: #34495e;
+}
+
+.group-page.light-theme nav a:hover,
+.group-page.light-theme nav a.active {
+    color: #0037ac;
+    background-color: rgba(0, 55, 172, 0.08);
+}
+
+.group-page.light-theme .group-title {
+    color: #2c3e50;
+}
+
+.group-page.light-theme .group-members,
+.group-page.light-theme .group-privacy {
+    color: #666;
+}
+
+.group-page.light-theme .group-description-full {
+    color: #4a5568;
+}
+
+.group-page.light-theme .group-main-container {
+    background: #f8f9fa;
+}
+
+.group-page.light-theme .sidebar-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(0, 55, 172, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.group-page.light-theme .sidebar-title {
+    color: #2c3e50;
+}
+
+.group-page.light-theme .member-name {
+    color: #2c3e50;
+}
+
+.group-page.light-theme .member-role {
+    color: #666;
+}
+
+.group-page.light-theme .member-item:hover {
+    background: rgba(0, 55, 172, 0.05);
+}
+
+.group-page.light-theme .group-rules li {
+    color: #4a5568;
+}
+
+.group-page.light-theme .stat-item {
+    color: #666;
+}
+
+.group-page.light-theme .message-form-container {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(0, 55, 172, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.group-page.light-theme .message-textarea {
+    background: rgba(0, 55, 172, 0.05);
+    border: 2px solid rgba(224, 230, 237, 0.8);
+    color: #2c3e50;
+}
+
+.group-page.light-theme .message-textarea:focus {
+    background: rgba(0, 55, 172, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 55, 172, 0.2);
+}
+
+.group-page.light-theme .attachment-btn {
+    background: rgba(0, 55, 172, 0.05);
+    border: 2px solid rgba(224, 230, 237, 0.8);
+    color: #5d6d7e;
+}
+
+.group-page.light-theme .date-divider:before,
+.group-page.light-theme .date-divider:after {
+    background: rgba(0, 55, 172, 0.2);
+}
+
+.group-page.light-theme .message-item {
+    background: rgba(0, 55, 172, 0.02);
+    border: 1px solid rgba(0, 55, 172, 0.1);
+}
+
+.group-page.light-theme .message-item:hover {
+    background: rgba(0, 55, 172, 0.05);
+    border-color: rgba(0, 55, 172, 0.2);
+}
+
+.group-page.light-theme .message-item.current-user {
+    background: rgba(0, 55, 172, 0.08);
+    border-color: rgba(0, 55, 172, 0.2);
+}
+
+.group-page.light-theme .message-author {
+    color: #2c3e50;
+}
+
+.group-page.light-theme .message-time {
+    color: #666;
+}
+
+.group-page.light-theme .message-text {
+    color: #4a5568;
+}
+
+.group-page.light-theme .like-btn:hover,
+.group-page.light-theme .reply-btn:hover {
+    background: rgba(0, 55, 172, 0.1);
+}
+
+.group-page.light-theme .reply-item {
+    background: rgba(0, 55, 172, 0.03);
+}
+
+.group-page.light-theme .reply-author {
+    color: #2c3e50;
+}
+
+.group-page.light-theme .reply-text {
+    color: #666;
+}
+
+.group-page.light-theme .footer {
+    background-color: #ffffff;
+    border-top: 1px solid rgba(0, 55, 172, 0.08);
+}
+
+.group-page.light-theme .footer-section p {
+    color: #5a6c7d;
+}
+
+.group-page.light-theme .footer-section a {
+    color: #5a6c7d;
+}
+
+.group-page.light-theme .footer-section a:hover,
+.group-page.light-theme .footer-section a.active {
+    color: #0037ac;
+}
+
+.group-page.light-theme .footer-bottom {
+    border-top: 1px solid rgba(0, 55, 172, 0.08);
+    color: #7b8895;
+}
+
+.group-page.light-theme .btn-secondary {
+    color: #0037ac;
+    border: 2px solid #0037ac;
+}
+
+.group-page.light-theme .btn-secondary:hover {
+    background: rgba(0, 55, 172, 0.1);
+}
+
+/* Специальные утилитарные классы */
+.text-center {
+    text-align: center;
+}
+
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+.mt-30 { margin-top: 30px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-20 { margin-bottom: 20px; }
+.mb-30 { margin-bottom: 30px; }
+
+.p-10 { padding: 10px; }
+.p-20 { padding: 20px; }
+.p-30 { padding: 30px; }
+
+.hidden {
+    display: none !important;
+}
+
+/* Индикатор онлайн статуса */
+.online-status {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    background: #00a86b;
+    border-radius: 50%;
+    border: 2px solid #1a1a1a;
+}
+
+.member-avatar,
+.message-avatar,
+.reply-avatar,
+.user-avatar-small {
+    position: relative;
+}
+
+/* Заглушка для отсутствующего аватара */
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+/* Стили для переключения темы */
+.theme-toggle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #0037ac;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 55, 172, 0.3);
+    background: linear-gradient(135deg, #002a8a, #001f66);
+}
+
+.theme-toggle-inner {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    transition: all 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    will-change: transform, opacity;
+    z-index: 2;
+}
+
+.theme-toggle .fa-sun {
+    color: #FFD700;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+}
+
+.theme-toggle .fa-moon {
+    color: #F0F0F0;
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-180deg) scale(0.5);
+    text-shadow: 0 0 10px rgba(240, 240, 240, 0.5);
+}
+
+.group-page.light-theme .theme-toggle .fa-sun {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(180deg) scale(0.5);
+}
+
+.group-page.light-theme .theme-toggle .fa-moon {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+.group-page.light-theme .theme-toggle {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    border-color: #0037ac;
+}

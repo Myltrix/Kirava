@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kirava — {{ anime.title }} - Аниме пересказ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/anime-detail.css' %}">
+  <link rel="icon" href="{% static 'images/VrLogo.png' %}" type="image/x-icon">
+</head>
+<body>
+  <header>
+    <div class="left-header">
+      <img src="{% static 'images/Kirava-logo.png' %}" alt="Логотип" class="logo">
+      <div class="logo-text">Kirava</div>
+      <nav>
+        <a href="{% url 'home' %}">Главное</a>
+        <a href="{% url 'entertainment' %}">Развлечения</a>
+        <a href="{% url 'education' %}">Обучение</a>
+        <a href="{% url 'rating' %}">Топ пользователей</a>
+        <a href="{% url 'community' %}">Сообщество</a>
+      </nav>
+    </div>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+        <div class="theme-toggle-inner">
+          <i class="fas fa-sun"></i>
+          <i class="fas fa-moon"></i>
+        </div>
+      </button>
+      {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}" class="btn-login">
+          <i class="fas fa-user"></i> Мой профиль
+        </a>
+        <a href="{% url 'logout' %}" class="btn-register">
+          <i class="fas fa-sign-out-alt"></i> Выйти
+        </a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn-login">
+          <i class="fas fa-user"></i> Войти
+        </a>
+        <a href="{% url 'register' %}" class="btn-register">
+          <i class="fas fa-user-plus"></i> Регистрация
+        </a>
+      {% endif %}
+    </div>
+  </header>
+
+  <div class="main-content anime-detail-page">
+    <section class="anime-detail-section">
+      <div class="container">
+        <div class="anime-detail-content">
+          <!-- Левая колонка -->
+          <div class="anime-sidebar">
+            <div class="anime-poster-card">
+              <img src="{{ anime.poster_url }}" alt="{{ anime.title }}" class="anime-poster">
+              <div class="quiz-badge">Популярное</div>
+            </div>
+
+            <div class="anime-info-card">
+              <h3>Информация об аниме</h3>
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="info-label"><i class="fas fa-calendar-alt"></i> Год выхода:</span>
+                  <span class="info-value">{{ anime.year }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label"><i class="fas fa-video"></i> Видео пересказ:</span>
+                  <span class="info-value">{{ anime.video_duration }} минут</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label"><i class="fas fa-clock"></i> Оригинал:</span>
+                  <span class="info-value">{{ anime.episodes }} серий</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label"><i class="fas fa-star"></i> Рейтинг:</span>
+                  <span class="info-value">{{ anime.rating }}/10</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label"><i class="fas fa-user"></i> Автор:</span>
+                  <span class="info-value">{{ anime.author }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label"><i class="fas fa-play-circle"></i> Студия:</span>
+                  <span class="info-value">{{ anime.studio }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Правая колонка -->
+          <div class="anime-main-content">
+            <div class="anime-header">
+              <h1 class="anime-title">{{ anime.title }}</h1>
+              <div class="anime-subtitle">Полный пересказ сюжета</div>
+              
+              <div class="anime-rating">
+                <div class="stars">
+                  {% with stars=anime.rating %}
+                    {% if stars >= 0.5 %}<i class="fas fa-star"></i>{% else %}<i class="far fa-star"></i>{% endif %}
+                    {% if stars >= 1.5 %}<i class="fas fa-star"></i>{% elif stars >= 1 %}<i class="fas fa-star-half-alt"></i>{% else %}<i class="far fa-star"></i>{% endif %}
+                    {% if stars >= 2.5 %}<i class="fas fa-star"></i>{% elif stars >= 2 %}<i class="fas fa-star-half-alt"></i>{% else %}<i class="far fa-star"></i>{% endif %}
+                    {% if stars >= 3.5 %}<i class="fas fa-star"></i>{% elif stars >= 3 %}<i class="fas fa-star-half-alt"></i>{% else %}<i class="far fa-star"></i>{% endif %}
+                    {% if stars >= 4.5 %}<i class="fas fa-star"></i>{% elif stars >= 4 %}<i class="fas fa-star-half-alt"></i>{% else %}<i class="far fa-star"></i>{% endif %}
+                  {% endwith %}
+                </div>
+                <span class="rating-score">{{ anime.rating }}/10</span>
+              </div>
+            </div>
+
+            <!-- Видео плеер -->
+            <div class="video-section">
+              <h2 class="section-title"><span class="highlight">Видео-пересказ</span> всего аниме</h2>
+              <div class="video-player">
+                <div class="video-container">
+                  {% if youtube_id %}
+                  <iframe 
+  width="100%" 
+  height="500"
+  loading="lazy"
+  referrerpolicy="strict-origin-when-cross-origin"
+  src="https://www.youtube.com/embed/{{ youtube_id }}?rel=0&modestbranding=1&autoplay=0"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen>
+</iframe>
+
+                  {% else %}
+                  <div class="video-placeholder">
+                    <div class="play-button">
+                      <i class="fas fa-play"></i>
+                    </div>
+                    <img src="{{ anime.poster_url }}" alt="{{ anime.title }}" class="video-thumbnail">
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <!-- Описание -->
+            <div class="description-section">
+              <h2 class="section-title">О чём это <span class="highlight">аниме</span></h2>
+              <div class="anime-description">
+                {{ anime.description|safe|linebreaks }}
+              </div>
+            </div>
+
+            <!-- Персонажи -->
+            {% if characters %}
+            <div class="characters-section">
+              <h2 class="section-title">Главные <span class="highlight">персонажи</span></h2>
+              <div class="characters-grid">
+                {% for character in characters %}
+                <div class="character-card">
+                  <div class="character-image">
+                    <img src="{{ character.image_url }}" alt="{{ character.name }}">
+                  </div>
+                  <div class="character-info">
+                    <h4>{{ character.name }}</h4>
+                    <p class="character-role">{{ character.role }}</p>
+                    <p class="character-desc">{{ character.description }}</p>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Комментарии -->
+    <section class="comments-section">
+      <div class="container">
+        <h2 class="section-title">Комментарии</h2>
+        
+        {% if user.is_authenticated %}
+        <form method="POST" class="comment-form">
+          {% csrf_token %}
+          <div class="comment-avatar">
+            {% if user.profile.avatar %}
+              <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="user-avatar">
+            {% else %}
+              <div class="default-avatar" data-initial="{{ user.username|first|upper }}">
+                <i class="fas fa-user"></i>
+              </div>
+            {% endif %}
+          </div>
+          <div class="comment-input-container">
+            {{ form.text }}
+            <button type="submit" class="btn-quiz">
+              <i class="fas fa-paper-plane"></i> Отправить
+            </button>
+          </div>
+        </form>
+        {% else %}
+        <div class="comment-form">
+          <div class="comment-avatar">
+            <div class="default-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+          </div>
+          <div class="comment-input-container">
+            <textarea placeholder="Войдите, чтобы оставить комментарий..." class="comment-input" disabled></textarea>
+            <a href="{% url 'login' %}" class="btn-quiz">
+              <i class="fas fa-sign-in-alt"></i> Войти для комментирования
+            </a>
+          </div>
+        </div>
+        {% endif %}
+        
+        <div class="comments-list">
+          {% for comment in comments %}
+          <div class="comment">
+            <div class="comment-avatar">
+              {% if comment.user.profile.avatar %}
+                <img src="{{ comment.user.profile.avatar.url }}" alt="{{ comment.user.username }}" class="user-avatar">
+              {% else %}
+                <div class="default-avatar" data-initial="{{ comment.user.username|first|upper }}">
+                  <i class="fas fa-user"></i>
+                </div>
+              {% endif %}
+            </div>
+            <div class="comment-content">
+              <div class="comment-header">
+                <span class="comment-author">{{ comment.user.username }}</span>
+                <span class="comment-date">{{ comment.created_at|date:"d.m.Y H:i" }}</span>
+              </div>
+              <p class="comment-text">{{ comment.text }}</p>
+            </div>
+          </div>
+          {% empty %}
+          <div class="no-comments">
+            <p>Пока нет комментариев. Будьте первым!</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+
+          <div class="footer-section">
+            <div class="footer-logo">
+              <img src="/static/images/Kirava-logo.png" alt="Kirava Logo" class="logo-image-footer">
+              <div class="footer-logo-text">
+                <span class="logo-main">Kirava</span>
+              </div>
+            </div>
+            <p>Образовательно-развлекательная платформа</p>
+          </div>
+
+          <div class="footer-section">
+            <h4>Разделы</h4>
+            <a href="{% url 'home' %}"><i class="fas fa-chevron-right"></i> Главная</a>
+            <a href="{% url 'entertainment' %}"><i class="fas fa-chevron-right"></i> Развлечения</a>
+            <a href="{% url 'education' %}"><i class="fas fa-chevron-right"></i> Обучение</a>
+            <a href="{% url 'rating' %}"><i class="fas fa-chevron-right"></i> Топ пользователей</a>
+            <a href="{% url 'community' %}"><i class="fas fa-chevron-right"></i> Сообщество</a>
+          </div>
+
+          <div class="footer-section">
+            <h4>Поддержка</h4>
+            <a href="#"><i class="fas fa-chevron-right"></i> Помощь</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> Контакты</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> FAQ</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> Сообщество</a>
+          </div>
+
+          <div class="footer-section">
+            <h4>Контакты</h4>
+            <p>
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=the.kirava.official@gmail.com"
+                target="_blank"
+                class="email-link"
+              >
+                <i class="fas fa-envelope"></i> the.kirava.official@gmail.com
+              </a>
+            </p>
+            <p><i class="fas fa-headset"></i> Поддержка 24/7</p>
+            <p><i class="fas fa-globe"></i> Казахстан, Астана</p>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2025 Kirava - Аниме Пересказы и Обучение. Все права защищены.</p>
+          <p>Сделано с ❤️ для сообщества отаку</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="{% static 'javascript/theme.js' %}"></script>
+  <script src="{% static 'javascript/anime_detail.js' %}"></script>
+</body>
+</html>

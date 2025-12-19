@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Угадай аниме по персонажу | Kirava Games</title>
+    <link rel="stylesheet" href="{% static 'css/game2.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(0, 55, 172, 0.2);
+            border-top: 3px solid #0037ac;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Экран загрузки -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+        <p style="color: #3b82f6; font-weight: 600; margin-top: 15px;">Загрузка игры...</p>
+    </div>
+
+    <!-- Навигация -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="{% static 'images/logo.png' %}" alt="Kirava Logo" class="logo-image">
+                <div class="brand-text">
+                    <h1><span class="kirava">Kirava</span><span class="games">Games</span></h1>
+                    <p class="brand-subtitle">Угадай аниме по персонажу</p>
+                </div>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="/" class="btn-nav back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>На главную</span>
+                </a>
+                
+                <button class="btn-nav theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Тема</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Основной контейнер -->
+    <main class="game-container">
+        <!-- Заголовок игры -->
+        <section class="game-header">
+            <div class="header-content">
+                <h1 class="game-title">
+                    <span class="highlight">УГАДАЙ АНИМЕ</span> ПО ПЕРСОНАЖУ
+                </h1>
+                <p class="game-subtitle">
+                    Угадай название аниме по главному герою! Присмотрись к деталям, запомни стиль и докажи, что ты настоящий отаку!
+                </p>
+                
+                <!-- Статистика -->
+                <div class="stats-bar">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">ОЧКИ</span>
+                            <span class="stat-value" id="scoreValue">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">ВРЕМЯ</span>
+                            <span class="stat-value" id="timerValue">60</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-flag-checkered"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">РАУНД</span>
+                            <span class="stat-value" id="roundValue">1/10</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">РЕКОРД</span>
+                            <span class="stat-value" id="highScoreValue">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Игровая зона -->
+        <section class="game-area">
+            <!-- Левая часть: персонаж + результат -->
+            <div class="image-section">
+                <div class="character-container">
+                    <div class="character-header">
+                        <div class="difficulty-badge" id="difficultyBadge">
+                            <i class="fas fa-signal"></i>
+                            <span id="difficultyText">Средняя сложность</span>
+                        </div>
+                        <div class="timer-badge" id="timerBadge">
+                            <i class="fas fa-clock"></i>
+                            <span id="timerDisplay">60</span>
+                        </div>
+                    </div>
+                    
+                    <div class="character-wrapper">
+                        <div class="character-content">
+                            <!-- Основное изображение персонажа -->
+                            <img id="characterImage" alt="Персонаж из аниме" class="character-pic">
+                            
+                            <!-- Плейсхолдер -->
+                            <div class="character-placeholder" id="characterPlaceholder">
+                                <i class="fas fa-user-circle"></i>
+                                <span>Сейчас появится персонаж</span>
+                            </div>
+                            
+                            <!-- РЕЗУЛЬТАТ ОТОБРАЖАЕТСЯ ЗДЕСЬ -->
+                            <div class="result-overlay" id="resultOverlay">
+                                <div class="result-popup" id="resultPopup"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Подсказка -->
+                    <div class="hint-container" id="hintContainer">
+                        <i class="fas fa-lightbulb"></i>
+                        <span id="hintText">Подсказка появится через 15 секунд</span>
+                    </div>
+                </div>
+                
+                <!-- Прогресс -->
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span>Прогресс игры</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="round-dots" id="roundDots">
+                        <!-- Точки будут добавлены через JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая часть: управление -->
+            <div class="control-section">
+                <!-- Ввод ответа -->
+                <div class="input-container">
+                    <div class="input-group">
+                        <input type="text" 
+                               id="answerInput" 
+                               placeholder="В каком аниме этот персонаж?" 
+                               autocomplete="off"
+                               maxlength="50"
+                               autofocus>
+                        <button id="submitAnswer" class="btn-primary submit-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Проверить</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Быстрые подсказки -->
+                <div class="quick-hints">
+                    <h3 class="section-title">
+                        <i class="fas fa-bolt"></i> Быстрые подсказки
+                    </h3>
+                    <div class="hints-grid">
+                        <button class="hint-btn" data-type="character">
+                            <div class="hint-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <span>Имя персонажа</span>
+                        </button>
+                        <button class="hint-btn" data-type="ability">
+                            <div class="hint-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <span>Способность</span>
+                        </button>
+                        <button class="hint-btn" data-type="quote">
+                            <div class="hint-icon">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                            <span>Цитата</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Варианты ответов -->
+                <div class="options-container">
+                    <h3 class="section-title">
+                        <i class="fas fa-list-check"></i> Варианты аниме
+                    </h3>
+                    <div class="options-grid" id="optionsGrid">
+                        <!-- Варианты будут добавлены через JS -->
+                    </div>
+                </div>
+
+                <!-- Действия -->
+                <div class="actions-container">
+                    <div class="actions-grid">
+                        <button id="skipBtn" class="btn-action skip-action">
+                            <div class="action-icon">
+                                <i class="fas fa-forward"></i>
+                            </div>
+                            <div class="action-info">
+                                <span class="action-title">Пропустить</span>
+                                <span class="action-cost">-25 очков</span>
+                            </div>
+                        </button>
+                        
+                        <button id="hintBtn" class="btn-action hint-action">
+                            <div class="action-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <div class="action-info">
+                                <span class="action-title">Подсказка</span>
+                                <span class="action-cost">-50 очков</span>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <button id="restartBtn" class="btn-restart">
+                        <i class="fas fa-redo"></i>
+                        <span>Начать заново</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Как играть -->
+        <section class="how-to-play">
+            <h2 class="section-title-main">
+                <i class="fas fa-gamepad"></i> Как играть?
+            </h2>
+            <div class="instructions-grid">
+                <div class="instruction-card">
+                    <div class="instruction-number">1</div>
+                    <div class="instruction-content">
+                        <h3>Изучи персонажа</h3>
+                        <p>Внимательно посмотри на изображение главного героя</p>
+                    </div>
+                </div>
+                <div class="instruction-card">
+                    <div class="instruction-number">2</div>
+                    <div class="instruction-content">
+                        <h3>Введи ответ</h3>
+                        <p>Напиши название аниме, где этот персонаж главный герой</p>
+                    </div>
+                </div>
+                <div class="instruction-card">
+                    <div class="instruction-number">3</div>
+                    <div class="instruction-content">
+                        <h3>Действуй быстро</h3>
+                        <p>Чем быстрее ответишь - тем больше очков получишь</p>
+                    </div>
+                </div>
+                <div class="instruction-card">
+                    <div class="instruction-number">4</div>
+                    <div class="instruction-content">
+                        <h3>Используй подсказки</h3>
+                        <p>Если не узнал персонажа - купи подсказку за очки</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Модальное окно результатов -->
+    <div class="modal-overlay" id="resultModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">
+                    <i class="fas fa-trophy"></i>
+                    <span>Игра завершена!</span>
+                </h2>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" id="modalBody">
+                <!-- Результаты будут добавлены через JS -->
+            </div>
+            
+            <div class="modal-footer">
+                <button id="playAgainBtn" class="btn-primary">
+                    <i class="fas fa-play-circle"></i> Играть снова
+                </button>
+                <button id="shareResultsBtn" class="btn-secondary">
+                    <i class="fas fa-share-alt"></i> Поделиться
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Скрипты -->
+    <script src="{% static 'javascript/game2.js' %}"></script>
+    
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.getElementById('loadingOverlay');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(function() {
+                        loader.style.display = 'none';
+                    }, 500);
+                }
+            }, 800);
+        });
+        
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            document.body.classList.toggle('light-theme');
+            const icon = this.querySelector('i');
+            const text = this.querySelector('span');
+            if (document.body.classList.contains('light-theme')) {
+                icon.className = 'fas fa-sun';
+                text.textContent = 'Тема';
+            } else {
+                icon.className = 'fas fa-moon';
+                text.textContent = 'Тема';
+            }
+            localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        });
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
+            document.getElementById('themeToggle').querySelector('i').className = 'fas fa-sun';
+        }
+    </script>
+</body>
+</html>

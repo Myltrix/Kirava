@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirava - Редактирование профиля</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/edit-profile.css' %}">
+    <link rel="icon" href="{% static 'images/VrLogo.png' %}" type="image/x-icon">
+    <style>
+        /* Стили для скроллинга без полосы прокрутки */
+        .modal-body-scroll {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+            padding-right: 0;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        
+        .modal-body-scroll::-webkit-scrollbar {
+            display: none; /* Chrome/Safari/Opera */
+        }
+        
+        /* Стиль для выбранной страны - только синяя обводка */
+        .language-item.selected {
+            border: 2px solid #0037ac !important;
+        }
+        
+        .language-item.selected .language-check {
+            opacity: 1;
+            color: #0037ac;
+        }
+        
+        /* Синие иконки для социальных сетей в модальном окне */
+        .social-edit-icon.blue {
+            background-color: #0037ac !important;
+        }
+        
+        .social-edit-icon.vk.blue { 
+            background-color: #0037ac !important; 
+        }
+        
+        .social-edit-icon.telegram.blue { 
+            background-color: #0037ac !important; 
+        }
+        
+        .social-edit-icon.instagram.blue { 
+            background-color: #0037ac !important; 
+        }
+        
+        .social-edit-icon.youtube.blue { 
+            background-color: #0037ac !important; 
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="left-header">
+        <img src="{% static 'images/Kirava-logo.png' %}" alt="Логотип" class="logo">
+        <div class="logo-text">Kirava</div>
+        <nav>
+            <a href="{% url 'home' %}">Главное</a>
+            <a href="{% url 'entertainment' %}">Развлечения</a>
+            <a href="{% url 'education' %}">Обучение</a>
+            <a href="{% url 'rating' %}">Топ пользователей</a>
+            <a href="{% url 'community' %}">Сообщество</a>
+        </nav>
+    </div>
+    <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+            <div class="theme-toggle-inner">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+            </div>
+        </button>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}" class="btn-profile">
+                <i class="fas fa-user"></i> Мой профиль
+            </a>
+            <a href="{% url 'logout' %}" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Выйти
+            </a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn-login">
+                <i class="fas fa-user"></i> Войти
+            </a>
+            <a href="{% url 'register' %}" class="btn-register">
+                <i class="fas fa-user-plus"></i> Регистрация
+            </a>
+        {% endif %}
+    </div>
+</header>
+
+<div class="main-content">
+    <section class="page-header">
+        <div class="container">
+            <div class="page-title-container">
+                <h1 class="page-title">Редактирование <span class="highlight">профиля</span></h1>
+                <p class="page-subtitle">Обновите информацию о себе и настройте внешний вид профиля</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="edit-section">
+        <div class="container">
+            <form method="POST" class="edit-form" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="edit-grid">
+                    <div class="left-column">
+                        <div class="edit-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-user-circle"></i>
+                                Аватар профиля
+                            </h3>
+                            <div class="avatar-upload">
+                                <div class="avatar-preview">
+                                    <div class="avatar-circle large">
+                                        {% if profile.avatar %}
+                                            <img src="{{ profile.avatar.url }}" alt="Аватар" id="avatar-preview">
+                                        {% else %}
+                                            <i class="fas fa-user" id="avatar-preview-icon"></i>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="upload-controls">
+                                    <input type="file" id="avatar-upload" name="avatar" accept="image/*" hidden>
+                                    <button type="button" class="btn-upload" onclick="document.getElementById('avatar-upload').click()">
+                                        <i class="fas fa-camera"></i>
+                                        Загрузить фото
+                                    </button>
+                                    <button type="button" class="btn-remove" id="remove-avatar">
+                                        <i class="fas fa-trash"></i>
+                                        Удалить
+                                    </button>
+                                </div>
+                                <p class="upload-hint">Рекомендуемый размер: 400x400px. Форматы: JPG, PNG, GIF</p>
+                            </div>
+                        </div>
+
+                        <div class="edit-card social-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-share-alt"></i>
+                                Социальные сети
+                                <button type="button" class="btn-edit-social" id="editSocialBtn">
+                                    <i class="fas fa-edit"></i>
+                                    Редактировать
+                                </button>
+                            </h3>
+
+                            <div class="social-links-grid" id="socialLinksView">
+                                {% if profile.vk_url %}
+                                <a href="{{ profile.vk_url }}" target="_blank" class="social-link-item">
+                                    <div class="social-icon">
+                                        <i class="fab fa-vk"></i>
+                                    </div>
+                                    <div class="social-info">
+                                        <div class="social-name">ВКонтакте</div>
+                                        <div class="social-username">
+                                            {% if "vk.com/" in profile.vk_url %}
+                                                @{{ profile.vk_url|slice:"15:" }}
+                                            {% else %}
+                                                {{ profile.vk_url }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-external-link-alt social-external-icon"></i>
+                                </a>
+                                {% else %}
+                                <div class="social-link-item empty">
+                                    <div class="social-icon">
+                                        <i class="fab fa-vk"></i>
+                                    </div>
+                                    <div class="social-info">
+                                        <div class="social-name">ВКонтакте</div>
+                                        <div class="social-username">Не добавлено</div>
+                                    </div>
+                                    <i class="fas fa-plus social-link-icon"></i>
+                                </div>
+                                {% endif %}
+
+                                {% if profile.telegram_url %}
+                                <a href="{{ profile.telegram_url }}" target="_blank" class="social-link-item">
+                                    <div class="social-icon">
+                                        <i class="fab fa-telegram"></i>
+                                    </div>
+                                    <div class="social-info">
+                                        <div class="social-name">Telegram</div>
+                                        <div class="social-username">
+                                            {% if "t.me/" in profile.telegram_url %}
+                                                @{{ profile.telegram_url|slice:"13:" }}
+                                            {% else %}
+                                                {{ profile.telegram_url }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-external-link-alt social-external-icon"></i>
+                                </a>
+                                {% else %}
+                                <div class="social-link-item empty">
+                                    <div class="social-icon">
+                                        <i class="fab fa-telegram"></i>
+                                    </div>
+                                    <div class="social-info">
+                                        <div class="social-name">Telegram</div>
+                                        <div class="social-username">Не добавлено</div>
+                                    </div>
+                                    <i class="fas fa-plus social-link-icon"></i>
+                                </div>
+                                {% endif %}
+
+                                {% if profile.instagram_url %}
+                                <a href="{{ profile.instagram_url }}" target="_blank" class="social-link-item">
+                                    <div class="social-icon">
+                                        <i class="fab fa-instagram"></i>
+                                    </div>
+                                    <div class="social-info">
+                                        <div class="social-name">Instagram</div>
+                                        <div class="social-username">
+                                            {% if "instagram.com/" in profile.instagram_url %}
+                                                @{{ profile.instagram_url|slice:"26:" }}
+                                            {% else %}
+                                                {{ profile.instagram_url }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-external-link-alt social-external-icon"></i>
+                                </a>
+                                {% else %}
+                                <div class="social-link-item empty">
+                                    <div class="social-icon">
+                                        <i class="fab fa-instagram"></i>
+                                    </div>
+                                    <div class="social-info">
+                                        <div class="social-name">Instagram</div>
+                                        <div class="social-username">Не добавлено</div>
+                                    </div>
+                                    <i class="fas fa-plus social-link-icon"></i>
+                                </div>
+                                {% endif %}
+
+                                {% if profile.youtube_url %}
+                                <a href="{{ profile.youtube_url }}" target="_blank" class="social-link-item">
+                                    <div class="social-icon">
+                                        <i class="fab fa-youtube"></i>
+                                    </div>
+                                    <div class="social-info">
+                                        <div class="social-name">YouTube</div>
+                                        <div class="social-username">{{ profile.youtube_url|slice:"23:" }}</div>
+                                    </div>
+                                    <i class="fas fa-external-link-alt social-external-icon"></i>
+                                </a>
+                                {% else %}
+                                <div class="social-link-item empty">
+                                    <div class="social-icon">
+                                        <i class="fab fa-youtube"></i>
+                                    </div>
+                                    <div class="social-info">
+                                        <div class="social-name">YouTube</div>
+                                        <div class="social-username">Не добавлено</div>
+                                    </div>
+                                    <i class="fas fa-plus social-link-icon"></i>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-column">
+                        <div class="edit-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-address-card"></i>
+                                Личная информация
+                            </h3>
+
+                            <div class="form-group readonly-field">
+                                <label>Имя пользователя</label>
+                                <div class="readonly-value">{{ user.username }}</div>
+                                <div class="form-hint">Для изменения имени обратитесь в поддержку</div>
+                            </div>
+
+                            <div class="form-group readonly-field">
+                                <label>Email адрес</label>
+                                <div class="readonly-value">{{ user.email }}</div>
+                                <div class="form-hint">Для изменения email обратитесь в поддержку</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="title">Статус/звание</label>
+                                <input type="text" id="title" name="status" class="form-input"
+                                       value="{{ profile.status|default:'' }}"
+                                       placeholder="Например: Мастер викторин">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="country">Страна</label>
+                                <div class="country-field-with-button">
+                                    <div class="country-display" id="countryDisplay">
+                                        {% if profile.country %}
+                                            {% if profile.country == "KZ" %}Казахстан
+                                            {% elif profile.country == "RU" %}Россия
+                                            {% elif profile.country == "BY" %}Беларусь
+                                            {% elif profile.country == "UA" %}Украина
+                                            {% elif profile.country == "US" %}США
+                                            {% elif profile.country == "JP" %}Япония
+                                            {% elif profile.country == "KR" %}Корея
+                                            {% elif profile.country == "CN" %}Китай
+                                            {% elif profile.country == "DE" %}Германия
+                                            {% elif profile.country == "FR" %}Франция
+                                            {% elif profile.country == "OTHER" %}Другая
+                                            {% else %}{{ profile.country }}{% endif %}
+                                        {% else %}
+                                            Не определена
+                                        {% endif %}
+                                    </div>
+                                    <button type="button" class="btn-select-country" id="selectCountryBtn">
+                                        <i class="fas fa-edit"></i>
+                                        Выбрать страну
+                                    </button>
+                                </div>
+                                <div class="form-hint">Для смены страны нажмите кнопку "Выбрать страну"</div>
+                                <input type="hidden" id="countryInput" name="country" value="{{ profile.country|default:'' }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bio">О себе</label>
+                                <textarea id="bio" name="bio" class="form-textarea" rows="4"
+                                          placeholder="Расскажите о себе...">{{ profile.bio|default:'' }}</textarea>
+                                <div class="char-counter">
+                                    <span id="bio-chars">{{ profile.bio|length|default:"0" }}</span>/80 символов
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Скрытые поля для социальных сетей -->
+                <input type="hidden" id="vk_url_input" name="vk_url" value="{{ profile.vk_url|default:'' }}">
+                <input type="hidden" id="telegram_url_input" name="telegram_url" value="{{ profile.telegram_url|default:'' }}">
+                <input type="hidden" id="instagram_url_input" name="instagram_url" value="{{ profile.instagram_url|default:'' }}">
+                <input type="hidden" id="youtube_url_input" name="youtube_url" value="{{ profile.youtube_url|default:'' }}">
+
+                <div class="action-buttons">
+                    <a href="{% url 'profile' %}" class="btn-cancel">
+                        <i class="fas fa-times"></i>
+                        Отмена
+                    </a>
+                    <button type="submit" class="btn-save">
+                        <i class="fas fa-save"></i>
+                        Сохранить изменения
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+
+          <div class="footer-section">
+            <div class="footer-logo">
+              <img src="/static/images/Kirava-logo.png" alt="Kirava Logo" class="logo-image-footer">
+              <div class="footer-logo-text">
+                <span class="logo-main">Kirava</span>
+              </div>
+            </div>
+            <p>Образовательно-развлекательная платформа</p>
+          </div>
+
+          <div class="footer-section">
+            <h4>Разделы</h4>
+            <a href="{% url 'home' %}">
+              <i class="fas fa-chevron-right"></i> Главная
+            </a>
+            <a href="{% url 'entertainment' %}">
+              <i class="fas fa-chevron-right"></i> Развлечения
+            </a>
+            <a href="{% url 'education' %}">
+              <i class="fas fa-chevron-right"></i> Обучение
+            </a>
+            <a href="{% url 'rating' %}">
+              <i class="fas fa-chevron-right"></i> Топ пользователей
+            </a>
+            <a href="{% url 'community' %}">
+              <i class="fas fa-chevron-right"></i> Сообщество
+            </a>
+          </div>
+
+          <div class="footer-section">
+            <h4>Поддержка</h4>
+            <a href="#"><i class="fas fa-chevron-right"></i> Помощь</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> Контакты</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> FAQ</a>
+            <a href="#"><i class="fas fa-chevron-right"></i> Сообщество</a>
+          </div>
+
+          <div class="footer-section">
+            <h4>Контакты</h4>
+
+            <p>
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=the.kirava.official@gmail.com"
+                target="_blank"
+                class="email-link">
+                <i class="fas fa-envelope"></i> the.kirava.official@gmail.com
+              </a>
+            </p>
+
+            <p><i class="fas fa-headset"></i> Поддержка 24/7</p>
+            <p><i class="fas fa-globe"></i> Казахстан, Астана</p>
+          </div>
+
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2025 Kirava - Аниме Викторины и Обучение. Все права защищены.</p>
+          <p>Сделано с ❤️ для сообщества отаку</p>
+        </div>
+      </div>
+    </footer>
+</div>
+
+<!-- Модальное окно для социальных сетей -->
+<div id="socialModal" class="modal-overlay" style="display: none;">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">
+                <i class="fas fa-share-alt language-title-icon"></i>
+                Редактирование социальных сетей
+            </h3>
+            <button class="modal-close" id="closeSocialModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-body-scroll">
+                <div class="social-modal-form">
+                    <div class="social-edit-item">
+                        <div class="social-edit-icon vk blue">
+                            <i class="fab fa-vk"></i>
+                        </div>
+                        <div class="social-edit-inputs">
+                            <div class="form-group">
+                                <label for="modal-social-vk-url">Ссылка на VK</label>
+                                <input type="url" id="modal-social-vk-url" class="form-input"
+                                       placeholder="https://vk.com/username">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="social-edit-item">
+                        <div class="social-edit-icon telegram blue">
+                            <i class="fab fa-telegram"></i>
+                        </div>
+                        <div class="social-edit-inputs">
+                            <div class="form-group">
+                                <label for="modal-social-telegram-url">Ссылка на Telegram</label>
+                                <input type="url" id="modal-social-telegram-url" class="form-input"
+                                       placeholder="https://t.me/username">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="social-edit-item">
+                        <div class="social-edit-icon instagram blue">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                        <div class="social-edit-inputs">
+                            <div class="form-group">
+                                <label for="modal-social-instagram-url">Ссылка на Instagram</label>
+                                <input type="url" id="modal-social-instagram-url" class="form-input"
+                                       placeholder="https://instagram.com/username">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="social-edit-item">
+                        <div class="social-edit-icon youtube blue">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <div class="social-edit-inputs">
+                            <div class="form-group">
+                                <label for="modal-social-youtube-url">Ссылка на YouTube</label>
+                                <input type="url" id="modal-social-youtube-url" class="form-input"
+                                       placeholder="https://youtube.com/c/channel">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-cancel" id="cancelSocialModal">
+                <i class="fas fa-times"></i>
+                Отмена
+            </button>
+            <button type="button" class="btn-save" id="saveSocialModal">
+                <i class="fas fa-save"></i>
+                Сохранить
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для выбора страны -->
+<div id="countryModal" class="modal-overlay" style="display: none;">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">
+                <i class="fas fa-globe language-title-icon"></i>
+                Выбор страны
+            </h3>
+            <button class="modal-close" id="closeCountryModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-body-scroll">
+                <div class="language-selection">
+                    <p class="language-description">Выберите страну, в которой вы проживаете.</p>
+                    <div class="language-list">
+                        <div class="language-item" data-country="KZ" data-name="Казахстан">
+                            <div class="language-flag">🇰🇿</div>
+                            <div class="language-info">
+                                <div class="language-name">Казахстан</div>
+                                <div class="language-native">Kazakhstan</div>
+                            </div>
+                            <i class="fas fa-check language-check"></i>
+                        </div>
+
+                        <div class="language-item" data-country="RU" data-name="Россия">
+                            <div class="language-flag">🇷🇺</div>
+                            <div class="language-info">
+                                <div class="language-name">Россия</div>
+                                <div class="language-native">Russia</div>
+                            </div>
+                            <i class="fas fa-check language-check"></i>
+                        </div>
+
+                        <div class="language-item" data-country="BY" data-name="Беларусь">
+                            <div class="language-flag">🇧🇾</div>
+                            <div class="language-info">
+                                <div class="language-name">Беларусь</div>
+                                <div class="language-native">Belarus</div>
+                            </div>
+                            <i class="fas fa-check language-check"></i>
+                        </div>
+
+                        <div class="language-item" data-country="UA" data-name="Украина">
+                            <div class="language-flag">🇺🇦</div>
+                            <div class="language-info">
+                                <div class="language-name">Украина</div>
+                                <div class="language-native">Ukraine</div>
+                            </div>
+                            <i class="fas fa-check language-check"></i>
+                        </div>
+
+                        <div class="language-item" data-country="US" data-name="США">
+                            <div class="language-flag">🇺🇸</div>
+                            <div class="language-info">
+                                <div class="language-name">США</div>
+                                <div class="language-native">United States</div>
+                            </div>
+                            <i class="fas fa-check language-check"></i>
+                        </div>
+
+                        <div class="language-item" data-country="JP" data-name="Япония">
+                            <div class="language-flag">🇯🇵</div>
+                            <div class="language-info">
+                                <div class="language-name">Япония</div>
+                                <div class="language-native">Japan</div>
+                            </div>
+                            <i class="fas fa-check language-check"></i>
+                        </div>
+
+                        <div class="language-item" data-country="KR" data-name="Корея">
+                            <div class="language-flag">🇰🇷</div>
+                            <div class="language-info">
+                                <div class="language-name">Корея</div>
+                                <div class="language-native">South Korea</div>
+                            </div>
+                            <i class="fas fa-check language-check"></i>
+                        </div>
+
+                        <div class="language-item" data-country="CN" data-name="Китай">
+                            <div class="language-flag">🇨🇳</div>
+                            <div class="language-info">
+                                <div class="language-name">Китай</div>
+                                <div class="language-native">China</div>
+                            </div>
+                            <i class="fas fa-check language-check"></i>
+                        </div>
+
+                        <div class="language-item" data-country="DE" data-name="Германия">
+                            <div class="language-flag">🇩🇪</div>
+                            <div class="language-info">
+                                <div class="language-name">Германия</div>
+                                <div class="language-native">Germany</div>
+                            </div>
+                            <i class="fas fa-check language-check"></i>
+                        </div>
+
+                        <div class="language-item" data-country="FR" data-name="Франция">
+                            <div class="language-flag">🇫🇷</div>
+                            <div class="language-info">
+                                <div class="language-name">Франция</div>
+                                <div class="language-native">France</div>
+                            </div>
+                            <i class="fas fa-check language-check"></i>
+                        </div>
+
+                        <div class="language-item" data-country="OTHER" data-name="Другая">
+                            <div class="language-flag">🌐</div>
+                            <div class="language-info">
+                                <div class="language-name">Другая</div>
+                                <div class="language-native">Other</div>
+                            </div>
+                            <i class="fas fa-check language-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-cancel" id="cancelCountryChange">
+                <i class="fas fa-times"></i>
+                Отмена
+            </button>
+            <button type="button" class="btn-save" id="saveCountryChange">
+                <i class="fas fa-save"></i>
+                Сохранить страну
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'javascript/theme.js' %}"></script>
+<script src="{% static 'javascript/edit-profile.js' %}"></script>
+
+</body>
+</html>

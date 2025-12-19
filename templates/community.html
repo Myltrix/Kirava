@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirava — Сообщество</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/community.css' %}">
+    <link rel="icon" href="{% static 'images/VrLogo.png' %}" type="image/x-icon">        
+</head>
+<body class="{{ current_theme }}-theme">
+    <form style="display:none;">
+        {% csrf_token %}
+    </form>
+
+    <header>
+        <div class="left-header">
+            <img src="{% static 'images/Kirava-logo.png' %}" alt="Логотип" class="logo">
+            <div class="logo-text">Kirava</div>
+            <nav>
+                <a href="{% url 'home' %}">Главное</a>
+                <a href="{% url 'entertainment' %}">Развлечения</a>
+                <a href="{% url 'education' %}">Обучение</a>
+                <a href="{% url 'rating' %}">Топ пользователей</a>
+                <a href="{% url 'community' %}" class="active">Сообщество</a>
+            </nav>
+        </div>
+
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+                <div class="theme-toggle-inner">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </button>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="btn-profile">
+                    <i class="fas fa-user"></i> Мой профиль
+                </a>
+                <a href="{% url 'logout' %}" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-login">
+                    <i class="fas fa-user"></i> Войти
+                </a>
+                <a href="{% url 'register' %}" class="btn-register">
+                    <i class="fas fa-user-plus"></i> Регистрация
+                </a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- Слайдер -->
+        <div class="slider-container">
+            <div class="slide-bg active" style="background-image: url('/static/images/sample_8e43d74bd31d8ab1da30a14c9 (1).jpg')"></div>
+            <div class="slider-content right-side">
+                <div class="slide active">
+                    <div class="slide-info">
+                        <h2 class="section-title">Стань частью <span class="highlight">нашего сообщества!</span></h2>
+                        <p class="community-description">
+                            Присоединяйтесь к тысячам поклонников аниме со всего мира! В нашем сообществе вы сможете обсуждать самые свежие новинки и культовые тайтлы, делиться любимым фанартом и собственными работами, участвовать в тематических конкурсах и ивентах, а главное можно находить друзей и единомышленников, которые так же страстно любят аниме, как и вы.
+                        </p>
+                        <div class="slide-buttons">
+                            {% if user.is_authenticated %}
+                                <button class="btn-primary" id="openCreateGroupModalSlider">
+                                    <i class="fas fa-plus-circle"></i> Создать группу
+                                </button>
+                            {% else %}
+                                <a href="{% url 'register' %}" class="btn-primary">
+                                    <i class="fas fa-user-plus"></i> Зарегистрироваться
+                                </a>
+                            {% endif %}
+                            <a href="#groups" class="btn-secondary">
+                                <i class="fas fa-users"></i> Найти группу
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Группы -->
+        <section class="interest-groups-section" id="groups">
+            <div class="container">
+                <h2 class="section-title"><span class="highlight">Группы</span> по интересам</h2>
+                <p class="section-subtitle">Найдите единомышленников в любимых темах</p>
+
+                <!-- Убраны фильтры и поиск, оставлена только кнопка создания группы -->
+                {% if not groups %}
+                <div class="no-groups-container" style="text-align: center; margin: 50px 0;">
+                    <i class="fas fa-users-slash" style="font-size: 64px; color: #888; margin-bottom: 20px;"></i>
+                    <p style="font-size: 18px; color: #888; margin-bottom: 30px;">
+                        Пока нет групп. Создайте первую!
+                    </p>
+                    {% if user.is_authenticated %}
+                    <button class="create-group-btn" id="openCreateGroupModalEmpty" style="margin: 0 auto;">
+                        <i class="fas fa-plus-circle"></i> Создать группу
+                    </button>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Сетка групп -->
+                <div class="groups-grid" id="groupsContainer">
+                    {% for group in groups %}
+                    <div class="group-card" data-group-id="{{ group.id }}">
+                        <!-- ВСЕ ГРУППЫ ПУБЛИЧНЫЕ -->
+                        <span class="group-status public">
+                            <i class="fas fa-globe"></i> Публичная
+                        </span>
+
+                        <div class="group-header">
+                            <div class="group-avatar">
+                                {% if group.avatar %}
+                                    <img src="{{ group.avatar.url }}" alt="{{ group.name }}" loading="lazy">
+                                {% else %}
+                                    <i class="fas fa-users"></i>
+                                {% endif %}
+                            </div>
+                            <div class="group-info">
+                                <h3 class="group-title">{{ group.name }}</h3>
+                                <small class="group-creator">Создатель: {{ group.creator.username }}</small>
+                            </div>
+                        </div>
+
+                        <p class="group-description">{{ group.description }}</p>
+
+                        <div class="group-meta">
+                            <span class="member-count">
+                                <i class="fas fa-user-friends"></i> 
+                                <span class="count-value">{{ group.members_count|default:0 }}</span> участников
+                            </span>
+                            <span class="message-count">
+                                <i class="fas fa-comment"></i> 
+                                <span class="count-value">{{ group.messages_count|default:0 }}</span> сообщений
+                            </span>
+                        </div>
+
+                        <div class="group-actions">
+                            <button class="btn-group-view" onclick="openGroup({{ group.id }})">
+                                <i class="fas fa-eye"></i> Открыть
+                            </button>
+                            <button class="btn-group-join {% if group.is_member %}joined{% endif %}" 
+                                    data-group-id="{{ group.id }}"
+                                    onclick="toggleGroupMembership(this, {{ group.id }})">
+                                {% if group.is_member %}
+                                    <i class="fas fa-check"></i> Вы в группе
+                                {% else %}
+                                    <i class="fas fa-user-plus"></i> Присоединиться
+                                {% endif %}
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Пагинация -->
+                {% if page_obj.has_other_pages %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <span class="page-link active">{{ num }}</span>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link">
+                                {{ num }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Преимущества -->
+        <section class="features-section">
+            <div class="container">
+                <h2 class="section-title">Почему наше <span class="highlight">сообщество</span> особенное?</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-users"></i></div>
+                        <h3>Активное сообщество</h3>
+                        <p>Более 10,000 активных участников</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-comments"></i></div>
+                        <h3>Живые обсуждения</h3>
+                        <p>Создавайте группы по интересам</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-heart"></i></div>
+                        <h3>Единомышленники</h3>
+                        <p>Находите друзей по интересам</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Модальное окно создания группы -->
+        <div id="createGroupModal" class="modal-overlay" style="display: none;">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                        <i class="fas fa-users language-title-icon"></i> Создать группу
+                    </h3>
+                    <button class="modal-close" id="closeCreateGroupModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="create-group-form">
+                        <div class="group-avatar-section">
+                            <div class="avatar-preview-group">
+                                <div class="avatar-square-group large">
+                                    <i class="fas fa-users" id="avatar-preview-icon-group"></i>
+                                </div>
+                            </div>
+                            <div class="upload-controls">
+                                <input type="file" id="avatar-upload-group" name="avatar" accept="image/*" hidden>
+                                <button type="button" class="btn-upload" onclick="document.getElementById('avatar-upload-group').click()">
+                                    <i class="fas fa-camera"></i> Загрузить фото
+                                </button>
+                                <button type="button" class="btn-remove" id="remove-avatar-group">
+                                    <i class="fas fa-trash"></i> Удалить
+                                </button>
+                            </div>
+                            <p class="upload-hint">Рекомендуемый размер: 300x300px. Форматы: JPG, PNG (макс. 5MB)</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="modal-group-name">Название группы *</label>
+                            <input type="text" id="modal-group-name" class="form-input" placeholder="Введите название группы" required maxlength="100">
+                            <small class="form-hint">Максимум 100 символов</small>
+                        </div>
+
+                        <!-- УБРАН ВЫБОР ПРИВАТНОСТИ -->
+                        <input type="hidden" id="modal-group-privacy" value="public">
+
+                        <div class="form-group">
+                            <label for="modal-group-description">Описание группы *</label>
+                            <textarea id="modal-group-description" class="form-textarea" rows="4" placeholder="Опишите тематику вашей группы..." maxlength="150" required></textarea>
+                            <div class="char-counter">
+                                <span id="group-description-chars">0</span>/150 символов
+                            </div>
+                            <small class="form-hint">Кратко опишите тематику группы</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" id="modalCancelBtn">
+                        <i class="fas fa-times"></i> Отмена
+                    </button>
+                    <button type="button" class="btn-save" id="modalCreateGroupBtn">
+                        <i class="fas fa-plus-circle"></i> Создать группу
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Футер -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <div class="footer-logo">
+                            <img src="{% static 'images/Kirava-logo.png' %}" alt="Kirava Logo" class="logo-image-footer">
+                            <div class="footer-logo-text">
+                                <span class="logo-main">Kirava</span>
+                            </div>
+                        </div>
+                        <p>Образовательно-развлекательная платформа</p>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Разделы</h4>
+                        <a href="{% url 'home' %}"><i class="fas fa-chevron-right"></i> Главная</a>
+                        <a href="{% url 'entertainment' %}"><i class="fas fa-chevron-right"></i> Развлечения</a>
+                        <a href="{% url 'education' %}"><i class="fas fa-chevron-right"></i> Обучение</a>
+                        <a href="{% url 'rating' %}"><i class="fas fa-chevron-right"></i> Топ пользователей</a>
+                        <a href="{% url 'community' %}" class="active"><i class="fas fa-chevron-right"></i> Сообщество</a>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Поддержка</h4>
+                        <a href="#"><i class="fas fa-chevron-right"></i> Помощь</a>
+                        <a href="#"><i class="fas fa-chevron-right"></i> Контакты</a>
+                        <a href="#"><i class="fas fa-chevron-right"></i> FAQ</a>
+                        <a href="#"><i class="fas fa-chevron-right"></i> Сообщество</a>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Контакты</h4>
+                        <p>
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=the.kirava.official@gmail.com" target="_blank" class="email-link">
+                                <i class="fas fa-envelope"></i> the.kirava.official@gmail.com
+                            </a>
+                        </p>
+                        <p><i class="fas fa-headset"></i> Поддержка 24/7</p>
+                        <p><i class="fas fa-globe"></i> Казахстан, Астана</p>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; 2025 Kirava - Аниме Викторины и Обучение. Все права защищены.</p>
+                    <p>Сделано с ❤️ для сообщества отаку</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/static/javascript/theme.js"></script>
+
+    <script>
+        // Функция для получения CSRF токена
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Показать уведомление
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification ' + type;
+            notification.innerHTML = '<div class="notification-content">' +
+                '<i class="fas fa-' + (type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle') + '"></i>' +
+                '<span>' + message + '</span>' +
+                '</div>' +
+                '<button class="notification-close" onclick="this.parentElement.remove()">' +
+                '<i class="fas fa-times"></i>' +
+                '</button>';
+            
+            notification.style.cssText = 'position: fixed;' +
+                'top: 20px;' +
+                'right: 20px;' +
+                'background: ' + (type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3') + ';' +
+                'color: white;' +
+                'padding: 15px 20px;' +
+                'border-radius: 8px;' +
+                'box-shadow: 0 4px 12px rgba(0,0,0,0.15);' +
+                'display: flex;' +
+                'align-items: center;' +
+                'justify-content: space-between;' +
+                'min-width: 300px;' +
+                'max-width: 500px;' +
+                'z-index: 10000;' +
+                'animation: slideIn 0.3s ease;';
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(function() {
+                if (notification.parentNode) {
+                    notification.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(function() {
+                        if (notification.parentNode) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // Анимации для уведомлений
+        const style = document.createElement('style');
+        style.textContent = '@keyframes slideIn {' +
+            'from {' +
+            'transform: translateX(100%);' +
+            'opacity: 0;' +
+            '}' +
+            'to {' +
+            'transform: translateX(0);' +
+            'opacity: 1;' +
+            '}' +
+            '}' +
+            '@keyframes slideOut {' +
+            'from {' +
+            'transform: translateX(0);' +
+            'opacity: 1;' +
+            '}' +
+            'to {' +
+            'transform: translateX(100%);' +
+            'opacity: 0;' +
+            '}' +
+            '}';
+        document.head.appendChild(style);
+
+        // Вступление/выход из группы
+        async function toggleGroupMembership(button, groupId) {
+            const isMember = button.classList.contains('joined');
+            const action = isMember ? 'leave' : 'join';
+            const url = '/community/' + groupId + '/' + action + '/';
+            
+            try {
+                button.disabled = true;
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Загрузка...';
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    
+                    // Обновляем состояние кнопки
+                    if (isMember) {
+                        button.classList.remove('joined');
+                        button.innerHTML = '<i class="fas fa-user-plus"></i> Присоединиться';
+                    } else {
+                        button.classList.add('joined');
+                        button.innerHTML = '<i class="fas fa-check"></i> Вы в группе';
+                    }
+                    
+                    // Обновляем счетчик участников
+                    const memberCount = button.closest('.group-card').querySelector('.count-value');
+                    if (memberCount && data.members_count !== undefined) {
+                        memberCount.textContent = data.members_count;
+                    }
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showNotification('Произошла ошибка', 'error');
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        // Открыть страницу группы
+        function openGroup(groupId) {
+            window.location.href = '/community/' + groupId + '/';
+        }
+
+        // Функция для динамического добавления новой группы в список
+        function addNewGroupToGrid(groupData) {
+            console.log('Добавляем новую группу в сетку:', groupData);
+            
+            // Скрываем сообщение "нет групп", если оно есть
+            const noGroupsContainer = document.querySelector('.no-groups-container');
+            if (noGroupsContainer) {
+                noGroupsContainer.style.display = 'none';
+            }
+            
+            // Все группы публичные
+            let statusHtml = '<span class="group-status public"><i class="fas fa-globe"></i> Публичная</span>';
+            
+            // Определяем HTML для аватара группы
+            let avatarHtml = '';
+            if (groupData.avatar_url) {
+                avatarHtml = '<img src="' + groupData.avatar_url + '" alt="' + groupData.name + '" loading="lazy">';
+            } else {
+                avatarHtml = '<i class="fas fa-users"></i>';
+            }
+            
+            // Создаем полный HTML для карточки группы
+            const groupCardHtml = '<div class="group-card" data-group-id="' + groupData.id + '">' +
+                statusHtml +
+                '<div class="group-header">' +
+                '<div class="group-avatar">' + avatarHtml + '</div>' +
+                '<div class="group-info">' +
+                '<h3 class="group-title">' + groupData.name + '</h3>' +
+                '<small class="group-creator">Создатель: ' + groupData.creator + '</small>' +
+                '</div>' +
+                '</div>' +
+                '<p class="group-description">' + groupData.description + '</p>' +
+                '<div class="group-meta">' +
+                '<span class="member-count">' +
+                '<i class="fas fa-user-friends"></i> ' +
+                '<span class="count-value">' + (groupData.members_count || 1) + '</span> участников' +
+                '</span>' +
+                '<span class="message-count">' +
+                '<i class="fas fa-comment"></i> ' +
+                '<span class="count-value">' + (groupData.messages_count || 0) + '</span> сообщений' +
+                '</span>' +
+                '</div>' +
+                '<div class="group-actions">' +
+                '<button class="btn-group-view" onclick="openGroup(' + groupData.id + ')">' +
+                '<i class="fas fa-eye"></i> Открыть' +
+                '</button>' +
+                '<button class="btn-group-join joined" ' +
+                'data-group-id="' + groupData.id + '" ' +
+                'onclick="toggleGroupMembership(this, ' + groupData.id + ')">' +
+                '<i class="fas fa-check"></i> Вы в группе' +
+                '</button>' +
+                '</div>' +
+                '</div>';
+            
+            // Получаем контейнер для групп
+            const groupsContainer = document.getElementById('groupsContainer');
+            
+            // Если контейнер существует, добавляем новую группу в начало
+            if (groupsContainer) {
+                // Создаем временный элемент
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = groupCardHtml;
+                
+                // Добавляем новую группу в начало списка
+                groupsContainer.insertBefore(tempDiv.firstChild, groupsContainer.firstChild);
+                
+                console.log('Группа успешно добавлена в сетку');
+            } else {
+                console.error('Контейнер groupsContainer не найден');
+                // Если контейнера нет, просто перезагружаем страницу
+                window.location.reload();
+            }
+        }
+
+        // Основная функция для создания группы
+        async function createGroup() {
+            const nameEl = document.getElementById('modal-group-name');
+            const descEl = document.getElementById('modal-group-description');
+            const groupName = nameEl.value.trim();
+            const groupDescription = descEl.value.trim();
+            // Все группы публичные
+            const groupPrivacy = 'public';
+
+            console.log('🔄 Начало создания группы...');
+            console.log('📝 Данные формы:', {
+                name: groupName,
+                description: groupDescription,
+                privacy: groupPrivacy
+            });
+
+            // Валидация
+            const errors = [];
+            
+            if (!groupName) { 
+                errors.push('Введите название группы');
+                nameEl.style.borderColor = '#ff6b6b';
+            } else {
+                nameEl.style.borderColor = '';
+            }
+            
+            if (!groupDescription) { 
+                errors.push('Введите описание группы');
+                descEl.style.borderColor = '#ff6b6b';
+            } else {
+                descEl.style.borderColor = '';
+            }
+            
+            if (groupName.length > 100) { 
+                errors.push('Название группы не должно превышать 100 символов');
+            }
+            
+            if (groupDescription.length > 150) { 
+                errors.push('Описание группы не должно превышать 150 символов');
+            }
+
+            if (errors.length > 0) {
+                errors.forEach(function(error) {
+                    showNotification(error, 'error');
+                });
+                return false;
+            }
+
+            // CSRF токен
+            const csrf = getCookie('csrftoken');
+            console.log('🔐 CSRF Token:', csrf ? '✅ Есть' : '❌ Нет');
+            
+            if (!csrf) {
+                showNotification('CSRF токен не найден. Обновите страницу (F5)', 'error');
+                return false;
+            }
+
+            // FormData для отправки файлов
+            const formData = new FormData();
+            formData.append('name', groupName);
+            formData.append('description', groupDescription);
+            formData.append('privacy', groupPrivacy);
+            
+            const avatarUpload = document.getElementById('avatar-upload-group');
+            if (avatarUpload && avatarUpload.files[0]) {
+                formData.append('avatar', avatarUpload.files[0]);
+            }
+
+            console.log('📤 Отправка запроса создания группы...');
+            
+            try {
+                // Отправка запроса
+                const response = await fetch('/community/create/ajax/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrf
+                    },
+                    body: formData
+                });
+
+                console.log('📥 Ответ сервера:', response.status, response.statusText);
+
+                // Проверяем тип ответа
+                const contentType = response.headers.get('content-type') || '';
+                
+                if (!contentType.includes('application/json')) {
+                    const text = await response.text();
+                    console.error('❌ Не JSON ответ:', text.substring(0, 500));
+                    showNotification('Ошибка сервера. Попробуйте снова.', 'error');
+                    return false;
+                }
+
+                // Парсим JSON
+                const data = await response.json();
+                console.log('📊 JSON ответ:', data);
+
+                if (data.success) {
+                    console.log('✅ Группа создана успешно! ID:', data.group.id);
+                    
+                    // Показываем уведомление
+                    showNotification(data.message || 'Группа успешно создана!', 'success');
+                    
+                    // Добавляем группу в сетку динамически
+                    if (data.group) {
+                        addNewGroupToGrid(data.group);
+                    }
+                    
+                    return true;
+                } else {
+                    console.error('❌ Ошибка от сервера:', data.error);
+                    showNotification('Ошибка: ' + (data.error || 'Неизвестная ошибка'), 'error');
+                    return false;
+                }
+            } catch (err) {
+                console.error('❌ Ошибка при создании группы:', err);
+                showNotification('Произошла ошибка: ' + err.message, 'error');
+                return false;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Страница Сообщество загружена');
+            
+            // Элементы модального окна
+            const modal = document.getElementById('createGroupModal');
+            const openBtn = document.getElementById('openCreateGroupModal');
+            const openSliderBtn = document.getElementById('openCreateGroupModalSlider');
+            const openEmptyBtn = document.getElementById('openCreateGroupModalEmpty');
+            const closeBtn = document.getElementById('closeCreateGroupModal');
+            const cancelBtn = document.getElementById('modalCancelBtn');
+            const createBtn = document.getElementById('modalCreateGroupBtn');
+            
+            const avatarUpload = document.getElementById('avatar-upload-group');
+            const avatarSquare = document.querySelector('.avatar-square-group');
+            const removeAvatarBtn = document.getElementById('remove-avatar-group');
+            const descriptionTextarea = document.getElementById('modal-group-description');
+            const charCounter = document.getElementById('group-description-chars');
+            const privacyHiddenInput = document.getElementById('modal-group-privacy');
+
+            // Открыть модальное окно
+            function openModal() {
+                console.log('📝 Открытие модального окна создания группы');
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                document.getElementById('modal-group-name').focus();
+            }
+
+            // Закрыть модальное окно
+            function closeModal() {
+                console.log('📝 Закрытие модального окна');
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                clearForm();
+            }
+
+            // Очистка формы
+            function clearForm() {
+                document.getElementById('modal-group-name').value = '';
+                document.getElementById('modal-group-description').value = '';
+                
+                if (avatarUpload) avatarUpload.value = '';
+                if (avatarSquare) {
+                    avatarSquare.innerHTML = '<i class="fas fa-users" id="avatar-preview-icon-group"></i>';
+                    avatarSquare.style.background = '';
+                }
+                if (charCounter) charCounter.textContent = '0';
+                
+                // Скрыть ошибки
+                document.querySelectorAll('.form-error').forEach(function(el) {
+                    el.remove();
+                });
+            }
+
+            // События для открытия/закрытия
+            if (openBtn) {
+                openBtn.addEventListener('click', function(e) { 
+                    e.preventDefault(); 
+                    openModal(); 
+                });
+            }
+            
+            if (openSliderBtn) {
+                openSliderBtn.addEventListener('click', function(e) { 
+                    e.preventDefault(); 
+                    openModal(); 
+                });
+            }
+            
+            if (openEmptyBtn) {
+                openEmptyBtn.addEventListener('click', function(e) { 
+                    e.preventDefault(); 
+                    openModal(); 
+                });
+            }
+            
+            if (closeBtn) closeBtn.addEventListener('click', closeModal);
+            if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+            
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) closeModal();
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    closeModal();
+                }
+            });
+
+            // Счетчик символов для описания
+            if (descriptionTextarea && charCounter) {
+                descriptionTextarea.addEventListener('input', function() {
+                    const length = this.value.length;
+                    if (length > 150) {
+                        this.value = this.value.substring(0, 150);
+                    }
+                    charCounter.textContent = this.value.length;
+                    
+                    // Подсветка при достижении лимита
+                    if (length >= 140) {
+                        charCounter.style.color = '#ff6b6b';
+                    } else {
+                        charCounter.style.color = '';
+                    }
+                });
+                
+                // Инициализация счетчика
+                charCounter.textContent = descriptionTextarea.value.length;
+            }
+
+            // Загрузка аватара
+            if (avatarUpload && avatarSquare) {
+                avatarUpload.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    console.log('Выбран файл:', file.name, 'Размер:', file.size, 'Тип:', file.type);
+
+                    // Валидация
+                    if (file.size > 5 * 1024 * 1024) {
+                        showNotification('Файл слишком большой. Максимальный размер: 5MB', 'error');
+                        this.value = '';
+                        return;
+                    }
+                    
+                    if (!file.type.startsWith('image/')) {
+                        showNotification('Пожалуйста, выберите изображение (JPG, PNG, GIF)', 'error');
+                        this.value = '';
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        const img = document.createElement('img');
+                        img.src = ev.target.result;
+                        img.alt = 'Аватар группы';
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                        img.style.objectFit = 'cover';
+                        img.style.borderRadius = '11px';
+                        avatarSquare.innerHTML = '';
+                        avatarSquare.appendChild(img);
+                        avatarSquare.style.background = 'none';
+                        
+                        console.log('Аватар загружен успешно');
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            // Удаление аватара
+            if (removeAvatarBtn) {
+                removeAvatarBtn.addEventListener('click', function() {
+                    if (avatarUpload) avatarUpload.value = '';
+                    if (avatarSquare) {
+                        avatarSquare.innerHTML = '<i class="fas fa-users" id="avatar-preview-icon-group"></i>';
+                        avatarSquare.style.background = '';
+                    }
+                    console.log('Аватар удален');
+                });
+            }
+
+            // СОЗДАНИЕ ГРУППЫ (ОСНОВНАЯ ФУНКЦИЯ)
+            if (createBtn) {
+                createBtn.addEventListener('click', async function() {
+                    console.log('🔄 Начало создания группы...');
+                    
+                    // Блокируем кнопку
+                    const originalText = createBtn.innerHTML;
+                    createBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Создание...';
+                    createBtn.disabled = true;
+
+                    try {
+                        // Создаем группу
+                        const success = await createGroup();
+                        
+                        if (success) {
+                            // Закрываем модальное окно
+                            closeModal();
+                        }
+                    } finally {
+                        // Разблокируем кнопку
+                        createBtn.innerHTML = originalText;
+                        createBtn.disabled = false;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

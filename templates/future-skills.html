@@ -1,0 +1,228 @@
+[file name]: future-skills.html
+[file content begin]
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirava - Навыки будущего</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/future-skills.css' %}">
+    <link rel="icon" href="{% static 'images/VrLogo.png' %}" type="image/x-icon">
+</head>
+
+<body>
+<header>
+    <div class="left-header">
+        <img src="{% static 'images/Kirava-logo.png' %}" alt="Логотип" class="logo">
+        <div class="logo-text">Kirava</div>
+        <nav>
+            <a href="{% url 'home' %}">Главное</a>
+            <a href="{% url 'entertainment' %}">Развлечения</a>
+            <a href="{% url 'education' %}" class="active">Обучение</a>
+            <a href="{% url 'rating' %}">Топ пользователей</a>
+            <a href="{% url 'community' %}">Сообщество</a>
+        </nav>
+    </div>
+
+    <div class="header-actions">
+        <!-- Кнопка переключения темы -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+            <div class="theme-toggle-inner">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+            </div>
+        </button>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}" class="btn-login">
+                <i class="fas fa-user"></i> Мой профиль
+            </a>
+            <a href="{% url 'logout' %}" class="btn-register">
+                <i class="fas fa-sign-out-alt"></i> Выйти
+            </a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn-login">
+                <i class="fas fa-user"></i> Войти
+            </a>
+            <a href="{% url 'register' %}" class="btn-register">
+                <i class="fas fa-user-plus"></i> Регистрация
+            </a>
+        {% endif %}
+    </div>
+</header>
+
+{% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Основной контент -->
+<main class="main-content">
+    <section class="page-header">
+        <div class="container">
+            <div class="page-title-container">
+                <h1 class="page-title">Навыки <span class="highlight">Будущего</span></h1>
+                <p class="page-subtitle">Развивайте ключевые компетенции 21 века через игровое обучение</p>
+            </div>
+        </div>
+    </section>
+
+        <!-- Сетка игр -->
+    <section class="games-grid-section">
+        <div class="container">
+            <div class="games-grid" id="gamesGrid">
+
+                <!-- Навык 1: Критическое мышление -->
+                <div class="game-card" data-category="critical">
+                    <div class="game-image">
+                        <img src="https://ethnomir.ru/upload/iblock/61f/flags660.jpg" alt="Критическое мышление" class="game-poster">
+                        <div class="game-badge">Эрудиция</div>
+                    </div>
+                    <div class="game-content">
+                        <h3>Страны мира: Узнай по флагу</h3>
+                        <p>Смотрите на изображение флага и угадывайте, какой стране он принадлежит.</p>
+                        <div class="game-meta">
+                            <span class="difficulty medium">Средняя</span>
+                        </div>
+                        <a href="{% url 'min1' %}" class="btn-quiz">Начать тренировку</a>
+                    </div>
+                </div>
+
+                <!-- Навык 2: Креативность -->
+                <div class="game-card" data-category="creative">
+                    <div class="game-image">
+                        <img src="https://static.tildacdn.com/tild3332-3563-4536-a535-396463623864/Depositphotos_419489.jpg" alt="Креативное решение задач" class="game-poster">
+                        <div class="game-badge">Логика</div>
+                    </div>
+                    <div class="game-content">
+                        <h3>Факт или ложь: Проверка утверждений</h3>
+                        <p>Читайте утверждение и угадывайте, правда это или вымысел.</p>
+                        <div class="game-meta">
+                            <span class="difficulty easy">Простая</span>
+                        </div>
+                        <a href="{% url 'min2' %}" class="btn-quiz">Начать тренировку</a>
+                    </div>
+                </div>
+
+                <!-- Навык 3: Эмоциональный интеллект -->
+                <div class="game-card" data-category="soft">
+                    <div class="game-image">
+                        <img src="https://img.goodfon.ru/wallpaper/big/1/47/kosmos-planeta-zemlya.webp" alt="Эмоциональный интеллект" class="game-poster">
+                        <div class="game-badge">Эрудиция</div>
+                    </div>
+                    <div class="game-content">
+                        <h3>Космос: Угадай планету</h3>
+                        <p>По изображению или описанию угадывайте, какая это планета Солнечной системы.</p>
+                        <div class="game-meta">
+                            <span class="difficulty medium">Средняя</span>
+                        </div>
+                        <a href="{% url 'min3' %}" class="btn-quiz">Начать тренировку</a>
+                    </div>
+                </div>
+
+                <!-- Навык 4: Цифровая грамотность -->
+                <div class="game-card" data-category="digital">
+                    <div class="game-image">
+                        <img src="https://images.pexels.com/photos/7319070/pexels-photo-7319070.jpeg" alt="Цифровая грамотность" class="game-poster">
+                        <div class="game-badge">Грамотность</div>
+                    </div>
+                    <div class="game-content">
+                        <h3>Словарь: Термин по описанию</h3>
+                        <p>Читайте определение и угадывайте, какому термину оно соответствует.</p>
+                        <div class="game-meta">
+                            <span class="difficulty medium">Средняя</span>
+                        </div>
+                        <a href="{% url 'min4' %}" class="btn-quiz">Начать тренировку</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Футер -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      
+      <div class="footer-section">
+        <div class="footer-logo">
+          <img src="/static/images/Kirava-logo.png" alt="Kirava Logo" class="logo-image-footer">
+          <div class="footer-logo-text">
+            <span class="logo-main">Kirava</span>
+          </div>
+        </div>
+        <p>Образовательно-развлекательная платформа</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Разделы</h4>
+        <a href="{% url 'home' %}">
+          <i class="fas fa-chevron-right"></i> Главная
+        </a>
+        <a href="{% url 'entertainment' %}">
+          <i class="fas fa-chevron-right"></i> Развлечения
+        </a>
+        <a href="{% url 'education' %}">
+          <i class="fas fa-chevron-right"></i> Обучение
+        </a>
+        <a href="{% url 'rating' %}">
+          <i class="fas fa-chevron-right"></i> Топ пользователей
+        </a>
+        <a href="{% url 'community' %}">
+          <i class="fas fa-chevron-right"></i> Сообщество
+        </a>
+      </div>
+
+      <div class="footer-section">
+        <h4>Поддержка</h4>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Помощь
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Контакты
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> FAQ
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Сообщество
+        </a>
+      </div>
+
+      <div class="footer-section">
+        <h4>Контакты</h4>
+
+        <p>
+          <a 
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=the.kirava.official@gmail.com"
+            target="_blank"
+            class="email-link"
+          >
+            <i class="fas fa-envelope"></i> the.kirava.official@gmail.com
+          </a>
+        </p>
+
+        <p><i class="fas fa-headset"></i> Поддержка 24/7</p>
+        <p><i class="fas fa-globe"></i> Казахстан, Астана</p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Kirava - Аниме Викторины и Обучение. Все права защищены.</p>
+      <p>Сделано с ❤️ для сообщества отаку</p>
+    </div>
+  </div>
+</footer>
+
+<script src="{% static 'js/future-skills.js' %}"></script>
+<script src="{% static 'javascript/theme.js' %}"></script>
+</body>
+</html>
+[file content end]

@@ -1,0 +1,2104 @@
+/* static/css/quiz-detail.css */
+
+/* СБРОС И БАЗОВЫЕ СТИЛИ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+    color: white;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* HEADER - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: #000;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #333;
+}
+
+.left-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex: 1;
+}
+
+.logo {
+    height: 70px;
+    width: 70px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.logo-text {
+    font-weight: bold;
+    font-size: 24px;
+    color: #0037ac;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 5px;
+    position: relative;
+}
+
+nav a:hover,
+nav a.active {
+    color: #0037ac;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -17px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #0037ac;
+    border-radius: 50%;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+/* Кнопка переключения темы */
+.theme-toggle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #0037ac;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 55, 172, 0.3);
+    background: linear-gradient(135deg, #002a8a, #001f66);
+}
+
+.theme-toggle-inner {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    transition: all 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    will-change: transform, opacity;
+    z-index: 2;
+}
+
+/* ТЕМНАЯ ТЕМА: показываем луну */
+.theme-toggle .fa-sun {
+    color: #FFD700;
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(180deg) scale(0.5);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+}
+
+.theme-toggle .fa-moon {
+    color: #F0F0F0;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    text-shadow: 0 0 10px rgba(240, 240, 240, 0.5);
+}
+
+/* СВЕТЛАЯ ТЕМА: показываем солнце */
+body.light-theme .theme-toggle .fa-sun {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+body.light-theme .theme-toggle .fa-moon {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-180deg) scale(0.5);
+}
+
+/* Кнопка в светлой теме */
+body.light-theme .theme-toggle {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    border-color: #0037ac;
+}
+
+/* Кнопки входа и регистрации - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.btn-login, .btn-register {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    color: white;
+    border: 2px solid #0037ac;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-login:hover, .btn-register:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+    background: linear-gradient(135deg, #002a8a, #0037ac);
+}
+
+/* Основной контент */
+.main-content {
+    margin-top: 70px;
+}
+
+/* СТРАНИЦА ВИКТОРИНЫ - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.quiz-detail-page {
+    padding-top: 20px;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Градиентные фоны как на главной странице */
+.quiz-detail-section {
+    padding: 80px 0;
+    position: relative;
+    z-index: 2;
+}
+
+/* Фоны для каждой секции как на главной */
+.quiz-detail-section {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+/* Градиенты-оверлеи как в main.css */
+.quiz-detail-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Контент страницы - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.quiz-detail-content {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+/* Левая колонка - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.quiz-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+}
+
+.quiz-poster-card {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border: 1px solid #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* СИНЕЕ СВЕЧЕНИЕ ТОЛЬКО ПРИ НАВЕДЕНИИ */
+.quiz-poster-card:hover {
+    transform: translateY(-6px);
+    border-color: #0037ac;
+    box-shadow: 0 15px 35px rgba(0, 55, 172, 0.4);
+}
+
+.quiz-poster {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.quiz-poster-card:hover .quiz-poster {
+    transform: scale(1.05);
+}
+
+/* Бейдж как quiz-badge - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.quiz-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
+/* Информационная карточка - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.quiz-info-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 15px;
+    padding: 25px;
+    border: 1px solid #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* СИНЕЕ СВЕЧЕНИЕ ТОЛЬКО ПРИ НАВЕДЕНИИ */
+.quiz-info-card:hover {
+    border-color: #0037ac;
+    box-shadow: 0 15px 35px rgba(0, 55, 172, 0.4);
+    transform: translateY(-2px);
+}
+
+.quiz-info-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: #fff;
+    text-align: center;
+    font-weight: 700;
+}
+
+.quiz-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-label {
+    color: #aaa;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-value {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* КНОПКИ - РОВНЫЕ И СИНИЕ ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.btn-quiz {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    width: 100%;
+    border: 2px solid #0037ac;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.btn-quiz:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+}
+
+.btn-quiz.secondary {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    border: 2px solid #0037ac;
+}
+
+.btn-quiz.secondary:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+}
+
+/* Правая колонка - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.quiz-main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Заголовок викторины - ТОЧЬ В ТОЧЬ КАК АНИМЕ С СИНИМИ АКЦЕНТАМИ */
+.quiz-header {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 15px;
+    padding: 30px;
+    border: 1px solid #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* СИНЕЕ СВЕЧЕНИЕ ТОЛЬКО ПРИ НАВЕДЕНИИ */
+.quiz-header:hover {
+    border-color: #0037ac;
+    box-shadow: 0 15px 35px rgba(0, 55, 172, 0.4);
+    transform: translateY(-2px);
+}
+
+.quiz-title {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 10px;
+    font-weight: 900;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.quiz-subtitle {
+    color: #0037ac;
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 300;
+}
+
+/* Описание - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.description-section {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 15px;
+    padding: 30px;
+    border: 1px solid #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* СИНЕЕ СВЕЧЕНИЕ ТОЛЬКО ПРИ НАВЕДЕНИИ */
+.description-section:hover {
+    border-color: #0037ac;
+    box-shadow: 0 15px 35px rgba(0, 55, 172, 0.4);
+    transform: translateY(-2px);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #fff;
+    font-weight: 900;
+}
+
+.highlight {
+    color: #0037ac;
+}
+
+.quiz-description {
+    color: #ccc;
+    line-height: 1.7;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+.quiz-description p {
+    margin-bottom: 20px;
+}
+
+.quiz-description h3 {
+    color: #0037ac;
+    margin: 25px 0 15px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.quiz-description ul {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.quiz-description li {
+    margin-bottom: 10px;
+    color: #ccc;
+    position: relative;
+    padding-left: 10px;
+}
+
+.quiz-description li:before {
+    content: "•";
+    color: #0037ac;
+    font-weight: bold;
+    position: absolute;
+    left: -15px;
+}
+
+/* КОНТЕЙНЕР ВИКТОРИНЫ - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.quiz-container {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 15px;
+    padding: 30px;
+    border: 1px solid #333;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* СИНЕЕ СВЕЧЕНИЕ ТОЛЬКО ПРИ НАВЕДЕНИИ */
+.quiz-container:hover {
+    border-color: #0037ac;
+    box-shadow: 0 15px 35px rgba(0, 55, 172, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Заголовок внутри контейнера викторины */
+.quiz-container .quiz-title {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.quiz-container .quiz-subtitle {
+    color: #0037ac;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+/* ТАЙМЕР */
+.quiz-timer {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    padding: 1.2rem 1.8rem;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    min-width: 140px;
+}
+
+.timer-display {
+    font-size: 2.2rem;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(45deg, #0037ac, #002a8a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 10px rgba(0, 55, 172, 0.3);
+    margin-bottom: 0.3rem;
+}
+
+.timer-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* ПРОГРЕСС БАР */
+.quiz-progress {
+    margin: 2rem 0;
+}
+
+.progress-bar {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 0.8rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0037ac, #002a8a);
+    border-radius: 5px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    color: #aaa;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* ВОПРОСЫ */
+#questionsContainer {
+    min-height: 400px;
+    position: relative;
+}
+
+.question-container {
+    display: none;
+}
+
+.question-container.active {
+    display: block;
+}
+
+.question-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.question-text {
+    font-size: 1.3rem;
+    color: white;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.question-image {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ОТВЕТЫ */
+.answers-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.answer-option {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.answer-option:hover {
+    border-color: #0037ac;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.2);
+}
+
+.answer-option.selected {
+    border-color: #0037ac;
+    background: linear-gradient(135deg, 
+        rgba(0, 55, 172, 0.15), 
+        rgba(0, 42, 138, 0.15));
+    box-shadow: 0 5px 20px rgba(0, 55, 172, 0.25);
+}
+
+.answer-radio {
+    width: 22px;
+    height: 22px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.answer-option.selected .answer-radio {
+    border-color: #0037ac;
+    background: #0037ac;
+}
+
+.answer-option.selected .answer-radio::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+}
+
+.answer-text {
+    color: #fff;
+    flex: 1;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+/* НАВИГАЦИЯ */
+.quiz-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-quiz-nav {
+    padding: 0.9rem 1.8rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-quiz-nav:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+}
+
+#prevBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.nav-center {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-quiz-nav.skip {
+    background: rgba(237, 137, 54, 0.2);
+    color: #ed8936;
+    border: 1px solid rgba(237, 137, 54, 0.3);
+}
+
+.btn-quiz-nav.skip:hover {
+    background: rgba(237, 137, 54, 0.3);
+    box-shadow: 0 5px 15px rgba(237, 137, 54, 0.2);
+}
+
+#nextBtn, #submitBtn {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+}
+
+#nextBtn:hover, #submitBtn:hover {
+    box-shadow: 0 5px 20px rgba(0, 55, 172, 0.4);
+}
+
+#submitBtn.submit {
+    background: linear-gradient(135deg, #48bb78, #38a169);
+}
+
+#submitBtn.submit:hover {
+    box-shadow: 0 5px 20px rgba(72, 187, 120, 0.4);
+}
+
+/* РЕЗУЛЬТАТЫ */
+.results-container {
+    text-align: center;
+    padding: 2rem;
+}
+
+.results-header {
+    margin-bottom: 2rem;
+}
+
+.results-title {
+    color: white;
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.results-anime {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.results-anime-poster {
+    width: 80px;
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.results-anime-info h3 {
+    color: white;
+    margin: 0 0 0.3rem 0;
+    font-size: 1.2rem;
+    text-align: left;
+}
+
+.results-anime-info p {
+    color: #0037ac;
+    margin: 0;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.results-score-container {
+    margin: 2rem 0;
+}
+
+.results-score {
+    font-size: 4.5rem;
+    font-weight: 800;
+    background: linear-gradient(45deg, #0037ac, #002a8a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+}
+
+.results-stars {
+    font-size: 3rem;
+    color: #ffd700;
+    margin-bottom: 1rem;
+    letter-spacing: 5px;
+}
+
+.results-message {
+    color: #0037ac;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.results-details {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin: 3rem auto;
+    max-width: 900px;
+}
+
+.result-stat {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.result-stat:hover {
+    transform: translateY(-5px);
+    border-color: #0037ac;
+    box-shadow: 0 15px 35px rgba(0, 55, 172, 0.3);
+}
+
+.result-stat-icon {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+    color: #0037ac;
+}
+
+.result-stat-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.3rem;
+}
+
+.result-stat-label {
+    color: #aaa;
+    font-size: 0.95rem;
+}
+
+.points-earned-section {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.points-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.points-header h3 {
+    color: white;
+    margin: 0;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.total-points {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffd700;
+}
+
+.points-breakdown {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.points-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.points-label {
+    color: #aaa;
+    font-size: 0.95rem;
+}
+
+.points-value {
+    color: #48bb78;
+    font-weight: 600;
+}
+
+.results-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
+.results-actions .btn-quiz {
+    width: auto;
+    min-width: 180px;
+    margin: 0;
+}
+
+.btn-quiz.primary {
+    background: linear-gradient(135deg, #48bb78, #38a169);
+}
+
+/* ================== КОММЕНТАРИИ - ОТДЕЛЬНАЯ СЕКЦИЯ ВНИЗУ ================== */
+.comments-section {
+    padding: 80px 0;
+    position: relative;
+    z-index: 2;
+}
+
+/* Фон для секции комментариев как на главной */
+.comments-section {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+.comments-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.comments-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.comments-section .section-title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 40px;
+    color: #fff;
+    font-weight: 900;
+}
+
+.comment-form {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+    padding: 25px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border: 1px solid #333;
+    position: relative;
+    overflow: hidden;
+}
+
+/* СИНЕЕ СВЕЧЕНИЕ ТОЛЬКО ПРИ НАВЕДЕНИИ */
+.comment-form:hover {
+    border-color: #0037ac;
+    box-shadow: 0 15px 35px rgba(0, 55, 172, 0.4);
+    transform: translateY(-2px);
+}
+
+.comment-avatar {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: white;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Аватар пользователя */
+.user-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Аватар по умолчанию */
+.default-avatar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    font-size: 1.3rem;
+    border-radius: 50%;
+    position: relative;
+}
+
+.default-avatar i {
+    color: white;
+}
+
+/* Первая буква имени пользователя для дефолтного аватара */
+.default-avatar::after {
+    content: attr(data-initial);
+    position: absolute;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+}
+
+.comment-input-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.comment-input {
+    width: 100%;
+    min-height: 120px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    font-size: 1rem;
+    resize: none;
+    transition: all 0.3s ease;
+    overflow-y: auto;
+}
+
+.comment-input:focus {
+    outline: none;
+    border-color: #0037ac;
+    box-shadow: 0 0 0 3px rgba(0, 55, 172, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.comment-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.comment-input-container .btn-quiz {
+    width: 200px;
+    align-self: flex-end;
+    padding: 12px 25px;
+    font-size: 1rem;
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.comment {
+    display: flex;
+    gap: 20px;
+    padding: 25px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border: 1px solid #333;
+    position: relative;
+    overflow: hidden;
+}
+
+/* СИНЕЕ СВЕЧЕНИЕ ТОЛЬКО ПРИ НАВЕДЕНИИ */
+.comment:hover {
+    border-color: #0037ac;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 55, 172, 0.3);
+}
+
+.comment-content {
+    flex: 1;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comment-author {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.comment-date {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.comment-text {
+    color: #ccc;
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+/* Футер - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.footer {
+    background-color: #000;
+    padding: 60px 0 20px;
+    border-top: 1px solid #333;
+    position: relative;
+    z-index: 2;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section h4 {
+    color: #0037ac;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.footer-section p {
+    color: #ccc;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.footer-section a {
+    color: #ccc;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-section a:hover,
+.footer-section a.active {
+    color: #0037ac;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid #333;
+    color: #666;
+}
+
+.footer-bottom p {
+    margin-bottom: 10px;
+}
+
+.logo-image-footer {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: contain;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.footer-logo-text {
+    font-weight: bold;
+    font-size: 24px;
+    color: #0037ac;
+}
+
+/* Дополнительные улучшения */
+.comment-input::-webkit-resizer {
+    display: none;
+}
+
+.comment-input::-moz-resizer {
+    display: none;
+}
+
+/* Стили для сообщения "нет комментариев" */
+.no-comments {
+    text-align: center;
+    padding: 40px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 15px;
+    border: 1px solid #333;
+    color: #aaa;
+}
+
+/* ================= МОДАЛЬНОЕ ОКНО ПРАВИЛЬНЫХ ОТВЕТОВ ================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 20px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    border: 1px solid #333;
+    box-shadow: 0 25px 50px rgba(0, 55, 172, 0.3);
+    transition: all 0.3s ease;
+}
+
+/* СИНЕЕ СВЕЧЕНИЕ ПРИ НАВЕДЕНИИ КАК НА ВСЕЙ СТРАНИЦЕ */
+.modal-content:hover {
+    border-color: #0037ac;
+    box-shadow: 0 30px 60px rgba(0, 55, 172, 0.4);
+}
+
+.modal-header {
+    padding: 25px 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(0, 55, 172, 0.1), rgba(0, 42, 138, 0.1));
+    border-radius: 20px 20px 0 0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    flex: 1;
+}
+
+.modal-close {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #0037ac;
+    color: #0037ac;
+    font-size: 1.8rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-close:hover {
+    background: #0037ac;
+    color: white;
+    transform: rotate(90deg);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+}
+
+.modal-close:after {
+    content: '✕';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.answers-review {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.review-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* СИНЕЕ СВЕЧЕНИЕ ПРИ НАВЕДЕНИИ */
+.review-item:hover {
+    border-color: #0037ac;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 55, 172, 0.2);
+}
+
+.review-item.correct {
+    border-left: 5px solid #48bb78;
+}
+
+.review-item.incorrect {
+    border-left: 5px solid #e53e3e;
+}
+
+/* Бейджи для правильных/неправильных ответов */
+.review-item:before {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 12px;
+    z-index: 1;
+}
+
+.review-item.correct:before {
+    content: '✓ ПРАВИЛЬНО';
+    background: linear-gradient(135deg, rgba(72, 187, 120, 0.2), rgba(56, 161, 105, 0.2));
+    color: #48bb78;
+    border: 1px solid rgba(72, 187, 120, 0.3);
+}
+
+.review-item.incorrect:before {
+    content: '✗ НЕПРАВИЛЬНО';
+    background: linear-gradient(135deg, rgba(229, 62, 62, 0.2), rgba(197, 48, 48, 0.2));
+    color: #e53e3e;
+    border: 1px solid rgba(229, 62, 62, 0.3);
+}
+
+.review-question {
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    font-weight: 600;
+    padding-right: 120px;
+}
+
+.review-question strong {
+    color: #0037ac;
+    font-size: 1.1em;
+}
+
+.review-answers {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.user-answer, .correct-answer {
+    padding: 18px 20px;
+    border-radius: 10px;
+    font-size: 1rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-answer {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    color: #e2e8f0;
+}
+
+.user-answer:before {
+    content: 'Ваш ответ:';
+    font-weight: 600;
+    color: #aaa;
+    min-width: 100px;
+}
+
+.correct-answer {
+    background: linear-gradient(135deg, rgba(72, 187, 120, 0.1), rgba(56, 161, 105, 0.05));
+    color: #48bb78;
+    border: 1px solid rgba(72, 187, 120, 0.2);
+}
+
+.correct-answer:before {
+    content: 'Правильный ответ:';
+    font-weight: 600;
+    color: #48bb78;
+    min-width: 100px;
+}
+
+.user-answer strong, .correct-answer strong {
+    display: none; /* Скрываем strong, так как используем псевдоэлементы */
+}
+
+.explanation {
+    background: linear-gradient(135deg, rgba(0, 55, 172, 0.1), rgba(0, 42, 138, 0.05));
+    padding: 20px;
+    border-radius: 10px;
+    color: #a0aec0;
+    font-size: 1rem;
+    line-height: 1.6;
+    border: 1px solid rgba(0, 55, 172, 0.2);
+    margin-top: 15px;
+}
+
+.explanation strong {
+    color: #0037ac;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.modal-footer {
+    padding: 25px 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    background: linear-gradient(135deg, rgba(0, 55, 172, 0.05), rgba(0, 42, 138, 0.02));
+    border-radius: 0 0 20px 20px;
+}
+
+.modal-close-btn {
+    width: auto;
+    padding: 12px 35px;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    border: 2px solid #0037ac;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.modal-close-btn:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 55, 172, 0.4);
+}
+
+/* ================= УВЕДОМЛЕНИЯ ================= */
+.notification {
+    position: fixed;
+    top: 90px; /* Ниже header */
+    right: 20px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: white;
+    padding: 18px 24px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 10001;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border: 1px solid #333;
+    max-width: 380px;
+    min-width: 300px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+/* СИНЕЕ СВЕЧЕНИЕ ДЛЯ УВЕДОМЛЕНИЙ */
+.notification:hover {
+    border-color: #0037ac;
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(0, 55, 172, 0.3);
+}
+
+.notification.success {
+    border-left: 5px solid #48bb78;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.notification.error {
+    border-left: 5px solid #e53e3e;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.notification i {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.notification.success i {
+    color: #48bb78;
+}
+
+.notification.error i {
+    color: #e53e3e;
+}
+
+.notification span {
+    flex: 1;
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+/* Стили для скроллбара в модальном окне */
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #0037ac;
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #002a8a;
+}
+
+/* ================= СВЕТЛАЯ ТЕМА ================= */
+body.light-theme {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+}
+
+/* Header в светлой теме */
+body.light-theme header {
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 55, 172, 0.12);
+}
+
+body.light-theme .logo-text {
+    color: #0037ac;
+}
+
+body.light-theme nav a {
+    color: #34495e;
+}
+
+body.light-theme nav a:hover,
+body.light-theme nav a.active {
+    color: #0037ac;
+    background-color: rgba(0, 55, 172, 0.08);
+}
+
+body.light-theme nav a.active::after {
+    background: #0037ac;
+}
+
+/* Кнопка переключения темы в светлой теме */
+body.light-theme .theme-toggle {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    border-color: #0037ac;
+}
+
+body.light-theme .theme-toggle:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    box-shadow: 0 6px 20px rgba(0, 55, 172, 0.3);
+}
+
+/* Кнопки в светлой теме */
+body.light-theme .btn-login,
+body.light-theme .btn-register {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    border: 2px solid #0037ac;
+}
+
+body.light-theme .btn-login:hover,
+body.light-theme .btn-register:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+}
+
+/* Страница викторины в светлой теме */
+body.light-theme .quiz-detail-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+body.light-theme .quiz-detail-section::before {
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.05) 0%, transparent 50%);
+}
+
+/* Заголовки в светлой теме */
+body.light-theme .section-title {
+    color: #2c3e50;
+}
+
+body.light-theme .quiz-title {
+    color: #2c3e50;
+}
+
+body.light-theme .quiz-subtitle {
+    color: #0037ac;
+}
+
+/* Светлая тема для секции комментариев */
+body.light-theme .comments-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+body.light-theme .comments-section::before {
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.05) 0%, transparent 50%);
+}
+
+/* Карточки в светлой теме */
+body.light-theme .quiz-poster-card,
+body.light-theme .quiz-info-card,
+body.light-theme .quiz-header,
+body.light-theme .description-section,
+body.light-theme .quiz-container,
+body.light-theme .comment-form,
+body.light-theme .comment {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(224, 230, 237, 0.8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* СИНЕЕ СВЕЧЕНИЕ ТОЛЬКО ПРИ НАВЕДЕНИИ В СВЕТЛОЙ ТЕМЕ */
+body.light-theme .quiz-poster-card:hover,
+body.light-theme .quiz-info-card:hover,
+body.light-theme .quiz-header:hover,
+body.light-theme .description-section:hover,
+body.light-theme .quiz-container:hover,
+body.light-theme .comment-form:hover,
+body.light-theme .comment:hover {
+    border-color: #0037ac;
+    box-shadow: 0 12px 28px rgba(0, 55, 172, 0.12);
+    transform: translateY(-5px);
+}
+
+body.light-theme .quiz-poster-card:hover {
+    transform: translateY(-6px);
+}
+
+body.light-theme .comment:hover {
+    transform: translateY(-5px);
+}
+
+/* Текст в светлой теме */
+body.light-theme .quiz-info-card h3,
+body.light-theme .comment-author,
+body.light-theme .question-text,
+body.light-theme .answer-text,
+body.light-theme .results-title {
+    color: #2c3e50;
+}
+
+body.light-theme .stat-label,
+body.light-theme .comment-date,
+body.light-theme .progress-text {
+    color: #5d6d7e;
+}
+
+body.light-theme .quiz-description,
+body.light-theme .comment-text {
+    color: #4a5568;
+}
+
+body.light-theme .stat-value {
+    color: #0037ac;
+}
+
+/* Заголовки h3 в описании в светлой теме */
+body.light-theme .quiz-description h3 {
+    color: #0037ac;
+}
+
+/* Бейджи в светлой теме */
+body.light-theme .quiz-badge {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+}
+
+/* Аватары комментариев в светлой теме */
+body.light-theme .comment-avatar {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+}
+
+body.light-theme .default-avatar {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+}
+
+body.light-theme .default-avatar i {
+    color: white;
+}
+
+/* Поле ввода комментария в светлой теме */
+body.light-theme .comment-input {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 55, 172, 0.2);
+    color: #2c3e50;
+}
+
+body.light-theme .comment-input:focus {
+    border-color: #0037ac;
+    box-shadow: 0 0 0 3px rgba(0, 55, 172, 0.1);
+    background: rgba(255, 255, 255, 1);
+}
+
+body.light-theme .comment-input::placeholder {
+    color: rgba(44, 62, 80, 0.5);
+}
+
+/* Границы в светлой теме */
+body.light-theme .stat-item,
+body.light-theme .comment-header,
+body.light-theme .quiz-navigation {
+    border-color: rgba(0, 55, 172, 0.1);
+}
+
+/* Кнопки в светлой теме - РОВНЫЕ И СИНИЕ */
+body.light-theme .btn-quiz {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    border: 2px solid #0037ac;
+}
+
+body.light-theme .btn-quiz:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+}
+
+body.light-theme .btn-quiz.secondary {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    border: 2px solid #0037ac;
+}
+
+body.light-theme .btn-quiz.secondary:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+}
+
+/* Сообщение "нет комментариев" в светлой теме */
+body.light-theme .no-comments {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(224, 230, 237, 0.8);
+    color: #7b8a8b;
+}
+
+/* Футер в светлой теме */
+body.light-theme .footer {
+    background-color: #ffffff;
+    border-top: 1px solid rgba(0, 55, 172, 0.08);
+}
+
+body.light-theme .footer-section p {
+    color: #5a6c7d;
+}
+
+body.light-theme .footer-section a {
+    color: #5a6c7d;
+}
+
+body.light-theme .footer-section a:hover,
+body.light-theme .footer-section a.active {
+    color: #0037ac;
+}
+
+body.light-theme .footer-section h4 {
+    color: #0037ac;
+}
+
+body.light-theme .footer-bottom {
+    border-top: 1px solid rgba(0, 55, 172, 0.08);
+    color: #7b8895;
+}
+
+body.light-theme .footer-logo-text {
+    color: #0037ac;
+}
+
+/* Светлая тема для модального окна */
+body.light-theme .modal-content {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(224, 230, 237, 0.8);
+    box-shadow: 0 25px 50px rgba(0, 55, 172, 0.15);
+}
+
+body.light-theme .modal-content:hover {
+    border-color: #0037ac;
+    box-shadow: 0 30px 60px rgba(0, 55, 172, 0.25);
+}
+
+body.light-theme .modal-header {
+    background: linear-gradient(135deg, rgba(0, 55, 172, 0.05), rgba(0, 42, 138, 0.02));
+    border-bottom: 1px solid rgba(0, 55, 172, 0.1);
+}
+
+body.light-theme .modal-header h3 {
+    color: #2c3e50;
+}
+
+body.light-theme .modal-close {
+    background: rgba(0, 55, 172, 0.1);
+    border: 2px solid #0037ac;
+    color: #0037ac;
+}
+
+body.light-theme .modal-close:hover {
+    background: #0037ac;
+    color: white;
+}
+
+body.light-theme .review-item {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(224, 230, 237, 0.8);
+}
+
+body.light-theme .review-item:hover {
+    border-color: #0037ac;
+    box-shadow: 0 10px 25px rgba(0, 55, 172, 0.12);
+}
+
+body.light-theme .review-question {
+    color: #2c3e50;
+}
+
+body.light-theme .review-question strong {
+    color: #0037ac;
+}
+
+body.light-theme .user-answer {
+    background: linear-gradient(135deg, rgba(0, 55, 172, 0.03), rgba(0, 42, 138, 0.01));
+    color: #4a5568;
+    border: 1px solid rgba(0, 55, 172, 0.1);
+}
+
+body.light-theme .user-answer:before {
+    color: #5d6d7e;
+}
+
+body.light-theme .correct-answer {
+    background: linear-gradient(135deg, rgba(72, 187, 120, 0.08), rgba(56, 161, 105, 0.03));
+    color: #2e7d32;
+    border: 1px solid rgba(72, 187, 120, 0.3);
+}
+
+body.light-theme .correct-answer:before {
+    color: #2e7d32;
+}
+
+body.light-theme .explanation {
+    background: linear-gradient(135deg, rgba(0, 55, 172, 0.05), rgba(0, 42, 138, 0.02));
+    color: #5a6c7d;
+    border: 1px solid rgba(0, 55, 172, 0.15);
+}
+
+body.light-theme .explanation strong {
+    color: #0037ac;
+}
+
+body.light-theme .modal-close-btn {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    border: 2px solid #0037ac;
+}
+
+body.light-theme .modal-close-btn:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    box-shadow: 0 8px 20px rgba(0, 55, 172, 0.25);
+}
+
+/* Светлая тема для уведомлений */
+body.light-theme .notification {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(224, 230, 237, 0.8);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    color: #2c3e50;
+}
+
+body.light-theme .notification:hover {
+    border-color: #0037ac;
+    box-shadow: 0 20px 40px rgba(0, 55, 172, 0.15);
+}
+
+body.light-theme .notification.success {
+    border-left: 5px solid #48bb78;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+body.light-theme .notification.error {
+    border-left: 5px solid #e53e3e;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+body.light-theme .modal-content::-webkit-scrollbar-track {
+    background: rgba(0, 55, 172, 0.05);
+}
+
+body.light-theme .modal-content::-webkit-scrollbar-thumb {
+    background: #0037ac;
+}
+
+/* Улучшенные стили для результата в светлой теме */
+body.light-theme .result-stat {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(224, 230, 237, 0.8);
+}
+
+body.light-theme .result-stat:hover {
+    border-color: #0037ac;
+    box-shadow: 0 15px 35px rgba(0, 55, 172, 0.15);
+}
+
+/* Анимации */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%) translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0) translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%) translateY(-20px);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 5px 15px rgba(0, 55, 172, 0.3); }
+    50% { transform: scale(1.02); box-shadow: 0 8px 25px rgba(0, 55, 172, 0.4); }
+    100% { transform: scale(1); box-shadow: 0 5px 15px rgba(0, 55, 172, 0.3); }
+}
+
+@keyframes correctAnswer {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes incorrectAnswer {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+.answer-option.selected.correct {
+    animation: correctAnswer 0.6s ease;
+}
+
+.answer-option.selected.incorrect {
+    animation: incorrectAnswer 0.6s ease;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 95%;
+        max-height: 90vh;
+        margin: 10px;
+    }
+    
+    .modal-header {
+        padding: 20px;
+    }
+    
+    .modal-header h3 {
+        font-size: 1.4rem;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .review-question {
+        font-size: 1rem;
+        padding-right: 0;
+    }
+    
+    .user-answer:before,
+    .correct-answer:before {
+        min-width: 80px;
+        font-size: 0.9rem;
+    }
+    
+    .notification {
+        max-width: calc(100vw - 40px);
+        min-width: auto;
+        top: 80px;
+        right: 10px;
+        left: 10px;
+    }
+    
+    .answers-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .results-details {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .quiz-detail-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .quiz-sidebar {
+        position: static;
+    }
+    
+    .quiz-header {
+        padding: 20px;
+    }
+    
+    .quiz-title {
+        font-size: 1.8rem;
+    }
+    
+    .quiz-container {
+        padding: 20px;
+    }
+    
+    .comment-form {
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    .comment-avatar {
+        align-self: flex-start;
+    }
+}
+
+/* УТИЛИТЫ */
+.hidden {
+    display: none !important;
+}

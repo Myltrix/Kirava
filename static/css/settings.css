@@ -1,0 +1,1735 @@
+/* settings.css - УПРОЩЕННЫЙ ВАРИАНТ БЕЗ БЛОКА "ТЕМА" */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+    color: white;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: #000;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #333;
+}
+
+.left-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex: 1;
+}
+
+.logo {
+    height: 70px;
+    width: 70px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.logo-text {
+    font-weight: bold;
+    font-size: 24px;
+    color: #0037ac;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 5px;
+    position: relative;
+}
+
+nav a:hover,
+nav a.active {
+    color: #0037ac;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -17px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #0037ac;
+    border-radius: 50%;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.btn-login, .btn-register, .btn-profile, .btn-logout {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    color: white;
+    border: 2px solid #0037ac;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-login:hover, .btn-register:hover, .btn-profile:hover, .btn-logout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+    background: linear-gradient(135deg, #002a8a, #0037ac);
+}
+
+.theme-toggle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #0037ac;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 55, 172, 0.3);
+    background: linear-gradient(135deg, #002a8a, #001f66);
+}
+
+.theme-toggle-inner {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    transition: all 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    will-change: transform, opacity;
+    z-index: 2;
+}
+
+.theme-toggle .fa-sun {
+    color: #FFD700;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+}
+
+.theme-toggle .fa-moon {
+    color: #F0F0F0;
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-180deg) scale(0.5);
+    text-shadow: 0 0 10px rgba(240, 240, 240, 0.5);
+}
+
+body.dark-theme .theme-toggle .fa-sun {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(180deg) scale(0.5);
+}
+
+body.dark-theme .theme-toggle .fa-moon {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+body.light-theme .theme-toggle {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    border-color: #0037ac;
+}
+
+body.light-theme {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+body.light-theme header {
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 55, 172, 0.12);
+    transition: all 0.4s ease;
+}
+
+body.light-theme .logo-text {
+    color: #0037ac;
+}
+
+body.light-theme nav a {
+    color: #34495e;
+    transition: all 0.3s ease;
+}
+
+body.light-theme nav a:hover,
+body.light-theme nav a.active {
+    color: #0037ac;
+    background-color: rgba(0, 55, 172, 0.08);
+}
+
+body.light-theme nav a.active::after {
+    background: #0037ac;
+}
+
+.page-header {
+    margin-top: 70px;
+    padding: 40px 0;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    text-align: center;
+    transition: background 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+body.light-theme .page-header {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+body.light-theme .page-header::before {
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.05) 0%, transparent 50%);
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+    color: #fff;
+    transition: color 0.4s ease;
+    position: relative;
+    z-index: 2;
+}
+
+body.light-theme .page-title {
+    color: #2c3e50;
+}
+
+.highlight {
+    color: #0037ac;
+}
+
+.page-subtitle {
+    color: #ccc;
+    font-size: 1.1rem;
+    transition: color 0.4s ease;
+    position: relative;
+    z-index: 2;
+}
+
+body.light-theme .page-subtitle {
+    color: #5d6d7e;
+}
+
+.settings-section {
+    padding: 60px 0;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s ease;
+}
+
+.settings-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+body.light-theme .settings-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+body.light-theme .settings-section::before {
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.05) 0%, transparent 50%);
+}
+
+/* ========== ВЫРОВНЕННАЯ СЕТКА ========== */
+.settings-grid-aligned {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 2;
+    align-items: start;
+}
+
+.settings-column {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    height: 100%;
+}
+
+/* Карточки с одинаковой высотой */
+.card-equal-height {
+    height: 100%;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ========== УВЕЛИЧЕННЫЕ БЛОКИ И ЭЛЕМЕНТЫ ========== */
+.settings-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 24px;
+    padding: 35px;
+    border: 2px solid #333;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    flex: 1;
+}
+
+.settings-card:hover {
+    border-color: #0037ac;
+    box-shadow: 0 15px 35px rgba(0, 55, 172, 0.25);
+    transform: translateY(-3px);
+}
+
+body.light-theme .settings-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 2px solid rgba(224, 230, 237, 0.8);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+body.light-theme .settings-card:hover {
+    border-color: #0037ac;
+    box-shadow: 0 15px 35px rgba(0, 55, 172, 0.15);
+    transform: translateY(-3px);
+}
+
+/* Увеличенные заголовки карточек */
+.card-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.6rem;
+    margin-bottom: 30px;
+    color: #fff;
+    border-bottom: 3px solid #0037ac;
+    padding-bottom: 15px;
+    transition: color 0.4s ease, border-color 0.4s ease;
+    flex-shrink: 0;
+}
+
+body.light-theme .card-title {
+    color: #2c3e50;
+    border-bottom: 3px solid rgba(0, 55, 172, 0.3);
+}
+
+/* ========== СИНИЙ ЗАГОЛОВОК ДЛЯ ОПАСНОЙ ЗОНЫ ========== */
+.danger-title-blue {
+    border-color: #0037ac !important;
+    color: #ffffff !important; /* Белый в темной теме */
+}
+
+body.light-theme .danger-title-blue {
+    border-color: #0037ac !important;
+    color: #2c3e50 !important; /* Как у блока Безопасность в светлой теме */
+}
+
+.danger-title-blue i {
+    color: #0037ac !important;
+}
+
+body.light-theme .danger-title-blue i {
+    color: #0037ac !important;
+}
+
+/* Старый красный заголовок для опасной зоны (оставлен для совместимости) */
+.danger-title {
+    border-color: #ff6b6b !important;
+    color: #ff6b6b !important;
+}
+
+body.light-theme .danger-title {
+    border-color: #d32f2f !important;
+    color: #d32f2f !important;
+}
+
+.danger-title i {
+    color: #ff6b6b !important;
+}
+
+body.light-theme .danger-title i {
+    color: #d32f2f !important;
+}
+
+/* Увеличенные иконки в заголовках */
+.card-title i {
+    color: #0037ac !important;
+    font-size: 1.5rem !important;
+}
+
+/* ========== УВЕЛИЧЕННЫЕ СПИСКИ ВНУТРИ КАРТОЧЕК ========== */
+.settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    flex: 1;
+    min-height: 0;
+}
+
+/* Увеличенные пункты настроек */
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+    min-height: 85px;
+    flex-shrink: 0;
+}
+
+.setting-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(0, 55, 172, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 55, 172, 0.2);
+}
+
+body.light-theme .setting-item {
+    background: rgba(0, 55, 172, 0.05);
+    border: 1px solid rgba(0, 55, 172, 0.1);
+}
+
+body.light-theme .setting-item:hover {
+    background: rgba(0, 55, 172, 0.1);
+    border-color: rgba(0, 55, 172, 0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 55, 172, 0.15);
+}
+
+/* ========== УВЕЛИЧЕННАЯ ИНФОРМАЦИЯ В ПУНКТАХ ========== */
+.setting-info {
+    flex: 1;
+    min-width: 0;
+    padding-right: 25px;
+}
+
+.setting-info h4 {
+    color: #fff;
+    margin-bottom: 8px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    transition: color 0.4s ease;
+    line-height: 1.4;
+}
+
+body.light-theme .setting-info h4 {
+    color: #2c3e50;
+}
+
+/* Красный текст для кнопок в опасной зоне */
+.danger-text {
+    color: #ff6b6b !important;
+}
+
+body.light-theme .danger-text {
+    color: #d32f2f !important;
+}
+
+.setting-info p {
+    color: #bbb;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    transition: color 0.4s ease;
+    margin: 0;
+}
+
+body.light-theme .setting-info p {
+    color: #5d6d7e;
+}
+
+/* ========== УВЕЛИЧЕННЫЕ КНОПКИ ВНУТРИ КАРТОЧЕК ========== */
+.btn-change-password, .btn-delete-account, .btn-enable-twofactor {
+    padding: 14px 24px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 160px;
+    height: 52px;
+    justify-content: center;
+    text-decoration: none;
+    margin-left: 25px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-change-password {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    border: 2px solid #0037ac;
+}
+
+.btn-change-password:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 55, 172, 0.4);
+}
+
+.btn-enable-twofactor {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    border: 2px solid #0037ac;
+}
+
+.btn-enable-twofactor:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 55, 172, 0.4);
+}
+
+body.light-theme .btn-enable-twofactor {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+}
+
+.btn-enable-twofactor.twofactor-enabled {
+    background: linear-gradient(135deg, #28a745, #218838);
+    border-color: #28a745;
+}
+
+.btn-enable-twofactor.twofactor-enabled:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34);
+    transform: translateY(-3px);
+}
+
+/* Кнопка Удалить аккаунт с красным текстом */
+.btn-delete-account {
+    background: transparent;
+    color: #ff6b6b !important;
+    border: 2px solid #ff6b6b;
+    font-weight: 600;
+}
+
+.btn-delete-account:hover {
+    background: linear-gradient(135deg, #ff6b6b, #ff5252);
+    color: white !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+}
+
+body.light-theme .btn-delete-account {
+    background: transparent;
+    color: #d32f2f !important;
+    border: 2px solid #d32f2f;
+}
+
+body.light-theme .btn-delete-account:hover {
+    background: linear-gradient(135deg, #d32f2f, #b71c1c);
+    color: white !important;
+    box-shadow: 0 8px 20px rgba(211, 47, 47, 0.3);
+}
+
+/* ========== УВЕЛИЧЕННЫЕ КНОПКИ ДЕЙСТВИЙ В ФОРМЕ ========== */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding-top: 40px;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    transition: border-color 0.4s ease;
+    position: relative;
+    z-index: 2;
+}
+
+body.light-theme .action-buttons {
+    border-top: 2px solid rgba(0, 55, 172, 0.1);
+}
+
+.btn-cancel, .btn-save {
+    padding: 18px 36px;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.1rem;
+    min-width: 220px;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-cancel {
+    background: transparent;
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    color: white;
+    border: 2px solid #0037ac;
+}
+
+.btn-cancel:hover {
+    background: linear-gradient(135deg, #ff6b6b, #ff5252);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+}
+
+.btn-save:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 55, 172, 0.5);
+}
+
+.footer {
+    background-color: #000;
+    padding: 60px 0 20px;
+    border-top: 1px solid #333;
+    position: relative;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section h4 {
+    color: #0037ac;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.footer-section p {
+    color: #ccc;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.footer-section a {
+    color: #ccc;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-section a:hover,
+.footer-section a.active {
+    color: #0037ac;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid #333;
+    color: #666;
+}
+
+.footer-bottom p {
+    margin-bottom: 10px;
+}
+
+.logo-image-footer {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: contain;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.footer-logo-text {
+    font-weight: bold;
+    font-size: 24px;
+    color: #0037ac;
+}
+
+body.light-theme .footer {
+    background-color: #ffffff;
+    border-top: 1px solid rgba(0, 55, 172, 0.08);
+    transition: all 0.4s ease;
+}
+
+body.light-theme .footer-section p {
+    color: #5a6c7d;
+}
+
+body.light-theme .footer-section a {
+    color: #5a6c7d;
+    transition: color 0.3s ease;
+}
+
+body.light-theme .footer-section a:hover,
+body.light-theme .footer-section a.active {
+    color: #0037ac;
+}
+
+body.light-theme .footer-section h4 {
+    color: #0037ac;
+}
+
+body.light-theme .footer-bottom {
+    border-top: 1px solid rgba(0, 55, 172, 0.08);
+    color: #7b8895;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+body.light-theme .modal-overlay {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* ========== УВЕЛИЧЕННЫЕ МОДАЛЬНЫЕ ОКНА ========== */
+.modal {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 550px;
+    width: 90%;
+    border: 2px solid rgba(0, 55, 172, 0.4);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active .modal {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+body.light-theme .modal {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 2px solid rgba(0, 55, 172, 0.15);
+    box-shadow: 0 25px 70px rgba(0, 55, 172, 0.1);
+}
+
+#deleteModal .modal,
+#twoFactorModal .modal,
+#passwordModal .modal {
+    border: 2px solid rgba(0, 55, 172, 0.4);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+body.light-theme #deleteModal .modal,
+body.light-theme #twoFactorModal .modal,
+body.light-theme #passwordModal .modal {
+    border: 2px solid rgba(0, 55, 172, 0.15);
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+#deleteModal .modal:hover,
+#twoFactorModal .modal:hover,
+#passwordModal .modal:hover {
+    border-color: #0037ac;
+    box-shadow: 0 25px 70px rgba(0, 55, 172, 0.4);
+}
+
+body.light-theme #deleteModal .modal:hover,
+body.light-theme #twoFactorModal .modal:hover,
+body.light-theme #passwordModal .modal:hover {
+    border-color: #0037ac;
+    box-shadow: 0 25px 70px rgba(0, 55, 172, 0.2);
+}
+
+/* Увеличенные заголовки модальных окон */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 3px solid rgba(0, 55, 172, 0.6);
+    padding-bottom: 18px;
+    transition: border-color 0.4s ease;
+}
+
+body.light-theme .modal-header {
+    border-bottom: 3px solid rgba(0, 55, 172, 0.2);
+}
+
+.modal-title {
+    font-size: 1.7rem;
+    color: #fff;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: color 0.4s ease;
+}
+
+body.light-theme .modal-title {
+    color: #2c3e50;
+}
+
+.modal-title i {
+    color: #0037ac !important;
+    font-size: 1.6rem !important;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    padding: 0;
+    text-decoration: none;
+    position: relative;
+}
+
+.modal-close:hover {
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+    text-decoration: none;
+}
+
+body.light-theme .modal-close {
+    color: #7b8895;
+}
+
+body.light-theme .modal-close:hover {
+    background: rgba(211, 47, 47, 0.1);
+    color: #d32f2f;
+}
+
+.modal-body {
+    margin-bottom: 30px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 25px;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+body.light-theme .modal-footer {
+    border-top: 2px solid rgba(0, 55, 172, 0.1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ========== УВЕЛИЧЕННЫЕ ФОРМЫ ========== */
+.form-group {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ccc;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color 0.4s ease;
+}
+
+body.light-theme .form-label {
+    color: #666;
+}
+
+.form-label i {
+    width: 16px;
+    font-size: 1.1rem;
+    color: #0037ac !important;
+}
+
+/* Стили полей ввода как в регистрации */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.form-input {
+    width: 100%;
+    padding: 16px 45px 16px 45px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid #444;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+/* Стили для поля кода (только цифры) */
+.form-input[inputmode="numeric"] {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: normal;
+    padding: 16px 45px 16px 45px;
+}
+
+body.light-theme .form-input {
+    background: rgba(0, 0, 0, 0.08);
+    border: 2px solid #ddd;
+    color: #2c3e50;
+}
+
+body.light-theme .form-input::placeholder {
+    color: #888;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #0037ac;
+    background: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 0 0 3px rgba(0, 55, 172, 0.3);
+}
+
+body.light-theme .form-input:focus {
+    background: rgba(0, 0, 0, 0.12);
+    box-shadow: 0 0 0 3px rgba(0, 55, 172, 0.3);
+}
+
+.form-input::placeholder {
+    color: #888;
+    font-size: 0.95rem;
+}
+
+/* Иконки в полях ввода */
+.input-icon {
+    position: absolute;
+    left: 15px;
+    color: #666;
+    z-index: 2;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+/* Иконки глаз для пароля */
+.input-icon.password-eye {
+    left: auto;
+    right: 15px;
+    color: #666;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.input-icon.password-eye:hover {
+    color: #0037ac;
+}
+
+/* Специальный стиль для поля кода */
+#twoFactorCode {
+    padding-left: 45px !important;
+    padding-right: 45px !important;
+}
+
+/* Скрываем лишнюю иконку в поле кода */
+#twoFactorModal .input-wrapper .input-icon.fa-lock {
+    display: none;
+}
+
+/* Стили для помощи в формах */
+.form-help {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-top: 8px;
+    transition: color 0.4s ease;
+}
+
+body.light-theme .form-help {
+    color: #7b8895;
+}
+
+#notificationContainer {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 10001;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border: 2px solid rgba(0, 55, 172, 0.3);
+    border-radius: 16px;
+    padding: 18px 22px;
+    min-width: 320px;
+    max-width: 400px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+body.light-theme .notification {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 2px solid rgba(0, 55, 172, 0.15);
+    box-shadow: 0 15px 40px rgba(0, 55, 172, 0.1);
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #fff;
+}
+
+body.light-theme .notification-content {
+    color: #2c3e50;
+}
+
+.notification-content i {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.notification-success .notification-content i {
+    color: #4CAF50;
+}
+
+.notification-error .notification-content i {
+    color: #f44336;
+}
+
+.notification-info .notification-content i {
+    color: #2196F3;
+}
+
+.notification-success {
+    border-left: 4px solid #4CAF50;
+}
+
+.notification-error {
+    border-left: 4px solid #f44336;
+}
+
+.notification-info {
+    border-left: 4px solid #2196F3;
+}
+
+/* ========== УВЕЛИЧЕННЫЕ КНОПКИ В МОДАЛЬНЫХ ОКНАХ ========== */
+.modal-btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 160px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.modal-btn-primary {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    border: 2px solid #0037ac;
+}
+
+.modal-btn-primary:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 55, 172, 0.4);
+    text-decoration: none;
+}
+
+.modal-btn-red {
+    background: transparent !important;
+    color: #ff6b6b !important;
+    border: 2px solid #ff6b6b !important;
+}
+
+.modal-btn-red:hover {
+    background: linear-gradient(135deg, #ff6b6b, #ff5252) !important;
+    color: white !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4) !important;
+    text-decoration: none;
+}
+
+body.light-theme .modal-btn-red {
+    background: transparent !important;
+    color: #d32f2f !important;
+    border: 2px solid #d32f2f !important;
+}
+
+body.light-theme .modal-btn-red:hover {
+    background: linear-gradient(135deg, #d32f2f, #b71c1c) !important;
+    color: white !important;
+    box-shadow: 0 8px 20px rgba(211, 47, 47, 0.3) !important;
+    text-decoration: none;
+}
+
+#cancelDelete {
+    background: transparent !important;
+    color: #ff6b6b !important;
+    border: 2px solid #ff6b6b !important;
+}
+
+#cancelDelete:hover {
+    background: linear-gradient(135deg, #ff6b6b, #ff5252) !important;
+    color: white !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4) !important;
+}
+
+body.light-theme #cancelDelete {
+    background: transparent !important;
+    color: #d32f2f !important;
+    border: 2px solid #d32f2f !important;
+}
+
+body.light-theme #cancelDelete:hover {
+    background: linear-gradient(135deg, #d32f2f, #b71c1c) !important;
+    color: white !important;
+    box-shadow: 0 8px 20px rgba(211, 47, 47, 0.3) !important;
+}
+
+.modal-btn-secondary {
+    background: transparent;
+    color: #aaa;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+}
+
+body.light-theme .modal-btn-secondary {
+    background: transparent;
+    color: #7b8895;
+    border: 2px solid rgba(0, 55, 172, 0.2);
+}
+
+body.light-theme .modal-btn-secondary:hover {
+    background: rgba(0, 55, 172, 0.1);
+    border-color: rgba(0, 55, 172, 0.3);
+    color: #0037ac;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 55, 172, 0.15);
+    text-decoration: none;
+}
+
+.danger-input {
+    border-color: #0037ac !important;
+}
+
+.danger-input:focus {
+    border-color: #0037ac !important;
+    box-shadow: 0 0 0 3px rgba(0, 55, 172, 0.3) !important;
+}
+
+body.light-theme .danger-input {
+    border-color: rgba(0, 55, 172, 0.3) !important;
+}
+
+body.light-theme .danger-input:focus {
+    border-color: #0037ac !important;
+    box-shadow: 0 0 0 3px rgba(0, 55, 172, 0.2) !important;
+}
+
+.danger-icon {
+    color: #0037ac !important;
+}
+
+body.light-theme .danger-icon {
+    color: #0037ac !important;
+}
+
+.modal-footer .modal-btn {
+    min-width: 160px !important;
+}
+
+#deleteModal .modal-title i {
+    color: #0037ac !important;
+}
+
+#deleteModal .form-label i {
+    color: #0037ac !important;
+}
+
+#deleteModal .danger-input {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+#deleteModal .danger-input:focus {
+    border-color: #0037ac !important;
+    box-shadow: 0 0 0 3px rgba(0, 55, 172, 0.3) !important;
+}
+
+body.light-theme #deleteModal .danger-input {
+    border-color: rgba(0, 55, 172, 0.15) !important;
+}
+
+body.light-theme #deleteModal .danger-input:focus {
+    border-color: #0037ac !important;
+    box-shadow: 0 0 0 3px rgba(0, 55, 172, 0.2) !important;
+}
+
+#passwordModal .modal,
+#twoFactorModal .modal,
+#deleteModal .modal {
+    max-width: 550px;
+    width: 90%;
+    padding: 40px;
+}
+
+#cancelPassword,
+#cancelTwoFactor {
+    background: transparent !important;
+    color: #ff6b6b !important;
+    border: 2px solid #ff6b6b !important;
+}
+
+#cancelPassword:hover,
+#cancelTwoFactor:hover {
+    background: linear-gradient(135deg, #ff6b6b, #ff5252) !important;
+    color: white !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+}
+
+body.light-theme #cancelPassword,
+body.light-theme #cancelTwoFactor {
+    background: transparent !important;
+    color: #d32f2f !important;
+    border: 2px solid #d32f2f !important;
+}
+
+body.light-theme #cancelPassword:hover,
+body.light-theme #cancelTwoFactor:hover {
+    background: linear-gradient(135deg, #d32f2f, #b71c1c) !important;
+    color: white !important;
+    box-shadow: 0 8px 20px rgba(211, 47, 47, 0.3);
+}
+
+#twoFactorCode {
+    font-family: 'Arial', sans-serif !important;
+    font-size: 1.1rem !important;
+    letter-spacing: normal !important;
+}
+
+/* ========== СИНИЙ ГЛАЗОК ПРИ НАВЕДЕНИИ ========== */
+.password-eye {
+    color: #666 !important;
+    transition: color 0.3s ease;
+}
+
+.password-eye:hover {
+    color: #0037ac !important;
+}
+
+#toggleCurrentPassword:hover,
+#toggleNewPassword:hover,
+#toggleConfirmPassword:hover {
+    color: #0037ac !important;
+}
+
+body.light-theme .password-eye {
+    color: #7b8895 !important;
+}
+
+body.light-theme .password-eye:hover {
+    color: #0037ac !important;
+}
+
+body.light-theme #toggleCurrentPassword,
+body.light-theme #toggleNewPassword,
+body.light-theme #toggleConfirmPassword {
+    color: #7b8895 !important;
+}
+
+body.light-theme #toggleCurrentPassword:hover,
+body.light-theme #toggleNewPassword:hover,
+body.light-theme #toggleConfirmPassword:hover {
+    color: #0037ac !important;
+}
+
+.password-requirements {
+    display: none !important;
+}
+
+/* ========== ИСПРАВЛЕНИЕ: СИНИЕ ЗНАЧКИ В ОКОШКАХ ========== */
+/* Иконки в заголовках модальных окон всегда синие */
+#passwordModal .modal-title i,
+#deleteModal .modal-title i,
+#twoFactorModal .modal-title i {
+    color: #0037ac !important;
+}
+
+/* Иконки в лейблах полей ввода всегда синие */
+#passwordModal .form-label i,
+#deleteModal .form-label i,
+#twoFactorModal .form-label i {
+    color: #0037ac !important;
+}
+
+/* Светлая тема - иконки остаются синими */
+body.light-theme .modal-title i,
+body.light-theme .form-label i {
+    color: #0037ac !important;
+}
+
+body.light-theme #passwordModal .modal-title i,
+body.light-theme #deleteModal .modal-title i,
+body.light-theme #twoFactorModal .modal-title i {
+    color: #0037ac !important;
+}
+
+body.light-theme #passwordModal .form-label i,
+body.light-theme #deleteModal .form-label i,
+body.light-theme #twoFactorModal .form-label i {
+    color: #0037ac !important;
+}
+
+/* ========== ИСПРАВЛЕНИЕ: КРУГЛЫЙ КРЕСТИК В ОКОШКЕ ========== */
+/* Фиксим овальный круг для крестика в twoFactorModal */
+#closeTwoFactorModal {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Убедимся, что все крестики имеют одинаковый размер и форму */
+#closePasswordModal,
+#closeDeleteModal,
+#closeTwoFactorModal {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Ховер эффект для всех крестиков одинаковый */
+#closePasswordModal:hover,
+#closeDeleteModal:hover,
+#closeTwoFactorModal:hover {
+    background: rgba(255, 107, 107, 0.1) !important;
+    color: #ff6b6b !important;
+}
+
+/* Светлая тема для крестиков */
+body.light-theme #closePasswordModal:hover,
+body.light-theme #closeDeleteModal:hover,
+body.light-theme #closeTwoFactorModal:hover {
+    background: rgba(211, 47, 47, 0.1) !important;
+    color: #d32f2f !important;
+}
+
+/* Светлая тема для иконок в полях ввода */
+body.light-theme .input-icon {
+    color: #7b8895;
+}
+
+body.light-theme .input-icon.password-eye {
+    color: #7b8895;
+}
+
+body.light-theme .input-icon.password-eye:hover {
+    color: #0037ac;
+}
+
+/* ========== ОЧИСТКА ПОЛЕЙ ПАРОЛЯ ПРИ ОТКРЫТИИ ========== */
+#passwordModal .form-input {
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid #444;
+    color: white;
+}
+
+#passwordModal .form-input:focus {
+    border-color: #0037ac;
+    background: rgba(255, 255, 255, 0.18);
+}
+
+body.light-theme #passwordModal .form-input {
+    background: rgba(0, 0, 0, 0.08);
+    border: 2px solid #ddd;
+    color: #2c3e50;
+}
+
+body.light-theme #passwordModal .form-input:focus {
+    background: rgba(0, 0, 0, 0.12);
+}
+
+/* ========== АНИМАЦИЯ ЗАГРУЗКИ ========== */
+.fa-spinner.fa-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ========== СТИЛИ ДЛЯ КНОПКИ СОХРАНЕНИЯ В СОСТОЯНИИ ЗАГРУЗКИ ========== */
+.btn-save.loading {
+    background: linear-gradient(135deg, #002a8a, #001f66) !important;
+    cursor: not-allowed !important;
+    opacity: 0.9;
+    position: relative;
+}
+
+.btn-save.loading:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    background: linear-gradient(135deg, #002a8a, #001f66) !important;
+}
+
+/* Плавная анимация изменения текста */
+.btn-save {
+    transition: all 0.3s ease;
+}
+
+.btn-save i.fa-spinner {
+    margin-right: 8px;
+}
+
+/* Анимация для текста "Сохранение..." */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.btn-save.loading:after {
+    content: '';
+    animation: pulse 1.5s infinite;
+}
+
+/* ========== АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ ========== */
+@media (max-width: 768px) {
+    .settings-grid-aligned {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .settings-full-width {
+        grid-column: 1;
+        margin-top: 30px;
+    }
+    
+    .settings-column {
+        gap: 30px;
+    }
+    
+    .settings-card {
+        padding: 25px;
+        min-height: 280px;
+    }
+    
+    .card-equal-height {
+        min-height: 280px;
+    }
+    
+    .setting-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        min-height: auto;
+        padding: 18px;
+    }
+    
+    .setting-info {
+        padding-right: 0;
+    }
+    
+    .setting-info h4 {
+        font-size: 1rem;
+        margin-bottom: 6px;
+    }
+    
+    .setting-info p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+    
+    .switch,
+    .btn-change-password,
+    .btn-delete-account,
+    .btn-enable-twofactor {
+        margin-left: 0;
+        width: 100%;
+        align-self: stretch;
+        justify-content: center;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .btn-cancel,
+    .btn-save {
+        min-width: 100%;
+        padding: 16px 24px;
+        font-size: 1rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .modal {
+        padding: 25px;
+        width: 95%;
+        max-width: 95%;
+    }
+    
+    .modal-title {
+        font-size: 1.4rem;
+    }
+    
+    .modal-btn {
+        min-width: 140px;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ========== ДОПОЛНИТЕЛЬНЫЕ НАСТРОЙКИ ДЛЯ РАЗМЕРОВ ========== */
+/* Пропорциональные размеры для заголовков карточек */
+.settings-card .card-title {
+    font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+}
+
+/* Пропорциональные размеры для текста внутри карточек */
+.setting-info h4 {
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+}
+
+.setting-info p {
+    font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+}
+
+/* Пропорциональные размеры для кнопок внутри карточек */
+.btn-change-password,
+.btn-enable-twofactor,
+.btn-delete-account {
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    min-width: clamp(140px, 20vw, 160px);
+    height: clamp(45px, 7vw, 52px);
+}
+
+/* Обеспечиваем, чтобы все элементы помещались в карточки */
+.settings-card {
+    overflow: hidden;
+}
+
+/* Гарантируем, что списки не выходят за пределы карточек */
+.settings-list {
+    max-height: none;
+}
+
+/* Для блоков с разным количеством пунктов */
+.settings-card:has(.settings-list > :nth-child(1):last-child) {
+    min-height: 320px;
+}
+
+/* Автоматическая высота для опасной зоны */
+.settings-card.danger-zone {
+    min-height: 320px;
+}
+
+/* Медиа запрос для средних экранов */
+@media (max-width: 1024px) {
+    .settings-grid-aligned {
+        gap: 30px;
+    }
+    
+    .settings-card {
+        padding: 30px;
+    }
+    
+    .card-title {
+        font-size: 1.4rem;
+        margin-bottom: 25px;
+    }
+    
+    .setting-item {
+        padding: 18px;
+        min-height: 75px;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+    .settings-card {
+        padding: 20px;
+        min-height: 280px;
+    }
+    
+    .card-equal-height {
+        min-height: 280px;
+    }
+    
+    .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+    }
+    
+    .settings-list {
+        gap: 20px;
+    }
+    
+    .setting-item {
+        padding: 15px;
+        min-height: 70px;
+    }
+    
+    .setting-info h4 {
+        font-size: 0.95rem;
+    }
+    
+    .setting-info p {
+        font-size: 0.8rem;
+    }
+}

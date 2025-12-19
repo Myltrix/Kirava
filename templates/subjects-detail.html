@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirava — {{ topic.title }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/quiz-detail.css' %}">
+    <link rel="icon" href="{% static 'images/VrLogo.png' %}" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <div class="left-header">
+            <img src="{% static 'images/Kirava-logo.png' %}" alt="Логотип" class="logo">
+            <div class="logo-text">Kirava</div>
+            <nav>
+                <a href="{% url 'home' %}">Главное</a>
+                <a href="{% url 'entertainment' %}">Развлечения</a>
+                <a href="{% url 'education' %}">Обучение</a>
+                <a href="{% url 'rating' %}">Топ пользователей</a>
+                <a href="{% url 'community' %}">Сообщество</a>
+            </nav>
+        </div>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+                <div class="theme-toggle-inner">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </button>
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="btn-login">
+                    <i class="fas fa-user"></i> Мой профиль
+                </a>
+                <a href="{% url 'logout' %}" class="btn-register">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-login">
+                    <i class="fas fa-user"></i> Войти
+                </a>
+                <a href="{% url 'register' %}" class="btn-register">
+                    <i class="fas fa-user-plus"></i> Регистрация
+                </a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="main-content quiz-detail-page">
+        <!-- ОСНОВНАЯ СЕКЦИЯ ТЕМЫ -->
+        <section class="quiz-detail-section">
+            <div class="container">
+                <div class="quiz-detail-content">
+                    <!-- ЛЕВАЯ КОЛОНКА -->
+                    <div class="quiz-sidebar">
+                        <div class="quiz-poster-card">
+                            <img src="{{ topic.poster_url }}" alt="{{ topic.title }}" class="quiz-poster">
+                            <div class="quiz-badge difficulty-{{ topic.difficulty }}">
+                                {{ topic.get_difficulty_display }}
+                            </div>
+                        </div>
+
+                        <div class="quiz-info-card">
+                            <h3>Информация о теме</h3>
+                            <div class="quiz-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label"><i class="fas fa-book"></i> Предмет:</span>
+                                    <span class="stat-value">{{ topic.subject.title }}</span>
+                                </div>
+
+                                <div class="stat-item">
+                                    <span class="stat-label"><i class="fas fa-chart-line"></i> Сложность:</span>
+                                    <span class="stat-value">{{ topic.get_difficulty_display }}</span>
+                                </div>
+
+                                <div class="stat-item">
+                                    <span class="stat-label"><i class="fas fa-eye"></i> Просмотров:</span>
+                                    <span class="stat-value">{{ total_completions }}</span>
+                                </div>
+
+                                <div class="stat-item">
+                                    <span class="stat-label"><i class="fas fa-chart-bar"></i> Средний результат:</span>
+                                    <span class="stat-value">{{ average_score }}%</span>
+                                </div>
+
+                                {% if best_result %}
+                                <div class="stat-item">
+                                    <span class="stat-label"><i class="fas fa-crown"></i> Ваш лучший:</span>
+                                    <span class="stat-value">{{ best_result.percentage|floatformat:1 }}%</span>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            {% if user.is_authenticated %}
+                                <button id="startTopicBtn" class="btn-quiz">
+                                    <i class="fas fa-play"></i> Начать викторину
+                                </button>
+                                <a href="{% url 'subjects:subjects_page' %}" class="btn-quiz secondary">
+                                    <i class="fas fa-arrow-left"></i> К предметам
+                                </a>
+                            {% else %}
+                                <a href="{% url 'login' %}" class="btn-quiz">
+                                    <i class="fas fa-sign-in-alt"></i> Войти для прохождения
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- ПРАВАЯ КОЛОНКА -->
+                    <div class="quiz-main-content">
+                        <!-- ЗАГОЛОВОК -->
+                        <div class="quiz-header">
+                            <h1 class="quiz-title">{{ topic.title }}</h1>
+                            <div class="quiz-subtitle">Тема по предмету "{{ topic.subject.title }}"</div>
+                        </div>
+
+                        <!-- ОПИСАНИЕ (скрывается при начале) -->
+                        <div id="descriptionSection" class="description-section">
+                            <h2 class="section-title">Описание темы</h2>
+                            <div class="quiz-description">
+                                {{ topic.description|linebreaks }}
+
+                                <h3><i class="fas fa-clipboard-list"></i> Правила викторины:</h3>
+                                <ul>
+                                    <li>Выбирайте один правильный вариант ответа</li>
+                                    <li>Всего <strong>5 вопросов</strong></li>
+                                    <li>Время не ограничено</li>
+                                    <li>Чем правильнее - тем больше очков!</li>
+                                    <li>Результат сохраняется в вашем профиле</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- КОНТЕЙНЕР ВИКТОРИНЫ -->
+                        <div id="topicContainer" class="quiz-container" style="display: none;">
+                            <div class="quiz-header">
+                                <div>
+                                    <h2 class="quiz-title" id="quizCurrentTitle">{{ topic.title }}</h2>
+                                    <p class="quiz-subtitle" id="quizSubtitle">Проверьте свои знания</p>
+                                </div>
+                                <div class="quiz-timer">
+                                    <div class="timer-display" id="timer">00:00</div>
+                                    <div class="timer-label">Затраченное время</div>
+                                </div>
+                            </div>
+
+                            <div class="quiz-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                                </div>
+                                <div class="progress-text">
+                                    <span id="currentQuestion">Вопрос 1</span>
+                                    <span id="totalQuestions">из 5</span>
+                                </div>
+                            </div>
+
+                            <div id="questionsContainer">
+                                <!-- ВОПРОСЫ ЗАГРУЖАЮТСЯ ДИНАМИЧЕСКИ -->
+                            </div>
+
+                            <div class="quiz-navigation">
+                                <button id="prevBtn" class="btn-quiz-nav" disabled>
+                                    <i class="fas fa-arrow-left"></i> Назад
+                                </button>
+                                <div class="nav-center">
+                                    <button id="skipBtn" class="btn-quiz-nav skip">
+                                        Пропустить <i class="fas fa-forward"></i>
+                                    </button>
+                                </div>
+                                <button id="nextBtn" class="btn-quiz-nav">
+                                    Далее <i class="fas fa-arrow-right"></i>
+                                </button>
+                                <button id="submitBtn" class="btn-quiz-nav submit" style="display: none;">
+                                    <i class="fas fa-paper-plane"></i> Завершить
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- РЕЗУЛЬТАТЫ -->
+                        <div id="resultsContainer" class="quiz-container" style="display: none;">
+                            <div class="results-container">
+                                <div class="results-header">
+                                    <h2 class="results-title">Результаты викторины</h2>
+                                    <div class="results-anime">
+                                        <img src="{{ topic.poster_url }}" alt="{{ topic.title }}" class="results-anime-poster">
+                                        <div class="results-anime-info">
+                                            <h3>{{ topic.title }}</h3>
+                                            <p>{{ topic.subject.title }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="results-score-container">
+                                    <div class="results-score" id="finalScore">0%</div>
+                                    <div class="results-stars" id="resultsStars">☆☆☆☆☆</div>
+                                    <div class="results-message" id="resultsMessage">Загрузка...</div>
+                                </div>
+
+                                <div class="results-details">
+                                    <div class="result-stat">
+                                        <div class="result-stat-icon"><i class="fas fa-check-circle"></i></div>
+                                        <div class="result-stat-value" id="correctAnswers">0</div>
+                                        <div class="result-stat-label">Правильно</div>
+                                    </div>
+                                    <div class="result-stat">
+                                        <div class="result-stat-icon"><i class="fas fa-times-circle"></i></div>
+                                        <div class="result-stat-value" id="wrongAnswers">0</div>
+                                        <div class="result-stat-label">Неправильно</div>
+                                    </div>
+                                    <div class="result-stat">
+                                        <div class="result-stat-icon"><i class="fas fa-clock"></i></div>
+                                        <div class="result-stat-value" id="timeSpent">0с</div>
+                                        <div class="result-stat-label">Время</div>
+                                    </div>
+                                    <div class="result-stat">
+                                        <div class="result-stat-icon"><i class="fas fa-percentage"></i></div>
+                                        <div class="result-stat-value" id="accuracy">0%</div>
+                                        <div class="result-stat-label">Точность</div>
+                                    </div>
+                                </div>
+
+                                <div class="points-earned-section">
+                                    <div class="points-header">
+                                        <h3><i class="fas fa-coins"></i> Заработанные очки</h3>
+                                        <div class="total-points" id="totalPoints">+0</div>
+                                    </div>
+                                    <div class="points-breakdown" id="pointsBreakdown">
+                                        <!-- ДЕТАЛИ ОЧКОВ ДОБАВЛЯЮТСЯ ДИНАМИЧЕСКИ -->
+                                    </div>
+                                </div>
+
+                                <div class="results-actions">
+                                    <button id="reviewBtn" class="btn-quiz">
+                                        <i class="fas fa-search"></i> Посмотреть ответы
+                                    </button>
+                                    <button id="restartBtn" class="btn-quiz primary">
+                                        <i class="fas fa-redo"></i> Пройти снова
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /quiz-main-content -->
+                </div><!-- /quiz-detail-content -->
+            </div>
+        </section>
+
+        <!-- КОММЕНТАРИИ -->
+        <section class="comments-section">
+            <div class="container">
+                <h2 class="section-title">Комментарии к теме</h2>
+
+                {% if user.is_authenticated %}
+                <form method="POST" class="comment-form" action="{% url 'subjects:topic_detail' subject.slug topic.slug %}">
+                    {% csrf_token %}
+                    <div class="comment-avatar">
+                        {% if user.profile.avatar %}
+                            <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="user-avatar">
+                        {% else %}
+                            <div class="default-avatar" data-initial="{{ user.username|first|upper }}">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="comment-input-container">
+                        {{ comment_form.text }}
+                        <button type="submit" class="btn-quiz">
+                            <i class="fas fa-paper-plane"></i> Отправить
+                        </button>
+                    </div>
+                </form>
+                {% else %}
+                <div class="comment-form">
+                    <div class="comment-avatar">
+                        <div class="default-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="comment-input-container">
+                        <textarea placeholder="Войдите, чтобы оставить комментарий..." class="comment-input" disabled></textarea>
+                        <a href="{% url 'login' %}" class="btn-quiz">
+                            <i class="fas fa-sign-in-alt"></i> Войти для комментирования
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="comments-list">
+                    {% for comment in comments %}
+                    <div class="comment">
+                        <div class="comment-avatar">
+                            {% if comment.user.profile.avatar %}
+                                <img src="{{ comment.user.profile.avatar.url }}" alt="{{ comment.user.username }}" class="user-avatar">
+                            {% else %}
+                                <div class="default-avatar" data-initial="{{ comment.user.username|first|upper }}">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">{{ comment.user.username }}</span>
+                                <span class="comment-date">{{ comment.created_at|date:"d.m.Y H:i" }}</span>
+                            </div>
+                            <p class="comment-text">{{ comment.text }}</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="no-comments">
+                        <p>Пока нет комментариев. Будьте первым!</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- ФУТЕР -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <div class="footer-logo">
+                            <img src="{% static 'images/Kirava-logo.png' %}" alt="Kirava Logo" class="logo-image-footer">
+                            <div class="footer-logo-text">
+                                <span class="logo-main">Kirava</span>
+                            </div>
+                        </div>
+                        <p>Образовательно-развлекательная платформа</p>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Разделы</h4>
+                        <a href="{% url 'home' %}"><i class="fas fa-chevron-right"></i> Главная</a>
+                        <a href="{% url 'entertainment' %}"><i class="fas fa-chevron-right"></i> Развлечения</a>
+                        <a href="{% url 'education' %}"><i class="fas fa-chevron-right"></i> Обучение</a>
+                        <a href="{% url 'rating' %}"><i class="fas fa-chevron-right"></i> Топ пользователей</a>
+                        <a href="{% url 'community' %}"><i class="fas fa-chevron-right"></i> Сообщество</a>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Поддержка</h4>
+                        <a href="#"><i class="fas fa-chevron-right"></i> Помощь</a>
+                        <a href="#"><i class="fas fa-chevron-right"></i> Контакты</a>
+                        <a href="#"><i class="fas fa-chevron-right"></i> FAQ</a>
+                        <a href="#"><i class="fas fa-chevron-right"></i> Сообщество</a>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Контакты</h4>
+                        <p>
+                            <a
+                                href="https://mail.google.com/mail/?view=cm&fs=1&to=the.kirava.official@gmail.com"
+                                target="_blank"
+                                class="email-link"
+                            >
+                                <i class="fas fa-envelope"></i> the.kirava.official@gmail.com
+                            </a>
+                        </p>
+                        <p><i class="fas fa-headset"></i> Поддержка 24/7</p>
+                        <p><i class="fas fa-globe"></i> Казахстан, Астана</p>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; 2025 Kirava - Аниме Викторины. Все права защищены.</p>
+                    <p>Сделано с ❤️ для сообщества отаку</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Глобальные переменные для JavaScript
+        window.SUBJECT_SLUG = "{{ subject.slug }}";
+        window.TOPIC_SLUG = "{{ topic.slug }}";
+        window.CSRF_TOKEN = "{{ csrf_token }}";
+        window.isAuthenticated = {% if user.is_authenticated %}true{% else %}false{% endif %};
+    </script>
+
+    <script src="{% static 'javascript/theme.js' %}"></script>
+    <script src="{% static 'javascript/subjects-detail.js' %}"></script>
+
+</body>
+</html>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kirava - Главная</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  {% load static %}
+  <link rel="stylesheet" href="/static/css/main.css">
+  <link rel="icon" href="/static/images/Kirava-logo.png" type="image/x-icon">
+</head>
+<body>
+  <header>
+    <div class="left-header">
+      <img src="/static/images/Kirava-logo.png" alt="Логотип" class="logo">
+      <div class="logo-text">Kirava</div>
+      <nav>
+        <a href="{% url 'home' %}" class="active">Главное</a>
+        <a href="{% url 'entertainment' %}">Развлечения</a>
+        <a href="{% url 'education' %}">Обучение</a>
+        <a href="{% url 'rating' %}">Топ пользователей</a>
+        <a href="{% url 'community' %}">Сообщество</a>
+      </nav>
+    </div>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+        <div class="theme-toggle-inner">
+          <i class="fas fa-sun"></i>
+          <i class="fas fa-moon"></i>
+        </div>
+      </button>
+      
+      {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}" class="btn-login">
+          <i class="fas fa-user"></i> Мой профиль
+        </a>
+        <a href="{% url 'logout' %}" class="btn-register">
+          <i class="fas fa-sign-out-alt"></i> Выйти
+        </a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn-login">
+          <i class="fas fa-user"></i> Войти
+        </a>
+        <a href="{% url 'register' %}" class="btn-register">
+          <i class="fas fa-user-plus"></i> Регистрация
+        </a>
+      {% endif %}
+    </div>
+  </header>
+
+  {% if messages %}
+  <div class="messages-container">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Слайдер -->
+  <div class="slider-container">
+    <!-- Фоновые изображения для слайдов -->
+    <div class="slide-bg active" style="background-image: url('https://img.freepik.com/free-photo/blackboard-inscribed-with-scientific-formulas-calculations_1150-19413.jpg?semt=ais_hybrid&w=740&q=80')"></div>
+    <div class="slide-bg" style="background-image: url('https://cdn.80.lv/api/upload/content/ea/684055206a222.jpg')"></div>
+    <div class="slide-bg" style="background-image: url('https://a-static.besthdwallpaper.com/solo-leveling-sung-jin-woo-shadows-wallpaper-2560x1600-88315_7.jpg')"></div>
+
+    <!-- Кнопки навигации слайдера -->
+    <button class="slider-btn slider-prev" onclick="changeSlide(-1)">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="slider-btn slider-next" onclick="changeSlide(1)">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+
+    <div class="slider-content">
+      <!-- Слайд 1 -->
+      <div class="slide active">
+        <img src="/static/images/image01.png" 
+             alt="Моя геройская академия" 
+             class="anime-poster">
+        <div class="slide-info">
+          <h2 class="section-title">Kirava — место, где <span class="highlight">аниме встречает знания</span></h2>
+          <p class="anime-description">Kirava — это пространство, где ты можешь не просто проводить время, а развиваться, открывать новые знания и погружаться в мир аниме-эстетики. Здесь обучение превращается в увлекательное путешествие, где каждый клик, каждый вопрос и каждая викторина помогают тебе становиться умнее, увереннее и мотивированнее, сохраняя при этом лёгкость и интерес.</p>
+        </div>
+      </div>
+
+      <!-- Слайд 2 -->
+      <div class="slide">
+        <img src="/static/images/image02.png" 
+             alt="Дандадан" 
+             class="anime-poster">
+        <div class="slide-info">
+          <h2 class="section-title">Открой мир <span class="highlight">аниме-игр и умных викторин</span></h2>
+          <p class="anime-description">Проходи захватывающие аниме-игры, принимай участие в умных викторинах и испытаниях, которые развивают логику, память и мышление. Соревнуйся с друзьями, зарабатывай очки и открывай новые уровни, превращая процесс обучения в увлекательную игру, к которой хочется возвращаться снова и снова.</p>
+        </div>
+      </div>
+
+      <!-- Слайд 3 -->
+      <div class="slide">
+        <img src="/static/images/Image03.png" 
+             alt="Поднятие уровня в одиночку" 
+             class="anime-poster">
+        <div class="slide-info">
+          <h2 class="section-title">Твоя <span class="highlight">вселенная знаний и вдохновения</span></h2>
+          <p class="anime-description">Kirava создаёт уникальную атмосферу, где каждый пользователь чувствует поддержку и желание двигаться вперёд. Это место, где ты можешь вдохновляться, учиться в своём темпе, находить новые интересы и превращать любознательность в реальные навыки, открывая для себя мир знаний через красивый визуал и интерактивный формат.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Секция возможностей -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">Наши <span class="highlight">Возможности</span></h2>
+      <p class="section-subtitle">Все лучшие развлечения и обучение — в одном месте</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-gamepad"></i>
+          </div>
+          <h3>Аниме-игры</h3>
+          <p>Погрузись в атмосферу аниме-мира с увлекательными мини-играми. Здесь ты сможешь расслабиться после учёбы, развить реакцию, логику и внимательность, проходя уровни с необычным визуальным стилем. Каждая игра создана с акцентом на удовольствие, простоту и яркие эмоции.</p>
+          <!-- Измененные мини-пункты как в обучении -->
+          <div class="category-features feature-stats">
+            <span><i class="fas fa-check"></i> 1000+ вопросов</span>
+            <span><i class="fas fa-check"></i> 50+ тем</span>
+          </div>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-robot"></i>
+          </div>
+          <h3>Викторины</h3>
+          <p>Проверь свои знания в захватывающем формате интерактивных викторин. На Kirava ты найдёшь вопросы по разным темам: от аниме и игр до науки и школьных предметов. Система автоматически подбирает уровень сложности под твой прогресс, делая игру одновременно интересной и полезной. Соревнуйся с друзьями, зарабатывай очки и поднимайся в рейтинге лучших игроков.</p>
+          <!-- Измененные мини-пункты как в обучении -->
+          <div class="category-features feature-stats">
+            <span><i class="fas fa-check"></i> 24/7 онлайн</span>
+            <span><i class="fas fa-check"></i> Обучение ИИ</span>
+          </div>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <h3>Образование</h3>
+          <p>Образовательный раздел Kirava превращает скучную теорию в интересное приключение. Материалы подаются в виде лёгких карточек, тестов и интерактивных заданий, что помогает лучше усваивать информацию. Учись в своём темпе, повторяй пройденное и открывай новые темы в игровом формате.</p>
+          <!-- Измененные мини-пункты как в обучении -->
+          <div class="category-features feature-stats">
+            <span><i class="fas fa-check"></i> 20+ курсов</span>
+            <span><i class="fas fa-check"></i> Сертификаты</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Секция популярных викторин -->
+<section class="quizzes">
+  <div class="container">
+    <h2 class="section-title">Популярные <span class="highlight">Аниме-викторины</span></h2>
+    
+    <div class="carousel-container">
+      <button class="carousel-btn carousel-prev">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      
+      <div class="quizzes-carousel">
+        <div class="quiz-card">
+          <div class="quiz-badge">Хит</div>
+          <div class="quiz-image">
+            <img src="https://preview.redd.it/what-is-the-one-thing-you-would-change-from-naruto-shippuden-v0-99u82er66aib1.jpg?width=1080&crop=smart&auto=webp&s=ad494cb0c80eaa525c5812288617d859250d20b5" alt="Наруто" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Наруто</h3>
+            <p>Проверьте, насколько хорошо вы знаете мир ниндзя</p>
+            <div class="quiz-meta">
+              <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+              <span class="questions"><i class="fas fa-question"></i> 20 вопросов</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Новое</div>
+          <div class="quiz-image">
+            <img src="https://ir.ozone.ru/s3/multimedia-x/c1000/6426076449.jpg" alt="Атака Титанов" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Атака Титанов</h3>
+            <p>Насколько глубоко вы понимаете сюжет и персонажей?</p>
+            <div class="quiz-meta">
+              <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+              <span class="questions"><i class="fas fa-question"></i> 25 вопросов</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Премиум</div>
+          <div class="quiz-image">
+            <img src="https://m.media-amazon.com/images/M/MV5BMWU1OGEwNmQtNGM3MS00YTYyLThmYmMtN2FjYzQzNzNmNTE0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Истребитель Демонов" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Истребитель Демонов</h3>
+            <p>Сложные вопросы о дыхательных стилях и персонажах</p>
+            <div class="quiz-meta">
+              <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+              <span class="questions"><i class="fas fa-question"></i> 30 вопросов</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Популярное</div>
+          <div class="quiz-image">
+            <img src="https://gen.jut.su/uploads/posts/2017-03/1488441269_one-piece-zou-visual.jpeg" alt="Ван Пис" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Ван Пис</h3>
+            <p>Знаете ли вы все приключения Луффи и его команды?</p>
+            <div class="quiz-meta">
+              <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+              <span class="questions"><i class="fas fa-question"></i> 28 вопросов</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Новое</div>
+          <div class="quiz-image">
+            <img src="https://animego.me/upload/anime/images/67dff0ab19404789136484.jpg" alt="Ван-Пис: Gear 5" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Блич</h3>
+            <p>Тест по новой арке с Gear 5 и Искателями дьявола</p>
+            <div class="quiz-meta">
+              <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+              <span class="questions"><i class="fas fa-question"></i> 35 вопросов</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Хит</div>
+          <div class="quiz-image">
+            <img src="https://m.media-amazon.com/images/M/MV5BMjBlNTExMDAtMWZjZi00MDc5LWFkMjgtZDU0ZWQ5ODk3YWY5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Наруто: Режим Мудреца" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Магическая битва</h3>
+            <p>Сложные вопросы о техниках сензюцу и проклятой энергии</p>
+            <div class="quiz-meta">
+              <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+              <span class="questions"><i class="fas fa-question"></i> 32 вопроса</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Популярное</div>
+          <div class="quiz-image">
+            <img src="https://s.anixmirai.com/posters/bpF8xeG8GitAAgkdcxMOONIGY9pKAo.jpg" alt="Ходячий замок" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Ходячий замок</h3>
+            <p>Волшебный тест по миру Хаула и Софи</p>
+            <div class="quiz-meta">
+              <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+              <span class="questions"><i class="fas fa-question"></i> 18 вопросов</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Новое</div>
+          <div class="quiz-image">
+            <img src="https://image.tmdb.org/t/p/original/1m4RlC9BTCbyY549TOdVQ5NRPcR.jpg" alt="Токийский гуль" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Токийский гуль</h3>
+            <p>Насколько вы разбираетесь в мире гулей и следопытов?</p>
+            <div class="quiz-meta">
+              <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+              <span class="questions"><i class="fas fa-question"></i> 24 вопроса</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+      </div>
+      
+      <button class="carousel-btn carousel-next">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Секция образовательных викторин -->
+<section class="quizzes">
+  <div class="container">
+    <h2 class="section-title">Популярные <span class="highlight">Образовательные викторины</span></h2>
+    
+    <div class="carousel-container">
+      <button class="carousel-btn carousel-prev">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      
+      <div class="quizzes-carousel">
+        <div class="quiz-card">
+          <div class="quiz-badge">Хит</div>
+          <div class="quiz-image">
+            <img src="https://images.unsplash.com/photo-1589652717521-10c0d092dea9?w=400&h=300&fit=crop" alt="История" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Всемирная история</h3>
+            <p>От древних цивилизаций до современности</p>
+            <div class="quiz-meta">
+              <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+              <span class="questions"><i class="fas fa-question"></i> 25 вопросов</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Новое</div>
+          <div class="quiz-image">
+            <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&h=300&fit=crop" alt="Наука" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Физика и химия</h3>
+            <p>Основные законы и научные открытия</p>
+            <div class="quiz-meta">
+              <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+              <span class="questions"><i class="fas fa-question"></i> 30 вопросов</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Премиум</div>
+          <div class="quiz-image">
+            <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400&h=300&fit=crop" alt="География" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>География мира</h3>
+            <p>Страны, столицы и достопримечательности</p>
+            <div class="quiz-meta">
+              <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+              <span class="questions"><i class="fas fa-question"></i> 20 вопросов</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Популярное</div>
+          <div class="quiz-image">
+            <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop" alt="Литература" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Русская литература</h3>
+            <p>Классики и их бессмертные произведения</p>
+            <div class="quiz-meta">
+              <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+              <span class="questions"><i class="fas fa-question"></i> 22 вопроса</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Новое</div>
+          <div class="quiz-image">
+            <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=300&fit=crop" alt="Математика" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Математика</h3>
+            <p>Задачи, теоремы и головоломки</p>
+            <div class="quiz-meta">
+              <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+              <span class="questions"><i class="fas fa-question"></i> 28 вопросов</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Хит</div>
+          <div class="quiz-image">
+            <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&h=300&fit=crop" alt="Биология" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Биология</h3>
+            <p>Живые организмы и природные явления</p>
+            <div class="quiz-meta">
+              <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+              <span class="questions"><i class="fas fa-question"></i> 24 вопроса</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Популярное</div>
+          <div class="quiz-image">
+            <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop" alt="Искусство" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Мировое искусство</h3>
+            <p>Художники, стили и знаменитые работы</p>
+            <div class="quiz-meta">
+              <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+              <span class="questions"><i class="fas fa-question"></i> 18 вопросов</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+        
+        <div class="quiz-card">
+          <div class="quiz-badge">Новое</div>
+          <div class="quiz-image">
+            <img src="https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400&h=300&fit=crop" alt="Программирование" class="quiz-poster">
+          </div>
+          <div class="quiz-content">
+            <h3>Программирование</h3>
+            <p>Языки, алгоритмы и IT-технологии</p>
+            <div class="quiz-meta">
+              <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+              <span class="questions"><i class="fas fa-question"></i> 32 вопроса</span>
+            </div>
+            <button class="btn-quiz">Начать викторину</button>
+          </div>
+        </div>
+      </div>
+      
+      <button class="carousel-btn carousel-next">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</section>
+
+  <!-- Футер -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      
+      <div class="footer-section">
+        <div class="footer-logo">
+          <img src="/static/images/Kirava-logo.png" alt="Kirava Logo" class="logo-image-footer">
+          <div class="footer-logo-text">
+            <span class="logo-main">Kirava</span>
+          </div>
+        </div>
+        <p>Образовательно-развлекательная платформа</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Разделы</h4>
+        <a href="{% url 'home' %}" class="active">
+          <i class="fas fa-chevron-right"></i> Главная
+        </a>
+        <a href="{% url 'entertainment' %}">
+          <i class="fas fa-chevron-right"></i> Развлечения
+        </a>
+        <a href="{% url 'education' %}">
+          <i class="fas fa-chevron-right"></i> Обучение
+        </a>
+        <a href="{% url 'rating' %}">
+          <i class="fas fa-chevron-right"></i> Топ пользователей
+        </a>
+        <a href="{% url 'community' %}">
+          <i class="fas fa-chevron-right"></i> Сообщество
+        </a>
+      </div>
+
+      <div class="footer-section">
+        <h4>Поддержка</h4>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Помощь
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Контакты
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> FAQ
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Сообщество
+        </a>
+      </div>
+
+      <div class="footer-section">
+        <h4>Контакты</h4>
+
+        <p>
+          <a 
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=the.kirava.official@gmail.com"
+            target="_blank"
+            class="email-link"
+          >
+            <i class="fas fa-envelope"></i> the.kirava.official@gmail.com
+          </a>
+        </p>
+
+        <p><i class="fas fa-headset"></i> Поддержка 24/7</p>
+        <p><i class="fas fa-globe"></i> Казахстан, Астана</p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Kirava - Аниме Викторины и Обучение. Все права защищены.</p>
+      <p>Сделано с ❤️ для сообщества отаку</p>
+    </div>
+  </div>
+</footer>
+
+<script src="/static/javascript/main.js"></script>
+<script src="/static/javascript/theme.js"></script>
+</body>
+</html>

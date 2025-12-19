@@ -1,0 +1,1002 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+    color: white;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* HEADER - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: #000;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #333;
+}
+
+.left-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex: 1;
+}
+
+.logo {
+    height: 70px;
+    width: 70px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.logo-text {
+    font-weight: bold;
+    font-size: 24px;
+    color: #0037ac;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 5px;
+    position: relative;
+}
+
+nav a:hover,
+nav a.active {
+    color: #0037ac;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -17px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #0037ac;
+    border-radius: 50%;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+/* Кнопка переключения темы */
+.theme-toggle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #0037ac;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 55, 172, 0.3);
+    background: linear-gradient(135deg, #002a8a, #001f66);
+}
+
+.theme-toggle-inner {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    transition: all 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    will-change: transform, opacity;
+    z-index: 2;
+}
+
+/* ТЕМНАЯ ТЕМА: показываем луну */
+.theme-toggle .fa-sun {
+    color: #FFD700;
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(180deg) scale(0.5);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+}
+
+.theme-toggle .fa-moon {
+    color: #F0F0F0;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    text-shadow: 0 0 10px rgba(240, 240, 240, 0.5);
+}
+
+/* СВЕТЛАЯ ТЕМА: показываем солнце */
+body.light-theme .theme-toggle .fa-sun {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+body.light-theme .theme-toggle .fa-moon {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-180deg) scale(0.5);
+}
+
+/* Кнопка в светлой теме */
+body.light-theme .theme-toggle {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    border-color: #0037ac;
+}
+
+/* Кнопки входа и регистрации */
+.btn-login, .btn-register {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    color: white;
+    border: 2px solid #0037ac;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-login:hover, .btn-register:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+    background: linear-gradient(135deg, #002a8a, #0037ac);
+}
+
+/* Основной контент */
+.main-content {
+    margin-top: 70px;
+}
+
+/* Page Header - ТОЧЬ В ТОЧЬ КАК АНИМЕ КВИЗЫ (возвращаем прежний размер) */
+.page-header {
+    padding: 40px 0; /* ← ВЕРНУЛИ ПРЕЖНИЙ РАЗМЕР 40px */
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.page-title-container {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.page-title {
+    font-size: 2.5rem; /* ← ВЕРНУЛИ ПРЕЖНИЙ РАЗМЕР 2.5rem */
+    font-weight: 900;
+    margin-bottom: 10px; /* ← ВЕРНУЛИ ПРЕЖНИЙ МАРГИН 10px */
+    color: #fff;
+    text-align: center;
+}
+
+.highlight {
+    color: #0037ac;
+}
+
+.page-subtitle {
+    color: #ccc;
+    font-size: 1.1rem; /* ← ВЕРНУЛИ ПРЕЖНИЙ РАЗМЕР 1.1rem */
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Навигационные точки - ТОЧЬ В ТОЧЬ КАК В АНИМЕ */
+.section-nav {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 100;
+}
+
+.nav-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-dot.active {
+    background: #0037ac !important;
+    transform: scale(1.2);
+}
+
+.nav-dot:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 101;
+}
+
+/* Quizzes Sections - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.quizzes {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    position: relative;
+    z-index: 2;
+}
+
+.quizzes::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Контент поверх фона */
+.quizzes .container,
+.quizzes .section-title,
+.quizzes .carousel-container,
+.quizzes .quiz-card {
+    position: relative;
+    z-index: 2;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 50px;
+    color: #fff;
+    font-weight: 900;
+}
+
+/* Carousel Styles - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.carousel-container {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 60px;
+}
+
+.quizzes-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 20px 10px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.quizzes-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 55, 172, 0.8);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-btn:hover {
+    background: #0037ac;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 55, 172, 0.4);
+}
+
+.carousel-prev {
+    left: 0;
+}
+
+.carousel-next {
+    right: 0;
+}
+
+/* Quiz Card Styles - ИСПРАВЛЕННЫЕ СТИЛИ КАК В АНИМЕ */
+.quiz-card {
+    flex: 0 0 auto;
+    width: 240px;
+    height: 610px; /* УВЕЛИЧЕНА ВЫСОТА ПО ВАШЕМУ ЗАПРОСУ */
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #333;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.quiz-card:hover {
+    transform: translateY(-6px);
+    border-color: #0037ac;
+    box-shadow: 0 15px 35px rgba(0, 55, 172, 0.4);
+}
+
+.quiz-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
+.quiz-image {
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.quiz-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+    display: block;
+}
+
+.quiz-card:hover .quiz-poster {
+    transform: scale(1.05);
+}
+
+.quiz-content {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 260px; /* УВЕЛИЧЕНА МИНИМАЛЬНАЯ ВЫСОТА ДЛЯ КНОПКИ */
+}
+
+.quiz-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    color: #fff;
+    text-align: center;
+    line-height: 1.3;
+    font-weight: 600;
+    min-height: 2.6em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quiz-content p {
+    color: #ccc;
+    margin-bottom: 20px; /* УВЕЛИЧЕН ОТСТУП */
+    line-height: 1.4;
+    text-align: center;
+    font-size: 0.9rem;
+    flex: 1;
+    min-height: 4.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ИСПРАВЛЕНИЕ: Мета-информация всегда в одну строку */
+.quiz-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 0.8rem;
+    gap: 10px;
+    flex-wrap: nowrap !important; /* ВАЖНО: запрещаем перенос */
+    white-space: nowrap; /* Запрещаем перенос текста */
+    width: 100%; /* Занимает всю ширину */
+    min-height: 24px; /* Фиксированная минимальная высота */
+}
+
+/* Гарантируем, что каждый элемент мета-информации не переносится */
+.difficulty,
+.questions {
+    flex-shrink: 0 !important; /* Запрещаем сжатие */
+    min-width: fit-content; /* Минимальная ширина по содержимому */
+    overflow: visible; /* Гарантируем видимость */
+    white-space: nowrap; /* Запрещаем перенос текста внутри элементов */
+}
+
+/* Исправление для метки сложности */
+.difficulty {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0; /* Не сжимается */
+}
+
+.difficulty.easy {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+}
+
+.difficulty.medium {
+    background: rgba(255, 152, 0, 0.2);
+    color: #ff9800;
+}
+
+.difficulty.hard {
+    background: rgba(244, 67, 54, 0.2);
+    color: #f44336;
+}
+
+/* Исправление для количества вопросов */
+.questions {
+    color: #0037ac;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0; /* Не сжимается */
+}
+
+/* КНОПКИ - РОВНЫЕ И СИНИЕ ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.btn-quiz {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    width: 100%;
+    border: 2px solid #0037ac;
+    margin-top: auto;
+    text-align: center;
+    min-height: 42px;
+    opacity: 1;
+    visibility: visible;
+    display: flex !important;
+}
+
+.btn-quiz:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+}
+
+/* Footer - ТОЧЬ В ТОЧЬ КАК АНИМЕ */
+.footer {
+    background-color: #000;
+    padding: 60px 0 20px;
+    border-top: 1px solid #333;
+    position: relative;
+    z-index: 2;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section h4 {
+    color: #0037ac;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.footer-section p {
+    color: #ccc;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.footer-section a {
+    color: #ccc;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-section a:hover,
+.footer-section a.active {
+    color: #0037ac;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid #333;
+    color: #666;
+}
+
+.footer-bottom p {
+    margin-bottom: 10px;
+}
+
+.logo-image-footer {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: contain;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.footer-logo-text {
+    font-weight: bold;
+    font-size: 24px;
+    color: #0037ac;
+}
+
+/* ================= СВЕТЛАЯ ТЕМА ================= */
+body.light-theme {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+}
+
+/* Header в светлой теме */
+body.light-theme header {
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 55, 172, 0.12);
+}
+
+body.light-theme .logo-text {
+    color: #0037ac;
+}
+
+body.light-theme nav a {
+    color: #34495e;
+}
+
+body.light-theme nav a:hover,
+body.light-theme nav a.active {
+    color: #0037ac;
+    background-color: rgba(0, 55, 172, 0.08);
+}
+
+body.light-theme nav a.active::after {
+    background: #0037ac;
+}
+
+/* Кнопка переключения темы в светлой теме */
+body.light-theme .theme-toggle {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    border-color: #0037ac;
+}
+
+body.light-theme .theme-toggle:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    box-shadow: 0 6px 20px rgba(0, 55, 172, 0.3);
+}
+
+/* Кнопки в светлой теме */
+body.light-theme .btn-login,
+body.light-theme .btn-register {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    border: 2px solid #0037ac;
+}
+
+body.light-theme .btn-login:hover,
+body.light-theme .btn-register:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+}
+
+/* Страница викторины в светлой теме */
+body.light-theme .page-header {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+body.light-theme .page-header::before {
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.05) 0%, transparent 50%);
+}
+
+/* Заголовки в светлой теме */
+body.light-theme .section-title {
+    color: #2c3e50;
+}
+
+body.light-theme .page-title {
+    color: #2c3e50;
+}
+
+body.light-theme .page-subtitle {
+    color: #5d6d7e;
+}
+
+/* Светлая тема для секций викторин */
+body.light-theme .quizzes {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+body.light-theme .quizzes::before {
+    background: radial-gradient(circle at 30% 20%, rgba(0, 55, 172, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 55, 172, 0.05) 0%, transparent 50%);
+}
+
+/* Карточки в светлой теме */
+body.light-theme .quiz-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid rgba(224, 230, 237, 0.8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* СИНЕЕ СВЕЧЕНИЕ ТОЛЬКО ПРИ НАВЕДЕНИИ В СВЕТЛОЙ ТЕМЕ */
+body.light-theme .quiz-card:hover {
+    border-color: #0037ac;
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0, 55, 172, 0.12);
+}
+
+/* Текст в светлой теме */
+body.light-theme .quiz-content h3 {
+    color: #2c3e50;
+}
+
+body.light-theme .quiz-content p {
+    color: #5d6d7e;
+}
+
+body.light-theme .difficulty.easy {
+    background: rgba(76, 175, 80, 0.12);
+    color: #2e7d32;
+}
+
+body.light-theme .difficulty.medium {
+    background: rgba(255, 152, 0, 0.12);
+    color: #ef6c00;
+}
+
+body.light-theme .difficulty.hard {
+    background: rgba(244, 67, 54, 0.12);
+    color: #d32f2f;
+}
+
+body.light-theme .questions {
+    color: #0037ac;
+}
+
+/* Кнопки в светлой теме - РОВНЫЕ И СИНИЕ */
+body.light-theme .btn-quiz {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    border: 2px solid #0037ac;
+}
+
+body.light-theme .btn-quiz:hover {
+    background: linear-gradient(135deg, #002a8a, #001f66);
+    box-shadow: 0 5px 15px rgba(0, 55, 172, 0.4);
+}
+
+/* Футер в светлой теме */
+body.light-theme .footer {
+    background-color: #ffffff;
+    border-top: 1px solid rgba(0, 55, 172, 0.08);
+}
+
+body.light-theme .footer-section p {
+    color: #5a6c7d;
+}
+
+body.light-theme .footer-section a {
+    color: #5a6c7d;
+}
+
+body.light-theme .footer-section a:hover,
+body.light-theme .footer-section a.active {
+    color: #0037ac;
+}
+
+body.light-theme .footer-section h4 {
+    color: #0037ac;
+}
+
+body.light-theme .footer-bottom {
+    border-top: 1px solid rgba(0, 55, 172, 0.08);
+    color: #7b8895;
+}
+
+body.light-theme .footer-logo-text {
+    color: #0037ac;
+}
+
+/* Навигационные точки в светлой теме */
+body.light-theme .nav-dot {
+    background: rgba(0, 55, 172, 0.2);
+}
+
+body.light-theme .nav-dot.active {
+    background: #0037ac !important;
+}
+
+body.light-theme .nav-dot:hover::after {
+    background: rgba(0, 55, 172, 0.9);
+}
+
+/* Кнопки карусели в светлой теме */
+body.light-theme .carousel-btn {
+    background: rgba(0, 55, 172, 0.9);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+body.light-theme .carousel-btn:hover {
+    background: #0037ac;
+    box-shadow: 0 6px 20px rgba(0, 55, 172, 0.6);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .quizzes-carousel {
+        gap: 15px;
+        padding: 15px 5px;
+    }
+    
+    .quiz-card {
+        width: 220px;
+        height: 580px; /* АДАПТИВНАЯ ВЫСОТА ДЛЯ ПЛАНШЕТОВ */
+    }
+    
+    .quiz-image {
+        height: 320px;
+    }
+    
+    .quiz-content {
+        padding: 15px;
+        min-height: 260px;
+    }
+    
+    .quiz-content h3 {
+        font-size: 1rem;
+        min-height: 2.4em;
+        margin-bottom: 10px;
+    }
+    
+    .quiz-content p {
+        font-size: 0.85rem;
+        min-height: 3.8em;
+        margin-bottom: 18px;
+    }
+    
+    .quiz-meta {
+        font-size: 0.75rem;
+        gap: 8px;
+        margin-bottom: 18px;
+    }
+    
+    .difficulty {
+        padding: 3px 8px;
+        font-size: 0.7rem;
+    }
+    
+    .carousel-container {
+        padding: 0 40px;
+    }
+    
+    .carousel-btn {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .section-nav {
+        right: 10px;
+    }
+    
+    .section-title {
+        font-size: 2.2rem;
+        margin-bottom: 30px;
+    }
+    
+    .page-title {
+        font-size: 2.5rem;
+    }
+    
+    .page-subtitle {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .quiz-card {
+        width: 200px;
+        height: 560px; /* АДАПТИВНАЯ ВЫСОТА ДЛЯ ТЕЛЕФОНОВ */
+    }
+    
+    .quiz-image {
+        height: 280px;
+    }
+    
+    .quiz-content {
+        min-height: 280px;
+        padding: 12px;
+    }
+    
+    .quiz-meta {
+        flex-direction: row; /* Сохраняем горизонтальное расположение */
+        justify-content: space-between;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 15px;
+    }
+    
+    .difficulty,
+    .questions {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+    }
+    
+    .carousel-container {
+        padding: 0 20px;
+    }
+    
+    .carousel-btn {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .page-title {
+        font-size: 2rem;
+    }
+    
+    .page-subtitle {
+        font-size: 1rem;
+    }
+}
+
+/* Фикс для слишком длинных заголовков */
+.quiz-content h3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.quiz-content p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* АЛЬТЕРНАТИВНЫЙ ФИКС: если все равно не помещается, используй grid */
+@media (max-width: 360px) {
+    .quiz-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    
+    .difficulty {
+        grid-column: 1;
+        justify-self: start;
+    }
+    
+    .questions {
+        grid-column: 2;
+        justify-self: end;
+    }
+}

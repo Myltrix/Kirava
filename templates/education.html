@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirava — Обучение</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/education.css' %}">
+    <link rel="icon" href="{% static 'images/VrLogo.png' %}" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <div class="left-header">
+            <img src="{% static 'images/Kirava-logo.png' %}" alt="Логотип" class="logo">
+            <div class="logo-text">Kirava</div>
+            <nav>
+                <a href="{% url 'home' %}">Главное</a>
+                <a href="{% url 'entertainment' %}">Развлечения</a>
+                <a href="{% url 'education' %}" class="active">Обучение</a>
+                <a href="{% url 'rating' %}">Топ пользователей</a>
+                <a href="{% url 'community' %}">Сообщество</a>
+            </nav>
+        </div>
+        <div class="header-actions">
+            <!-- Кнопка переключения темы -->
+            <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+                <div class="theme-toggle-inner">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </button>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="btn-profile">
+                    <i class="fas fa-user"></i> Мой профиль
+                </a>
+                <a href="{% url 'logout' %}" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-login">
+                    <i class="fas fa-user"></i> Войти
+                </a>
+                <a href="{% url 'register' %}" class="btn-register">
+                    <i class="fas fa-user-plus"></i> Регистрация
+                </a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- Слайдер -->
+<div class="slider-container">
+    <!-- Фоновое изображение - используем тот же фон что и в развлечениях -->
+    <div class="slide-bg active" 
+         style="background-image: url('/static/images/image04.png')">
+    </div>
+
+    <div class="slider-content">
+        <!-- Слайд 1 -->
+        <div class="slide active">
+            <!-- Текст справа -->
+            <div class="slide-info">
+                <h2 class="section-title">
+    Обучение в <span class="highlight">аниме-формате</span> начинается здесь!
+</h2>
+<p class="anime-description">
+    Погрузись в уникальный образовательный мир, где знания подаются через
+    аниме-стиль, интерактивные задания и игровые механики. Проходи курсы,
+    выполняй миссии и развивай навыки вместе с любимыми персонажами.
+    Каждое занятие — это новый уровень, созданный для тех, кто хочет
+    учиться с интересом и получать удовольствие от процесса.
+</p>
+                <div class="slide-buttons">
+                    {% if user.is_authenticated %}
+                        <a href="#categories" class="btn-primary">
+                            <i class="fas fa-graduation-cap"></i>
+                            Продолжить обучение
+                        </a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn-primary">
+                            <i class="fas fa-graduation-cap"></i>
+                            Начать обучение
+                        </a>
+                    {% endif %}
+                    <a href="#categories" class="btn-secondary">
+                        <i class="fas fa-book-open"></i>
+                        Изучить курсы
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>      
+
+        <!-- Категории обучения --> 
+<section class="categories-section" id="categories">
+    <div class="container">
+        <h2 class="section-title">Направления <span class="highlight">Обучения</span></h2>
+        
+        <div class="categories-grid">
+            <!-- Школьные предметы -->
+            <a href="{% url 'school_subjects' %}" class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-school"></i>
+                </div>
+                <div class="category-content">
+                    <h3>Школьные предметы</h3>
+                    <p>
+                        Изучайте основные школьные дисциплины — от математики и физики до биологии, истории 
+                        и литературы — в современном и понятном формате. Материалы созданы так, чтобы любой 
+                        школьник мог быстро разобраться в теме, потренироваться и уверенно применять знания 
+                        на практике.
+                    </p>
+                    <div class="category-features">
+                        <span><i class="fas fa-check"></i> Подробные уроки</span>
+                        <span><i class="fas fa-check"></i> Интерактивные тесты</span>
+                        <span><i class="fas fa-check"></i> Игровая форма</span>
+                    </div>
+                </div>
+                <div class="category-hover">
+                    <span>Изучать →</span>
+                </div>
+            </a>
+
+            <!-- Навыки будущего -->
+            <a href="{% url 'future_skills' %}" class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="category-content">
+                    <h3>Навыки будущего</h3>
+                    <p>
+                        Развивайте ключевые компетенции XXI века: критическое мышление, финансовую 
+                        грамотность, креативность, дизайн-мышление и умение работать в команде. 
+                        Курсы помогают формировать гибкие навыки, которые пригодятся в жизни, учёбе 
+                        и будущей профессии.
+                    </p>
+                    <div class="category-features">
+                        <span><i class="fas fa-check"></i> Практические задания</span>
+                        <span><i class="fas fa-check"></i> Кейс-стади</span>
+                        <span><i class="fas fa-check"></i> Сертификаты</span>
+                    </div>
+                </div>
+                <div class="category-hover">
+                    <span>Развиваться →</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+
+        <!-- Дополнительная секция - Преимущества -->
+        <section class="features-section">
+            <div class="container">
+                <h2 class="section-title">
+                    Почему учиться <span class="highlight">интересно</span> с нами?
+                </h2>
+                
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3>Игровой формат</h3>
+                        <p>Обучение через игры, квесты и интерактивные задания с аниме-персонажами</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h3>Достижения и награды</h3>
+                        <p>Зарабатывай бейджи, повышай уровень и соревнуйся с друзьями</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Сообщество</h3>
+                        <p>Общайся с единомышленниками, находи команду для проектов</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Футер -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      
+      <div class="footer-section">
+        <div class="footer-logo">
+          <img src="/static/images/Kirava-logo.png" alt="Kirava Logo" class="logo-image-footer">
+          <div class="footer-logo-text">
+            <span class="logo-main">Kirava</span>
+          </div>
+        </div>
+        <p>Образовательно-развлекательная платформа</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Разделы</h4>
+        <a href="{% url 'home' %}">
+          <i class="fas fa-chevron-right"></i> Главная
+        </a>
+        <a href="{% url 'entertainment' %}">
+          <i class="fas fa-chevron-right"></i> Развлечения
+        </a>
+        <a href="{% url 'education' %}" class="active">
+          <i class="fas fa-chevron-right"></i> Обучение
+        </a>
+        <a href="{% url 'rating' %}">
+          <i class="fas fa-chevron-right"></i> Топ пользователей
+        </a>
+        <a href="{% url 'community' %}">
+          <i class="fas fa-chevron-right"></i> Сообщество
+        </a>
+      </div>
+
+      <div class="footer-section">
+        <h4>Поддержка</h4>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Помощь
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Контакты
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> FAQ
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Сообщество
+        </a>
+      </div>
+
+      <div class="footer-section">
+        <h4>Контакты</h4>
+
+        <p>
+          <a 
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=the.kirava.official@gmail.com"
+            target="_blank"
+            class="email-link"
+          >
+            <i class="fas fa-envelope"></i> the.kirava.official@gmail.com
+          </a>
+        </p>
+
+        <p><i class="fas fa-headset"></i> Поддержка 24/7</p>
+        <p><i class="fas fa-globe"></i> Казахстан, Астана</p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Kirava - Аниме Викторины и Обучение. Все права защищены.</p>
+      <p>Сделано с ❤️ для сообщества отаку</p>
+    </div>
+  </div>
+</footer>
+
+    <script src="{% static 'javascript/education.js' %}"></script>
+    <script src="{% static 'javascript/theme.js' %}"></script>
+    
+</body>
+</html>

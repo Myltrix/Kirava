@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirava — Топ пользователей</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% load static %}
+    {% load humanize %}
+    <link rel="stylesheet" href="{% static 'css/rating.css' %}">
+    <link rel="icon" href="{% static 'images/VrLogo.png' %}" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <div class="left-header">
+            <img src="{% static 'images/Kirava-logo.png' %}" alt="Логотип" class="logo">
+            <div class="logo-text">Kirava</div>
+            <nav>
+                <a href="{% url 'home' %}">Главное</a>
+                <a href="{% url 'entertainment' %}">Развлечения</a>
+                <a href="{% url 'education' %}">Обучение</a>
+                <a href="{% url 'rating' %}" class="active">Топ пользователей</a>
+                <a href="{% url 'community' %}">Сообщество</a>
+            </nav>
+        </div>
+        <div class="header-actions">
+            <!-- Кнопка переключения темы -->
+            <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+                <div class="theme-toggle-inner">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </button>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="btn-profile">
+                    <i class="fas fa-user"></i> Мой профиль
+                </a>
+                <a href="{% url 'logout' %}" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-login">
+                    <i class="fas fa-user"></i> Войти
+                </a>
+                <a href="{% url 'register' %}" class="btn-register">
+                    <i class="fas fa-user-plus"></i> Регистрация
+                </a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- Слайдер -->
+        <div class="slider-container">
+            <!-- Фоновое изображение -->
+            <div class="slide-bg active"
+                 style="background-image: url('/static/images/maxresdefault\ \(1\)\ \(1\)рр.jpg')">
+            </div>
+
+            <div class="slider-content">
+                <!-- Слайд 1 -->
+                <div class="slide active">
+                    <div class="slide-info">
+                        <h2 class="section-title">
+    Топ <span class="highlight">пользователей Kirava</span> уже здесь!
+</h2>
+<p class="anime-description">
+    Прими участие в соревновании среди самых активных участников сообщества
+    и докажи, что именно ты достоин быть в числе лидеров. Зарабатывай очки,
+    выполняй задания, участвуй в играх и викторинах, открывай редкие
+    достижения и постепенно поднимайся всё выше в общем рейтинге.
+    Каждый день — это новый шанс обойти соперников, укрепить свою позицию
+    и занять место среди лучших пользователей Kirava!
+</p>
+                        <div class="slide-buttons">
+                            {% if user.is_authenticated %}
+                                <a href="#leaderboard" class="btn-primary">
+                                    <i class="fas fa-trophy"></i>
+                                    Мой рейтинг
+                                </a>
+                            {% else %}
+                                <a href="{% url 'register' %}" class="btn-primary">
+                                    <i class="fas fa-trophy"></i>
+                                    Присоединиться
+                                </a>
+                            {% endif %}
+                            <a href="#leaderboard" class="btn-secondary">
+                                <i class="fas fa-list-ol"></i>
+                                Смотреть рейтинг
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Таблица лидеров -->
+        <section class="leaderboard-section" id="leaderboard">
+            <div class="container">
+                <h2 class="section-title">Таблица <span class="highlight">лидеров</span></h2>
+                <p class="section-subtitle">Смотри, кто сегодня возглавляет рейтинг Kirava</p>
+                
+                <!-- Фильтры (скрыты) -->
+                <div class="leaderboard-filters" style="display: none;">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fas fa-globe"></i> Все
+                    </button>
+                    <button class="filter-btn" data-filter="entertainment">
+                        <i class="fas fa-gamepad"></i> Развлечения
+                    </button>
+                    <button class="filter-btn" data-filter="education">
+                        <i class="fas fa-graduation-cap"></i> Обучение
+                    </button>
+                </div>
+
+                <!-- Упрощенный список -->
+                <div class="modern-leaderboard">
+                    {% if top_users %}
+                        {% for profile in top_users|slice:":50" %}
+                            {% with position=forloop.counter %}
+                            <div class="leaderboard-user {% if position == 1 %}first-place{% elif position == 2 %}second-place{% elif position == 3 %}third-place{% endif %}">
+                                <div class="user-rank">
+                                    <div class="rank-number">{{ position }}</div>
+                                    {% if position == 1 %}
+                                    <div class="rank-medal">
+                                        <i class="fas fa-crown"></i>
+                                    </div>
+                                    {% elif position == 2 %}
+                                    <div class="rank-medal">
+                                        <i class="fas fa-medal"></i>
+                                    </div>
+                                    {% elif position == 3 %}
+                                    <div class="rank-medal">
+                                        <i class="fas fa-award"></i>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="user-main">
+                                    <div class="user-avatar">
+                                        {% if profile.avatar %}
+                                            <img src="{{ profile.avatar.url }}" alt="{{ profile.user.username }}" class="avatar-image">
+                                        {% else %}
+                                            <div class="default-avatar">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="user-info">
+                                        <h3 class="username">{{ profile.user.username }}</h3>
+                                        <div class="user-title">
+                                            {% if profile.status %}
+                                                {{ profile.status }}
+                                            {% elif position == 1 %}
+                                                Легенда Kirava
+                                            {% elif position <= 3 %}
+                                                Мастер
+                                            {% elif profile.level >= 10 %}
+                                                Эксперт
+                                            {% else %}
+                                                Участник
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="user-points">
+                                    <div class="points-number">{{ profile.points|intcomma }}</div>
+                                    <div class="points-label">очков</div>
+                                </div>
+                            </div>
+                            {% endwith %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-users-message">
+                            <p>Пока нет пользователей в рейтинге. Станьте первым!</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Пагинация -->
+                <div class="leaderboard-pagination">
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <span class="pagination-dots">...</span>
+                    <button class="pagination-btn">10</button>
+                    <button class="pagination-next">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок "Как быть в рейтинге" -->
+        <section class="why-join-section">
+            <div class="container">
+                <h2 class="section-title">Как попасть в <span class="highlight">топ рейтинга?</span></h2>
+                <p class="section-subtitle">Следуй этим шагам, чтобы подняться в таблице лидеров</p>
+                
+                <div class="why-grid">
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3>Играй активно</h3>
+                        <p>Проходи викторины, участвуй в мини-играх и образовательных курсах. Каждая активность приносит очки для поднятия в рейтинге.</p>
+                        <div class="why-features">
+                            <span><i class="fas fa-check"></i> +100 очков за викторину</span>
+                            <span><i class="fas fa-check"></i> +50 за мини-игру</span>
+                            <span><i class="fas fa-check"></i> +200 за курс</span>
+                        </div>
+                    </div>
+                    
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h3>Зарабатывай достижения</h3>
+                        <p>Выполняй ежедневные задания, получай награды за серии и открывай уникальные достижения для дополнительных баллов.</p>
+                        <div class="why-features">
+                            <span><i class="fas fa-check"></i> Ежедневные квесты</span>
+                            <span><i class="fas fa-check"></i> Сезонные награды</span>
+                            <span><i class="fas fa-check"></i> Уникальные бейджи</span>
+                        </div>
+                    </div>
+                    
+                    <div class="why-card">
+                        <div class="why-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Соревнуйся с другими</h3>
+                        <p>Бросай вызов другим игрокам, участвуй в турнирах и поднимайся выше в рейтинге, побеждая сильнейших.</p>
+                        <div class="why-features">
+                            <span><i class="fas fa-check"></i> Дуэли с игроками</span>
+                            <span><i class="fas fa-check"></i> Групповые турниры</span>
+                            <span><i class="fas fa-check"></i> Личные рекорды</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Статистика сообщества -->
+        <section class="stats-section">
+            <div class="container">
+                <h2 class="section-title">Статистика <span class="highlight">сообщества</span></h2>
+                <p class="section-subtitle">Наша динамично развивающаяся платформа в цифрах</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                    <div class="stat-number">{{ total_users|default:0 }}</div>
+                    <div class="stat-label">Активных пользователей</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-number">{{ total_games|default:0 }}</div>
+                    <div class="stat-label">Сыграно игр</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number">{{ total_courses|default:0 }}</div>
+                    <div class="stat-label">Пройдено курсов</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="stat-number">{{ total_achievements|default:0 }}</div>
+                    <div class="stat-label">Выдано достижений</div>
+                </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Призыв к действию -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Начни свой путь к вершине прямо сейчас!</h2>
+                    <p>Присоединяйся к тысячам игроков, которые уже покоряют рейтинг Kirava.</p>
+                    <div class="cta-buttons">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'entertainment' %}" class="btn-primary btn-large">
+                                <i class="fas fa-play-circle"></i> Начать играть
+                            </a>
+                            <a href="{% url 'education' %}" class="btn-secondary btn-large">
+                                <i class="fas fa-graduation-cap"></i> Начать учиться
+                            </a>
+                        {% else %}
+                            <a href="{% url 'register' %}" class="btn-primary btn-large">
+                                <i class="fas fa-user-plus"></i> Бесплатная регистрация
+                            </a>
+                            <a href="{% url 'login' %}" class="btn-secondary btn-large">
+                                <i class="fas fa-sign-in-alt"></i> Войти в аккаунт
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Футер -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      
+      <div class="footer-section">
+        <div class="footer-logo">
+          <img src="/static/images/Kirava-logo.png" alt="Kirava Logo" class="logo-image-footer">
+          <div class="footer-logo-text">
+            <span class="logo-main">Kirava</span>
+          </div>
+        </div>
+        <p>Образовательно-развлекательная платформа</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Разделы</h4>
+        <a href="{% url 'home' %}">
+          <i class="fas fa-chevron-right"></i> Главная
+        </a>
+        <a href="{% url 'entertainment' %}">
+          <i class="fas fa-chevron-right"></i> Развлечения
+        </a>
+        <a href="{% url 'education' %}">
+          <i class="fas fa-chevron-right"></i> Обучение
+        </a>
+        <a href="{% url 'rating' %}" class="active">
+          <i class="fas fa-chevron-right"></i> Топ пользователей
+        </a>
+        <a href="{% url 'community' %}">
+          <i class="fas fa-chevron-right"></i> Сообщество
+        </a>
+      </div>
+
+      <div class="footer-section">
+        <h4>Поддержка</h4>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Помощь
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Контакты
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> FAQ
+        </a>
+        <a href="#">
+          <i class="fas fa-chevron-right"></i> Сообщество
+        </a>
+      </div>
+
+      <div class="footer-section">
+        <h4>Контакты</h4>
+
+        <p>
+          <a 
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=the.kirava.official@gmail.com"
+            target="_blank"
+            class="email-link"
+          >
+            <i class="fas fa-envelope"></i> the.kirava.official@gmail.com
+          </a>
+        </p>
+
+        <p><i class="fas fa-headset"></i> Поддержка 24/7</p>
+        <p><i class="fas fa-globe"></i> Казахстан, Астана</p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Kirava - Аниме Викторины и Обучение. Все права защищены.</p>
+      <p>Сделано с ❤️ для сообщества отаку</p>
+    </div>
+  </div>
+</footer>
+
+    <!-- Скрипты -->
+    <script src="{% static 'javascript/rating.js' %}"></script>
+    <script src="{% static 'javascript/theme.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кто сильнее? | Сражение персонажей | Kirava Games</title>
+    <link rel="stylesheet" href="{% static 'css/game5.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(239, 68, 68, 0.2);
+            border-top: 3px solid #ef4444;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Экран загрузки -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+        <p style="color: #ef4444; font-weight: 600; margin-top: 15px;">Подготовка битвы...</p>
+    </div>
+
+    <!-- Навигация -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="{% static 'images/logo.png' %}" alt="Kirava Games Logo" class="logo-image">
+                <div class="brand-text">
+                    <h1><span class="kirava">Kirava</span><span class="games">Games</span></h1>
+                    <p class="brand-subtitle">Кто сильнее? Битва персонажей</p>
+                </div>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="/" class="btn-nav back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>На главную</span>
+                </a>
+                
+                <button class="btn-nav theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Тема</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Основной контейнер -->
+    <main class="game-container">
+        <!-- Заголовок игры -->
+        <section class="game-header">
+            <div class="header-content">
+                <h1 class="game-title">
+                    <span class="highlight">КТО СИЛЬНЕЕ?</span> БИТВА ПЕРСОНАЖЕЙ
+                </h1>
+                <p class="game-subtitle">
+                    Выбери, какой персонаж победил бы в битве! Используй логику, знания и интуицию. 
+                    Чем точнее предскажешь исход — тем больше очков получишь!
+                </p>
+                
+                <!-- Статистика -->
+                <div class="stats-bar">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">ОЧКИ</span>
+                            <span class="stat-value" id="scoreValue">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">ПОБЕДЫ</span>
+                            <span class="stat-value" id="winsValue">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-flag-checkered"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">БИТВЫ</span>
+                            <span class="stat-value" id="battlesValue">0/10</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">РЕКОРД</span>
+                            <span class="stat-value" id="highScoreValue">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Боевое поле -->
+        <section class="game-area">
+            <div class="battle-container">
+                <!-- Левая часть: персонаж -->
+                <div class="character-section left-section">
+                    <div class="character-card" id="leftCharacterCard">
+                        <div class="character-image-container">
+                            <img id="leftCharacterImage" alt="Первый персонаж" class="character-pic">
+                            <div class="character-placeholder" id="leftCharacterPlaceholder">
+                                <i class="fas fa-user-circle"></i>
+                                <span>Загрузка персонажа...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="character-info">
+                            <h3 class="character-name" id="leftCharacterName">Загрузка...</h3>
+                            <p class="character-anime" id="leftCharacterAnime">Аниме</p>
+                            
+                            <!-- Характеристики -->
+                            <div class="character-stats">
+                                <div class="stat-item">
+                                    <div class="stat-icon-small">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-title">Способность</div>
+                                        <div class="stat-value" id="leftAbility">Загрузка...</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-item">
+                                    <div class="stat-icon-small">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-title">Сила</div>
+                                        <div class="stat-value" id="leftPowerDesc">Загрузка...</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-item">
+                                    <div class="stat-icon-small">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-title">Тактика</div>
+                                        <div class="stat-value" id="leftStrategy">Загрузка...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Центральная часть: VS и управление -->
+                <div class="center-section">
+                    <div class="vs-container">
+                        <!-- Таймер -->
+                        <div class="timer-container">
+                            <div class="timer-badge">
+                                <i class="fas fa-clock"></i>
+                                <span id="timerDisplay">30</span>
+                            </div>
+                        </div>
+                        
+                        <!-- VS Бейдж -->
+                        <div class="vs-badge">
+                            <div class="vs-text">VS</div>
+                            <div class="vs-subtitle">КТО ПОБЕДИТ?</div>
+                        </div>
+                        
+                        <!-- Кнопки голосования -->
+                        <div class="vote-container">
+                            <button id="voteLeftBtn" class="vote-btn left-vote">
+                                <i class="fas fa-arrow-left"></i>
+                                <span>ЛЕВЫЙ</span>
+                            </button>
+                            
+                            <button id="drawBtn" class="vote-btn draw-vote">
+                                <i class="fas fa-handshake"></i>
+                                <span>НИЧЬЯ</span>
+                            </button>
+                            
+                            <button id="voteRightBtn" class="vote-btn right-vote">
+                                <span>ПРАВЫЙ</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Действия -->
+                        <div class="actions-container">
+                            <button id="hintBtn" class="btn-action hint-action">
+                                <div class="action-icon">
+                                    <i class="fas fa-question-circle"></i>
+                                </div>
+                                <div class="action-info">
+                                    <span class="action-title">Подсказка</span>
+                                    <span class="action-cost">-30 очков</span>
+                                </div>
+                            </button>
+                            
+                            <button id="skipBtn" class="btn-action skip-action">
+                                <div class="action-icon">
+                                    <i class="fas fa-forward"></i>
+                                </div>
+                                <div class="action-info">
+                                    <span class="action-title">Пропустить</span>
+                                    <span class="action-cost">-20 очков</span>
+                                </div>
+                            </button>
+                            
+                            <button id="restartBtn" class="btn-restart">
+                                <i class="fas fa-redo"></i>
+                                <span>Новая игра</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Правая часть: персонаж -->
+                <div class="character-section right-section">
+                    <div class="character-card" id="rightCharacterCard">
+                        <div class="character-image-container">
+                            <img id="rightCharacterImage" alt="Второй персонаж" class="character-pic">
+                            <div class="character-placeholder" id="rightCharacterPlaceholder">
+                                <i class="fas fa-user-circle"></i>
+                                <span>Загрузка персонажа...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="character-info">
+                            <h3 class="character-name" id="rightCharacterName">Загрузка...</h3>
+                            <p class="character-anime" id="rightCharacterAnime">Аниме</p>
+                            
+                            <!-- Характеристики -->
+                            <div class="character-stats">
+                                <div class="stat-item">
+                                    <div class="stat-icon-small">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-title">Способность</div>
+                                        <div class="stat-value" id="rightAbility">Загрузка...</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-item">
+                                    <div class="stat-icon-small">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-title">Сила</div>
+                                        <div class="stat-value" id="rightPowerDesc">Загрузка...</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-item">
+                                    <div class="stat-icon-small">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-title">Тактика</div>
+                                        <div class="stat-value" id="rightStrategy">Загрузка...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Прогресс игры -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span>Прогресс битв</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="round-dots" id="roundDots">
+                    <!-- Точки будут добавлены через JS -->
+                </div>
+            </div>
+
+            <!-- Результат битвы -->
+            <div class="result-overlay" id="resultOverlay">
+                <div class="result-popup" id="resultPopup"></div>
+            </div>
+        </section>
+
+        <!-- Как играть -->
+        <section class="how-to-play">
+            <h2 class="section-title-main">
+                <i class="fas fa-info-circle"></i> Как определить, кто сильнее?
+            </h2>
+            <div class="instructions-grid">
+                <div class="instruction-card">
+                    <div class="instruction-number">1</div>
+                    <div class="instruction-content">
+                        <h3>Анализируй способности</h3>
+                        <p>Какие уникальные умения есть у персонажа? Есть ли трансформации?</p>
+                    </div>
+                </div>
+                <div class="instruction-card">
+                    <div class="instruction-number">2</div>
+                    <div class="instruction-content">
+                        <h3>Вспомни достижения</h3>
+                        <p>Каких врагов побеждал персонаж в своём аниме? Какие были битвы?</p>
+                    </div>
+                </div>
+                <div class="instruction-card">
+                    <div class="instruction-number">3</div>
+                    <div class="instruction-content">
+                        <h3>Оцени тактику</h3>
+                        <p>Умный персонаж может победить более сильного противника</p>
+                    </div>
+                </div>
+                <div class="instruction-card">
+                    <div class="instruction-number">4</div>
+                    <div class="instruction-content">
+                        <h3>Учитывай универсальность</h3>
+                        <p>Многофункциональные способности важнее простой грубой силы</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Модальное окно результатов -->
+    <div class="modal-overlay" id="resultModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">
+                    <i class="fas fa-trophy"></i>
+                    <span>Битва завершена!</span>
+                </h2>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" id="modalBody">
+                <!-- Результаты будут добавлены через JS -->
+            </div>
+            
+            <div class="modal-footer">
+                <button id="playAgainBtn" class="btn-primary">
+                    <i class="fas fa-play-circle"></i> Играть снова
+                </button>
+                <button id="shareResultsBtn" class="btn-secondary">
+                    <i class="fas fa-share-alt"></i> Поделиться
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Скрипты -->
+    <script src="{% static 'javascript/game5.js' %}"></script>
+    
+    <script>
+        // Скрыть загрузку
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.getElementById('loadingOverlay');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(function() {
+                        loader.style.display = 'none';
+                    }, 500);
+                }
+            }, 800);
+        });
+        
+        // Переключение темы
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            document.body.classList.toggle('light-theme');
+            const icon = this.querySelector('i');
+            const text = this.querySelector('span');
+            if (document.body.classList.contains('light-theme')) {
+                icon.className = 'fas fa-sun';
+                if (text) text.textContent = 'Тема';
+            } else {
+                icon.className = 'fas fa-moon';
+                if (text) text.textContent = 'Тема';
+            }
+            localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        });
+
+        // Загрузка сохраненной темы
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
+            const themeIcon = document.getElementById('themeToggle').querySelector('i');
+            if (themeIcon) themeIcon.className = 'fas fa-sun';
+        }
+    </script>
+</body>
+</html>

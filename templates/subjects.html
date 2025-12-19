@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirava - Школьные предметы</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/subjects.css' %}">
+    <link rel="icon" href="{% static 'images/VrLogo.png' %}" type="image/x-icon">
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+    <div class="left-header">
+        <img src="{% static 'images/Kirava-logo.png' %}" alt="Логотип" class="logo">
+        <div class="logo-text">Kirava</div>
+
+        <nav>
+            <a href="{% url 'home' %}">Главное</a>
+            <a href="{% url 'entertainment' %}">Развлечения</a>
+            <a href="{% url 'education' %}" class="active">Обучение</a>
+            <a href="{% url 'rating' %}">Топ пользователей</a>
+            <a href="{% url 'community' %}">Сообщество</a>
+        </nav>
+    </div>
+
+    <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+            <div class="theme-toggle-inner">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+            </div>
+        </button>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}" class="btn-login">
+                <i class="fas fa-user"></i> Мой профиль
+            </a>
+            <a href="{% url 'logout' %}" class="btn-register">
+                <i class="fas fa-sign-out-alt"></i> Выйти
+            </a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn-login">
+                <i class="fas fa-user"></i> Войти
+            </a>
+            <a href="{% url 'register' %}" class="btn-register">
+                <i class="fas fa-user-plus"></i> Регистрация
+            </a>
+        {% endif %}
+    </div>
+</header>
+
+<!-- ================= MAIN ================= -->
+<div class="main-content">
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <div class="container">
+            <div class="page-title-container">
+                <h1 class="page-title">Школьные <span class="highlight">Предметы</span></h1>
+                <p class="page-subtitle">
+                    Изучайте темы по всем школьным предметам с помощью видео-уроков и материалов
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- НАВИГАТОР ПО ПРЕДМЕТАМ -->
+    <div class="section-nav">
+        <div class="nav-dot active" data-section="matematika" data-title="Математика"></div>
+        <div class="nav-dot" data-section="istoriya" data-title="История"></div>
+        <div class="nav-dot" data-section="fizika" data-title="Физика"></div>
+        <div class="nav-dot" data-section="himiya" data-title="Химия"></div>
+        <div class="nav-dot" data-section="biologiya" data-title="Биология"></div>
+        <div class="nav-dot" data-section="geografiya" data-title="География"></div>
+        <div class="nav-dot" data-section="informatika" data-title="Информатика"></div>
+    </div>
+
+    <!-- Секция: Математика -->
+    <section class="quizzes" id="matematika">
+        <div class="container">
+            <h2 class="section-title">Математика <span class="highlight">и Алгебра</span></h2>
+            
+            <div class="carousel-container">
+                <button class="carousel-btn carousel-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="quizzes-carousel">
+                    <!-- Карточка 1: Теория вероятностей -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://www.repetitor-mathematics.ru/wp-content/uploads/2017/09/teoriya-veroyatnosti-osnovnyie-formulyi-i-primeryi-resheniya-zadach.jpg" 
+                                 alt="Теория вероятностей" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Теория вероятностей</h3>
+                            <p>Основы комбинаторики и вероятностных распределений. Изучите случайные события и их закономерности.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'matematika' 'teoriya-veroyatnostey' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 2: Дифференциальные уравнения -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://blog.tutoronline.ru/media/81827/differencialnie-yravnenya_397x331.jpg" 
+                                 alt="Дифференциальные уравнения" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Дифференциальные уравнения</h3>
+                            <p>Решение уравнений первого и второго порядка. Освойте методы решения ДУ.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'matematika' 'differentsialnye-uravneniya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 3: Стереометрия -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://edguru.ru/uploads/images/00/01/28/2016/08/25/9652f6.png" 
+                                 alt="Стереометрия" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Стереометрия</h3>
+                            <p>Объемы и поверхности геометрических тел. Изучите трехмерную геометрию.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'matematika' 'stereometriya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 4: Тригонометрия -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://s3.stroi-news.ru/img/trigonometriya-kartinki-17.jpg" 
+                                 alt="Тригонометрия" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Тригонометрия</h3>
+                            <p>Синусы, косинусы и тригонометрические уравнения. Изучите соотношения в треугольниках.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'matematika' 'trigonometriya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 5: Математический анализ -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://res.cloudinary.com/seably/image/upload/ar_16:10,c_fill,q_auto/vmli8ylndw5y58p3qxac.jpeg" 
+                                 alt="Математический анализ" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Математический анализ</h3>
+                            <p>Пределы, производные и интегралы. Освойте основы высшей математики.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'matematika' 'matematicheskiy-analiz' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-btn carousel-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция: История -->
+    <section class="quizzes" id="istoriya">
+        <div class="container">
+            <h2 class="section-title">История <span class="highlight">Мира</span></h2>
+            
+            <div class="carousel-container">
+                <button class="carousel-btn carousel-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="quizzes-carousel">
+                    <!-- Карточка 1: Древний Рим -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://th.bing.com/th/id/R.6a07784a2afafd7855db3ed1e715c950?rik=lYWMRXg7IONcqA&pid=ImgRaw&r=0" 
+                                 alt="Древний Рим" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Древний Рим</h3>
+                            <p>От основания до падения Римской империи. Узнайте о великой цивилизации древности.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'istoriya' 'drevniy-rim' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 2: Средневековье -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Легкая</div>
+                        <div class="quiz-image">
+                            <img src="https://th.bing.com/th/id/R.2959a79f6ea3fe69bb5848c83b941823?rik=DOXSnJ%2fnmmDoiQ&pid=ImgRaw&r=0" 
+                                 alt="Средневековье" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Средневековье</h3>
+                            <p>Феодализм, крестовые походы, культура. Изучите эпоху рыцарей и замков.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'istoriya' 'srednevekove' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 3: Эпоха Возрождения -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://tse4.mm.bing.net/th/id/OIP.CybCHWf7Gu1BvInDKyqI8QHaFD?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" 
+                                 alt="Эпоха Возрождения" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Эпоха Возрождения</h3>
+                            <p>Гуманизм, искусство и наука XV-XVI веков. Узнайте о великих открытиях и творцах.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'istoriya' 'epoha-vozrozhdeniya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 4: Вторая мировая война -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://tse1.mm.bing.net/th/id/OIP.WmKYxuz1nS4QrJESlh7y2AHaEK?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" 
+                                 alt="Вторая мировая война" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Вторая мировая война</h3>
+                            <p>Основные события и участники войны. Изучите ключевые сражения и их значение.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'istoriya' 'vtoraya-mirovaya-voyna' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 5: Революция 1917 -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://www.prostudenta.ru/wp-content/auploads/902877/fullsize.jpg" 
+                                 alt="Революция 1917" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Революция 1917 года</h3>
+                            <p>Февральская и Октябрьская революции в России. Узнайте о причинах и последствиях.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'istoriya' 'revolyutsiya-1917' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-btn carousel-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция: Физика -->
+    <section class="quizzes" id="fizika">
+        <div class="container">
+            <h2 class="section-title">Физика <span class="highlight">и Законы</span></h2>
+            
+            <div class="carousel-container">
+                <button class="carousel-btn carousel-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="quizzes-carousel">
+                    <!-- Карточка 1: Классическая механика -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Легкая</div>
+                        <div class="quiz-image">
+                            <img src="https://tattooinfo.ru/800/600/http/totaldesignreviews.com/wp-content/uploads/2013/06/28230_steampunk.jpg" 
+                                 alt="Классическая механика" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Классическая механика</h3>
+                            <p>Законы Ньютона и кинематика. Изучите основы движения тел под действием сил.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'fizika' 'klassicheskaya-mehanika' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 2: Электромагнетизм -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://miro.medium.com/v2/resize:fit:1358/1*kfJFBM-Dq8s3AtJXiuWWzg.jpeg" 
+                                 alt="Электромагнетизм" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Электромагнетизм</h3>
+                            <p>Законы Максвелла и электромагнитные волны. Погрузитесь в мир электричества и магнетизма.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'fizika' 'elektromagnetizm' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 3: Термодинамика -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://fb.ru/misc/i/gallery/115234/3734814.jpg" 
+                                 alt="Термодинамика" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Термодинамика</h3>
+                            <p>Законы сохранения энергии и тепловые процессы. Изучите передачу тепла и работу систем.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'fizika' 'termodinamika' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 4: Оптика -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://tse1.mm.bing.net/th/id/OIP.Tlq9aEv5I8m9bJ6WU13eegHaE7?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" 
+                                 alt="Оптика" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Оптика</h3>
+                            <p>Геометрическая и волновая оптика, линзы. Узнайте о природе света и его свойствах.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'fizika' 'optika' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 5: Квантовая механика -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://avatars.dzeninfra.ru/get-zen_doc/3606239/pub_637722a2b7c8df3d73eb57d3_637722d9e37a9d144ca52cb0/scale_1200" 
+                                 alt="Квантовая механика" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Квантовая механика</h3>
+                            <p>Основы квантовой теории и явления. Изучите мир элементарных частиц и их поведения.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'fizika' 'kvantovaya-mehanika' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-btn carousel-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция: Химия -->
+    <section class="quizzes" id="himiya">
+        <div class="container">
+            <h2 class="section-title">Химия <span class="highlight">Веществ</span></h2>
+            
+            <div class="carousel-container">
+                <button class="carousel-btn carousel-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="quizzes-carousel">
+                    <!-- Карточка 1: Неорганическая химия -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Легкая</div>
+                        <div class="quiz-image">
+                            <img src="https://static.tildacdn.com/tild3863-6336-4761-b339-626533633136/photo.jpg" 
+                                 alt="Неорганическая химия" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Неорганическая химия</h3>
+                            <p>Металлы, неметаллы, основные классы соединений. Изучите свойства химических элементов.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'himiya' 'neorganicheskaya-himiya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 2: Органическая химия -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://kartinki.pics/uploads/posts/2022-03/1647463226_3-kartinkin-net-p-organicheskaya-khimiya-kartinki-3.jpg" 
+                                 alt="Органическая химия" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Органическая химия</h3>
+                            <p>Углеводороды, спирты, карбоновые кислоты. Изучите мир соединений углерода.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'himiya' 'organicheskaya-himiya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 3: Биохимия -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://img.freepik.com/premium-photo/plants-with-biochemistry-dna-molecular-structure-biochemistry-generative-ai_887552-12239.jpg?w=1060" 
+                                 alt="Биохимия" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Биохимия</h3>
+                            <p>Белки, ферменты, метаболизм клетки. Узнайте о химических процессах в живых организмах.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'himiya' 'biohimiya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 4: Аналитическая химия -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://img.freepik.com/premium-vector/data-analytics-vector-illustrationanalytics_951778-88728.jpg" 
+                                 alt="Аналитическая химия" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Аналитическая химия</h3>
+                            <p>Методы качественного и количественного анализа. Изучите способы определения состава веществ.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'himiya' 'analiticheskaya-himiya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 5: Физическая химия -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://funik.ru/wp-content/uploads/2019/08/4d5f260d0ea9dc347e8c-1-700x525.jpg" 
+                                 alt="Физическая химия" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Физическая химия</h3>
+                            <p>Термодинамика, кинетика, электрохимия. Изучите физические основы химических процессов.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'himiya' 'fizicheskaya-himiya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-btn carousel-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция: Биология -->
+    <section class="quizzes" id="biologiya">
+        <div class="container">
+            <h2 class="section-title">Биология <span class="highlight">Жизни</span></h2>
+            
+            <div class="carousel-container">
+                <button class="carousel-btn carousel-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="quizzes-carousel">
+                    <!-- Карточка 1: Анатомия человека -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Легкая</div>
+                        <div class="quiz-image">
+                            <img src="https://tse2.mm.bing.net/th/id/OIP.JBNCzBTA4tftNK9err_JbAHaHa?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" 
+                                 alt="Анатомия человека" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Анатомия человека</h3>
+                            <p>Строение органов и систем организма. Изучите устройство человеческого тела.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'biologiya' 'anatomiya-cheloveka' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 2: Генетика -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://s3.stroi-news.ru/img/genetika-kartinki-dlya-prezentatsii-38.jpg" 
+                                 alt="Генетика" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Генетика</h3>
+                            <p>Законы Менделя, мутации, наследственность. Узнайте о передаче наследственной информации.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'biologiya' 'genetika' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 3: Экология -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Легкая</div>
+                        <div class="quiz-image">
+                            <img src="https://fikiwiki.com/uploads/posts/2022-02/1644992987_45-fikiwiki-com-p-ekologiya-krasivie-kartinki-53.jpg" 
+                                 alt="Экология" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Экология</h3>
+                            <p>Экосистемы, цепи питания, охрана природы. Изучите взаимодействие организмов со средой.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'biologiya' 'ekologiya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 4: Эволюция -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://tse3.mm.bing.net/th/id/OIP.1M0lJisezNXhgJO0hCPTGgHaCh?cb=ucfimg2&ucfimg=1&w=754&h=257&rs=1&pid=ImgDetMain&o=7&rm=3" 
+                                 alt="Эволюция" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Эволюция</h3>
+                            <p>Теория Дарвина, естественный отбор, видообразование. Узнайте о развитии жизни на Земле.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'biologiya' 'evolyutsiya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 5: Физиология -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://fb.ru/misc/i/gallery/35703/927022.jpg" 
+                                 alt="Физиология" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Физиология</h3>
+                            <p>Функционирование органов и систем. Изучите процессы жизнедеятельности организмов.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'biologiya' 'fiziologiya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-btn carousel-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция: География -->
+    <section class="quizzes" id="geografiya">
+        <div class="container">
+            <h2 class="section-title">География <span class="highlight">Мира</span></h2>
+            
+            <div class="carousel-container">
+                <button class="carousel-btn carousel-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="quizzes-carousel">
+                    <!-- Карточка 1: Физическая география -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Легкая</div>
+                        <div class="quiz-image">
+                            <img src="https://mapsworld.ru/wp-content/uploads/2021/10/fizicheskaya-karta-2048x1342.jpg" 
+                                 alt="Физическая география" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Физическая география</h3>
+                            <p>Рельеф, климат, воды, природные зоны. Изучите природные особенности Земли.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'geografiya' 'fizicheskaya-geografiya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 2: Экономическая география -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://img.freepik.com/free-photo/concept-of-global-economy-and-pile-of-coins_23-2148525349.jpg" 
+                                 alt="Экономическая география" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Экономическая география</h3>
+                            <p>Отрасли хозяйства, ресурсы, транспорт. Узнайте о размещении производства и экономике.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'geografiya' 'ekonomicheskaya-geografiya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 3: Политическая география -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Легкая</div>
+                        <div class="quiz-image">
+                            <img src="https://st2.depositphotos.com/2637053/6440/i/450/depositphotos_64408617-stock-photo-political-geography.jpg" 
+                                 alt="Политическая география" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Политическая география</h3>
+                            <p>Государства, границы, международные отношения. Изучите политическое устройство мира.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty easy"><i class="fas fa-signal"></i> Легкий</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'geografiya' 'politicheskaya-geografiya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 4: Картография -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://th.bing.com/th/id/R.7fc83603e48f240e26c2403c8fdb6180?rik=BollR7207Ccd8g&riu=http%3a%2f%2fi2.imageban.ru%2fout%2f2017%2f10%2f08%2f5c6345003aac10be8d487b91d7581d1d.jpg&ehk=PYr2CvGg1UA1j%2bH14j9tF2COF75BJmsEd0pYCqaUVAM%3d&risl=&pid=ImgRaw&r=0" 
+                                 alt="Картография" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Картография</h3>
+                            <p>Виды карт, масштаб, условные знаки. Изучите искусство создания и чтения карт.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'geografiya' 'kartografiya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 5: Климатология -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://img.freepik.com/vector-gratis/iconos-clima-nublado-lluvioso-soleado_1308-126268.jpg?t=st=1717909471~exp=1717913071~hmac=f304dc227b4a051d1516428923bd79115adeac010f606a0471ad348a4267d782&w=740" 
+                                 alt="Климатология" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Климатология</h3>
+                            <p>Климатические пояса, погода, атмосфера. Узнайте о закономерностях климата Земли.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'geografiya' 'klimatologiya' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-btn carousel-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция: Информатика -->
+    <section class="quizzes" id="informatika">
+        <div class="container">
+            <h2 class="section-title">Информатика <span class="highlight">и IT</span></h2>
+            
+            <div class="carousel-container">
+                <button class="carousel-btn carousel-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="quizzes-carousel">
+                    <!-- Карточка 1: Алгоритмы -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://img.freepik.com/vector-gratis/iconos-clima-nublado-lluvioso-soleado_1308-126268.jpg?t=st=1717909471~exp=1717913071~hmac=f304dc227b4a051d1516428923bd79115adeac010f606a0471ad348a4267d782&w=740" 
+                                 alt="Алгоритмы" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Алгоритмы</h3>
+                            <p>Основные алгоритмы и структуры данных. Изучите принципы решения вычислительных задач.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'informatika' 'algoritmy' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 2: Базы данных -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://media.istockphoto.com/id/1414813357/ru/%D1%84%D0%BE%D1%82%D0%BE/%D0%BF%D0%B0%D0%BD%D0%BE%D1%80%D0%B0%D0%BC%D0%BD%D1%8B%D0%B9-%D0%B2%D0%B8%D0%B4-%D0%BD%D0%B5%D1%81%D0%BA%D0%BE%D0%BB%D1%8C%D0%BA%D0%B8%D1%85-%D0%B1%D0%B0%D0%B7-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85-%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B5%D1%82%D1%81%D1%8F-%D0%BD%D0%B0-%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86%D0%B0%D1%85-%D1%80%D0%B5%D0%BB%D1%8F%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D0%BE%D0%B9-%D0%B1%D0%B0%D0%B7%D1%8B-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85-%D1%81-%D1%84%D0%BE%D0%BD%D0%BE%D0%BC.jpg?s=170667a&w=0&k=20&c=e2vy4na2bgwCFptRyvIwLKKMUrV_jnbw5XgC501kXMU=" 
+                                 alt="Базы данных" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Базы данных</h3>
+                            <p>Реляционные БД, SQL запросы, нормализация. Узнайте о хранении и обработке информации.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'informatika' 'bazy-dannyh' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 3: Компьютерные сети -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Средняя</div>
+                        <div class="quiz-image">
+                            <img src="https://thumbs.dreamstime.com/z/global-communication-computers-connected-globe-white-background-internet-concept-background-file-sharing-d-render-computer-120066205.jpg?w=576" 
+                                 alt="Компьютерные сети" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Компьютерные сети</h3>
+                            <p>Протоколы, топологии, сетевое оборудование. Изучите принципы передачи данных.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty medium"><i class="fas fa-signal"></i> Средний</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'informatika' 'kompyuternye-seti' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 4: Web-разработка -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://beseller.by/assets/images/veb-razrabotka/veb-razrabotka-09.jpg" 
+                                 alt="Web-разработка" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Web-разработка</h3>
+                            <p>HTML, CSS, JavaScript, фреймворки. Освойте создание веб-приложений и сайтов.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'informatika' 'web-razrabotka' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 5: Кибербезопасность -->
+                    <div class="quiz-card">
+                        <div class="quiz-badge">Сложная</div>
+                        <div class="quiz-image">
+                            <img src="https://polinka.top/uploads/posts/2023-06/1686191433_polinka-top-p-kiberbezopasnost-kartinki-dlya-prezentatsi-33.jpg" 
+                                 alt="Кибербезопасность" 
+                                 class="quiz-poster">
+                        </div>
+                        <div class="quiz-content">
+                            <h3>Кибербезопасность</h3>
+                            <p>Защита информации, шифрование, атаки. Изучите методы обеспечения информационной безопасности.</p>
+                            <div class="quiz-meta">
+                                <span class="difficulty hard"><i class="fas fa-signal"></i> Сложный</span>
+                                <span class="questions"><i class="fas fa-question-circle"></i> 10 вопросов</span>
+                            </div>
+                            <a href="{% url 'subjects:topic_detail' 'informatika' 'kiberbezopasnost' %}" class="btn-quiz">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="carousel-btn carousel-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Футер -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img src="{% static 'images/Kirava-logo.png' %}" alt="Kirava Logo" class="logo-image-footer">
+                    <div class="footer-logo-text">
+                        <span class="logo-main">Kirava</span>
+                    </div>
+                </div>
+                <p>Образовательно-развлекательная платформа</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Разделы</h4>
+                <a href="{% url 'home' %}">
+                    <i class="fas fa-chevron-right"></i> Главная
+                </a>
+                <a href="{% url 'entertainment' %}">
+                    <i class="fas fa-chevron-right"></i> Развлечения
+                </a>
+                <a href="{% url 'education' %}">
+                    <i class="fas fa-chevron-right"></i> Обучение
+                </a>
+                <a href="{% url 'rating' %}">
+                    <i class="fas fa-chevron-right"></i> Топ пользователей
+                </a>
+                <a href="{% url 'community' %}">
+                    <i class="fas fa-chevron-right"></i> Сообщество
+                </a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Поддержка</h4>
+                <a href="#">
+                    <i class="fas fa-chevron-right"></i> Помощь
+                </a>
+                <a href="#">
+                    <i class="fas fa-chevron-right"></i> Контакты
+                </a>
+                <a href="#">
+                    <i class="fas fa-chevron-right"></i> FAQ
+                </a>
+                <a href="#">
+                    <i class="fas fa-chevron-right"></i> Сообщество
+                </a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Контакты</h4>
+
+                <p>
+                    <a 
+                        href="https://mail.google.com/mail/?view=cm&fs=1&to=the.kirava.official@gmail.com"
+                        target="_blank"
+                        class="email-link"
+                    >
+                        <i class="fas fa-envelope"></i> the.kirava.official@gmail.com
+                    </a>
+                </p>
+
+                <p><i class="fas fa-headset"></i> Поддержка 24/7</p>
+                <p><i class="fas fa-globe"></i> Казахстан, Астана</p>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Kirava - Аниме Викторины и Обучение. Все права защищены.</p>
+            <p>Сделано с ❤️ для сообщества отаку</p>
+        </div>
+    </div>
+</footer>
+
+<script src="{% static 'javascript/subjects.js' %}"></script>
+<script src="{% static 'javascript/theme.js' %}"></script>
+
+</body>
+</html>

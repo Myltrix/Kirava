@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirava - Профиль</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="icon" href="{% static 'images/VrLogo.png' %}" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <div class="left-header">
+            <img src="{% static 'images/Kirava-logo.png' %}" alt="Логотип" class="logo">
+            <div class="logo-text">Kirava</div>
+            <nav>
+                <a href="{% url 'home' %}">Главное</a>
+                <a href="{% url 'entertainment' %}">Развлечения</a>
+                <a href="{% url 'education' %}">Обучение</a>
+                <a href="{% url 'rating' %}">Топ пользователей</a>
+                <a href="{% url 'community' %}">Сообщество</a>
+            </nav>
+        </div>
+        <div class="header-actions">
+            <!-- Кнопка переключения темы -->
+            <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+                <div class="theme-toggle-inner">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </button>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="btn-profile active">
+                    <i class="fas fa-user"></i> Мой профиль
+                </a>
+                <a href="{% url 'logout' %}" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-login">
+                    <i class="fas fa-user"></i> Войти
+                </a>
+                <a href="{% url 'register' %}" class="btn-register">
+                    <i class="fas fa-user-plus"></i> Регистрация
+                </a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- Профиль пользователя -->
+        <section class="profile-section">
+            <div class="container">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <div class="avatar-circle large">
+                            {% if profile.avatar %}
+                                <img src="{{ profile.avatar.url }}" alt="Аватар">
+                            {% else %}
+                                <i class="fas fa-user"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="profile-info">
+                        <h1 class="username">{{ user.username }}</h1>
+                        <p class="user-title">
+                            {% if profile.status %}
+                                {{ profile.status }}
+                            {% else %}
+                                Участник Kirava
+                            {% endif %}
+                        </p>
+                        <div class="profile-stats">
+                            <div class="stat">
+                                <div class="stat-number">{{ profile.points }}</div>
+                                <div class="stat-label">Очки</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">{{ profile.achievements_count }}</div>
+                                <div class="stat-label">Достижения</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">
+                                    {% if profile.rank == 9999 %}
+                                        —
+                                    {% else %}
+                                        {{ profile.rank }}
+                                    {% endif %}
+                                </div>
+                                <div class="stat-label">Рейтинг</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-actions">
+                        <a href="{% url 'edit_profile' %}" class="btn-edit">
+                            <i class="fas fa-edit"></i>
+                            Редактировать
+                        </a>
+                        <a href="{% url 'settings' %}" class="btn-settings">
+                            <i class="fas fa-cog"></i>
+                            Настройки
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Основная информация -->
+        <section class="info-section">
+            <div class="container">
+                <div class="info-grid">
+                    <!-- Левая колонка -->
+                    <div class="info-column">
+                        <!-- Личная информация -->
+                        <div class="info-card personal-info-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-user-circle"></i>
+                                Личная информация
+                            </h3>
+                            <div class="info-list">
+                                <div class="info-item">
+                                    <span class="info-label">Имя пользователя:</span>
+                                    <span class="info-value">{{ user.username }}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Дата регистрации:</span>
+                                    <span class="info-value">{{ registration_date }}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Страна:</span>
+                                    <span class="info-value">
+                                        {% if profile.country %}
+                                            {% if profile.country == "KZ" %}Казахстан
+                                            {% elif profile.country == "RU" %}Россия
+                                            {% elif profile.country == "BY" %}Беларусь
+                                            {% elif profile.country == "UA" %}Украина
+                                            {% elif profile.country == "US" %}США
+                                            {% elif profile.country == "JP" %}Япония
+                                            {% elif profile.country == "KR" %}Корея
+                                            {% elif profile.country == "CN" %}Китай
+                                            {% elif profile.country == "DE" %}Германия
+                                            {% elif profile.country == "FR" %}Франция
+                                            {% else %}{{ profile.country }}{% endif %}
+                                        {% else %}
+                                            Не определена
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Статус/звание:</span>
+                                    <span class="info-value">
+                                        {% if profile.status %}
+                                            {{ profile.status }}
+                                        {% else %}
+                                            Не установлен
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- О себе -->
+                            <div class="about-section">
+                                <h4 class="about-title personal-info-line">
+                                    <i class="fas fa-comment"></i>
+                                    О себе
+                                </h4>
+                                <div class="about-content">
+                                    {% if profile.bio %}
+                                        <p>{{ profile.bio }}</p>
+                                    {% else %}
+                                        <p>Пользователь еще не заполнил информацию о себе.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Социальные сети -->
+                        <div class="info-card social-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-share-alt"></i>
+                                Социальные сети
+                            </h3>
+                            <div class="social-links-grid">
+                                {% if profile.vk_url %}
+                                <a href="{{ profile.vk_url }}" target="_blank" class="social-link-item">
+                                    <div class="social-icon">
+                                        <i class="fab fa-vk"></i>
+                                    </div>
+                                    <div class="social-info">
+                                        <div class="social-name">ВКонтакте</div>
+                                        <div class="social-username">
+                                            {% if "vk.com/" in profile.vk_url %}
+                                                @{{ profile.vk_url|slice:"15:" }}
+                                            {% else %}
+                                                {{ profile.vk_url }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-external-link-alt social-external-icon"></i>
+                                </a>
+                                {% endif %}
+
+                                {% if profile.telegram_url %}
+                                <a href="{{ profile.telegram_url }}" target="_blank" class="social-link-item">
+                                    <div class="social-icon">
+                                        <i class="fab fa-telegram"></i>
+                                    </div>
+                                    <div class="social-info">
+                                        <div class="social-name">Telegram</div>
+                                        <div class="social-username">
+                                            {% if "t.me/" in profile.telegram_url %}
+                                                @{{ profile.telegram_url|slice:"13:" }}
+                                            {% else %}
+                                                {{ profile.telegram_url }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-external-link-alt social-external-icon"></i>
+                                </a>
+                                {% endif %}
+
+                                {% if profile.instagram_url %}
+                                <a href="{{ profile.instagram_url }}" target="_blank" class="social-link-item">
+                                    <div class="social-icon">
+                                        <i class="fab fa-instagram"></i>
+                                    </div>
+                                    <div class="social-info">
+                                        <div class="social-name">Instagram</div>
+                                        <div class="social-username">
+                                            {% if "instagram.com/" in profile.instagram_url %}
+                                                @{{ profile.instagram_url|slice:"26:" }}
+                                            {% else %}
+                                                {{ profile.instagram_url }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-external-link-alt social-external-icon"></i>
+                                </a>
+                                {% endif %}
+
+                                {% if profile.youtube_url %}
+                                <a href="{{ profile.youtube_url }}" target="_blank" class="social-link-item">
+                                    <div class="social-icon">
+                                        <i class="fab fa-youtube"></i>
+                                    </div>
+                                    <div class="social-info">
+                                        <div class="social-name">YouTube</div>
+                                        <div class="social-username">{{ profile.youtube_url|slice:"23:" }}</div>
+                                    </div>
+                                    <i class="fas fa-external-link-alt social-external-icon"></i>
+                                </a>
+                                {% endif %}
+
+                                {% if not profile.vk_url and not profile.telegram_url and not profile.instagram_url and not profile.youtube_url %}
+                                <div class="social-empty-state">
+                                    <div class="social-empty-icon">
+                                        <i class="fas fa-users-slash"></i>
+                                    </div>
+                                    <div class="social-empty-info">
+                                        <div class="social-empty-title">Социальные сети не добавлены</div>
+                                        <div class="social-empty-desc">Поделитесь ссылками на свои профили</div>
+                                    </div>
+                                    <a href="{% url 'edit_profile' %}" class="social-empty-action">
+                                        <i class="fas fa-plus"></i> Добавить
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Правая колонка -->
+                    <div class="info-column">
+                        <!-- Статистика активности -->
+                        <div class="info-card activity-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-line"></i>
+                                Статистика активности
+                            </h3>
+                            <div class="activity-stats">
+                                <div class="activity-item">
+                                    <i class="fas fa-gamepad"></i>
+                                    <div class="activity-info">
+                                        <div class="activity-count">{{ profile.games_played }}</div>
+                                        <div class="activity-label">Сыграно игр</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <div class="activity-info">
+                                        <div class="activity-count">{{ profile.courses_completed }}</div>
+                                        <div class="activity-label">Пройдено курсов</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <i class="fas fa-trophy"></i>
+                                    <div class="activity-info">
+                                        <div class="activity-count">{{ profile.quizzes_completed }}</div>
+                                        <div class="activity-label">Пройдено викторин</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <i class="fas fa-clock"></i>
+                                    <div class="activity-info">
+                                        <div class="activity-count">{{ profile.total_time_played }}ч</div>
+                                        <div class="activity-label">Время в игре</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Достижения (РЕАЛЬНЫЕ ИЗ БАЗЫ) -->
+                        <div class="info-card achievements-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-medal"></i>
+                                Достижения
+                            </h3>
+
+                            <div class="achievements-grid">
+                                {% if achievements %}
+                                    {% for ua in achievements %}
+                                        <div class="achievement">
+                                            <div class="achievement-icon">
+                                                <i class="fas fa-trophy"></i>
+                                            </div>
+                                            <div class="achievement-info">
+                                                <div class="achievement-title">{{ ua.achievement.title }}</div>
+                                                <div class="achievement-desc">{{ ua.achievement.description }}</div>
+                                            </div>
+                                            <div class="achievement-status">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="achievement-empty-state">
+                                        <div class="achievement-empty-icon">
+                                            <i class="fas fa-medal"></i>
+                                        </div>
+                                        <div class="achievement-empty-info">
+                                            <div class="achievement-empty-title">Достижений пока нет</div>
+                                            <div class="achievement-empty-desc">Начните активность на платформе</div>
+                                        </div>
+                                        <a href="{% url 'entertainment' %}" class="achievement-empty-action">
+                                            <i class="fas fa-play-circle"></i> Начать
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Любимые категории -->
+        <section class="categories-section">
+            <div class="container">
+                <h2 class="section-title">
+                    Любимые <span class="highlight">категории</span>
+                </h2>
+
+                <div class="categories-grid">
+                    <div class="category-item">
+                        <div class="category-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <div class="category-info">
+                            <h4>Аниме</h4>
+                            <p>Просмотрено: 0 аниме</p>
+                            <div class="category-progress">
+                                <div class="progress-bar small">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span>0% завершено</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-item">
+                        <div class="category-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <div class="category-info">
+                            <h4>Мини-игры</h4>
+                            <p>Сыграно: 0 игр</p>
+                            <div class="category-progress">
+                                <div class="progress-bar small">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span>0% завершено</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-item">
+                        <div class="category-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="category-info">
+                            <h4>Викторины</h4>
+                            <p>Пройдено: 0 викторин</p>
+                            <div class="category-progress">
+                                <div class="progress-bar small">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span>0% завершено</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-item">
+                        <div class="category-icon">
+                            <i class="fas fa-puzzle-piece"></i>
+                        </div>
+                        <div class="category-info">
+                            <h4>Головоломки</h4>
+                            <p>Решено: 0 головоломок</p>
+                            <div class="category-progress">
+                                <div class="progress-bar small">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span>0% завершено</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Футер -->
+        <footer class="footer">
+          <div class="container">
+            <div class="footer-content">
+
+              <div class="footer-section">
+                <div class="footer-logo">
+                  <img src="/static/images/Kirava-logo.png" alt="Kirava Logo" class="logo-image-footer">
+                  <div class="footer-logo-text">
+                    <span class="logo-main">Kirava</span>
+                  </div>
+                </div>
+                <p>Образовательно-развлекательная платформа</p>
+              </div>
+
+              <div class="footer-section">
+                <h4>Разделы</h4>
+                <a href="{% url 'home' %}" class="active">
+                  <i class="fas fa-chevron-right"></i> Главная
+                </a>
+                <a href="{% url 'entertainment' %}">
+                  <i class="fas fa-chevron-right"></i> Развлечения
+                </a>
+                <a href="{% url 'education' %}">
+                  <i class="fas fa-chevron-right"></i> Обучение
+                </a>
+                <a href="{% url 'rating' %}">
+                  <i class="fas fa-chevron-right"></i> Топ пользователей
+                </a>
+                <a href="{% url 'community' %}">
+                  <i class="fas fa-chevron-right"></i> Сообщество
+                </a>
+              </div>
+
+              <div class="footer-section">
+                <h4>Поддержка</h4>
+                <a href="#"><i class="fas fa-chevron-right"></i> Помощь</a>
+                <a href="#"><i class="fas fa-chevron-right"></i> Контакты</a>
+                <a href="#"><i class="fas fa-chevron-right"></i> FAQ</a>
+                <a href="#"><i class="fas fa-chevron-right"></i> Сообщество</a>
+              </div>
+
+              <div class="footer-section">
+                <h4>Контакты</h4>
+
+                <p>
+                  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=the.kirava.official@gmail.com"
+                     target="_blank"
+                     class="email-link">
+                    <i class="fas fa-envelope"></i> the.kirava.official@gmail.com
+                  </a>
+                </p>
+
+                <p><i class="fas fa-headset"></i> Поддержка 24/7</p>
+                <p><i class="fas fa-globe"></i> Казахстан, Астана</p>
+              </div>
+
+            </div>
+
+            <div class="footer-bottom">
+              <p>&copy; 2025 Kirava - Аниме Викторины и Обучение. Все права защищены.</p>
+              <p>Сделано с ❤️ для сообщества отаку</p>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+    <script src="{% static 'javascript/profile.js' %}"></script>
+    <script src="{% static 'javascript/theme.js' %}"></script>
+</body>
+</html>

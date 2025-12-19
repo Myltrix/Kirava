@@ -1,0 +1,719 @@
+/* ВСЕ СТИЛИ ЗДЕСЬ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #000;
+    color: white;
+    overflow: auto;
+    min-height: 100vh;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Светлая тема */
+body.light-theme {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+}
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px;
+}
+
+.auth-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+}
+
+body.light-theme .auth-overlay {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.auth-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    max-width: 520px;
+    width: 100%;
+    position: relative;
+}
+
+/* КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМЫ - СПРАВА ОТ КАРТОЧКИ */
+.theme-toggle-register {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #0037ac;
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    color: white;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-top: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.theme-toggle-register:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 55, 172, 0.3);
+    background: linear-gradient(135deg, #002a8a, #001f66);
+}
+
+.theme-toggle-inner {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle-register i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    transition: all 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    will-change: transform, opacity;
+    z-index: 2;
+}
+
+.theme-toggle-register .fa-sun {
+    color: #FFD700;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+}
+
+.theme-toggle-register .fa-moon {
+    color: #F0F0F0;
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-180deg) scale(0.5);
+    text-shadow: 0 0 10px rgba(240, 240, 240, 0.5);
+}
+
+/* Анимация для темной темы */
+body.dark-theme .theme-toggle-register .fa-sun {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(180deg) scale(0.5);
+}
+
+body.dark-theme .theme-toggle-register .fa-moon {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+/* Светлая тема - кружок остается синим */
+body.light-theme .theme-toggle-register {
+    background: linear-gradient(135deg, #0037ac, #002a8a);
+    border-color: #0037ac;
+}
+
+.auth-card {
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid #333;
+    border-radius: 20px;
+    padding: 30px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 1;
+    transition: all 0.4s ease;
+    flex: 1;
+    /* Убрал скроллбар полностью */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE и Edge */
+}
+
+/* Скрываем скроллбар в Chrome, Safari и Opera */
+.auth-card::-webkit-scrollbar {
+    display: none;
+}
+
+body.light-theme .auth-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 55, 172, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.back-btn {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+body.light-theme .back-btn {
+    color: #666;
+}
+
+.back-btn:hover {
+    color: #0037ac;
+}
+
+.auth-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.auth-logo .logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.auth-logo h1 {
+    font-size: 1.8rem;
+    color: #0037ac;
+    font-weight: bold;
+}
+
+.auth-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    color: white;
+    transition: color 0.4s ease;
+}
+
+body.light-theme .auth-header h2 {
+    color: #2c3e50;
+}
+
+.auth-header p {
+    color: #ccc;
+    font-size: 0.9rem;
+    transition: color 0.4s ease;
+}
+
+body.light-theme .auth-header p {
+    color: #666;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #ccc;
+    font-size: 0.85rem;
+    transition: color 0.4s ease;
+}
+
+body.light-theme .form-group label {
+    color: #666;
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 12px;
+    color: #666;
+    z-index: 2;
+    font-size: 0.9rem;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 10px 12px 10px 35px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: white;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+body.light-theme .input-container input {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid #ddd;
+    color: #2c3e50;
+}
+
+body.light-theme .input-container input::placeholder {
+    color: #888;
+}
+
+.input-container input:focus {
+    outline: none;
+    border-color: #0037ac;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 2px rgba(0, 55, 172, 0.2);
+}
+
+body.light-theme .input-container input:focus {
+    background: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0 0 2px rgba(0, 55, 172, 0.3);
+}
+
+.input-container input::placeholder {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+/* КНОПКА ГЛАЗКА - исправлено положение и работа */
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    font-size: 0.9rem;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 3;
+}
+
+.password-toggle:hover {
+    color: #0037ac;
+}
+
+.password-toggle i {
+    pointer-events: none;
+    font-size: 14px;
+}
+
+.error-message {
+    color: #ff4444;
+    font-size: 0.75rem;
+    margin-top: 4px;
+    min-height: 16px;
+    display: none;
+}
+
+.error-message.show {
+    display: block;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #ccc;
+    line-height: 1;
+    padding: 0;
+    width: 100%;
+    position: relative;
+    white-space: nowrap;
+    transition: color 0.4s ease;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+body.light-theme .checkbox-container {
+    color: #666;
+}
+
+.checkbox-container input {
+    display: none;
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    border: 2px solid #333;
+    border-radius: 4px;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.light-theme .checkmark {
+    border-color: #ccc;
+}
+
+.checkbox-container input:checked + .checkmark {
+    background: #0037ac;
+    border-color: #0037ac;
+}
+
+.checkbox-container input:checked + .checkmark::after {
+    content: '✓';
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.checkbox-text {
+    flex: 0 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    font-size: 0.8rem;
+    color: inherit;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+/* КНОПКА ВОЙТИ / СОЗДАТЬ АККАУНТ - ВСЕГДА СИНЯЯ */
+.auth-submit-btn {
+    padding: 12px;
+    background: linear-gradient(135deg, #0037ac, #0037ac);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 55, 172, 0.4);
+    background: linear-gradient(135deg, #002a8a, #0037ac);
+}
+
+.auth-submit-btn:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+    background: linear-gradient(135deg, #0037ac, #0037ac) !important;
+}
+
+.auth-submit-btn:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    background: linear-gradient(135deg, #0037ac, #0037ac) !important;
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 15px 0;
+    color: #666;
+    font-size: 0.85rem;
+    transition: color 0.4s ease;
+}
+
+body.light-theme .auth-divider {
+    color: #999;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #333;
+    transition: background 0.4s ease;
+}
+
+body.light-theme .auth-divider::before,
+body.light-theme .auth-divider::after {
+    background: #ddd;
+}
+
+.social-auth {
+    display: grid;
+    grid-template-columns: 1fr; 
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+/* КНОПКИ GOOGLE - исправлено: синие границы при наведении */
+.social-btn {
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-decoration: none !important;
+    position: relative;
+}
+
+body.light-theme .social-btn {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid #ddd;
+    color: #2c3e50;
+    text-decoration: none !important;
+}
+
+/* КРИТИЧНОЕ ИСПРАВЛЕНИЕ: Синие границы при наведении */
+.social-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #0037ac !important;
+    border-width: 1px !important;
+    box-shadow: 0 0 0 2px rgba(0, 55, 172, 0.2);
+    transform: translateY(-1px);
+    text-decoration: none !important;
+}
+
+body.light-theme .social-btn:hover {
+    background: rgba(0, 0, 0, 0.08);
+    border-color: #0037ac !important;
+    border-width: 1px !important;
+    text-decoration: none !important;
+}
+
+/* Убираем подчеркивание текста в Google кнопке */
+.google-btn,
+.google-btn:hover,
+.google-btn:focus,
+.google-btn:active {
+    text-decoration: none !important;
+    border-bottom: none !important;
+}
+
+.auth-footer {
+    text-align: center;
+    color: #ccc;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    transition: color 0.4s ease;
+}
+
+body.light-theme .auth-footer {
+    color: #666;
+}
+
+.auth-footer a {
+    color: #0037ac;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.input-success {
+    border-color: #333 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.input-error {
+    border-color: #333 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.input-container input:focus {
+    border-color: #0037ac !important;
+    box-shadow: 0 0 0 2px rgba(0, 55, 172, 0.2) !important;
+}
+
+.fa-spinner.fa-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.error-message.show {
+    animation: fadeIn 0.3s ease;
+}
+
+/* Убраны уведомления */
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    white-space: nowrap;
+}
+
+body.light-theme .form-options {
+    color: #666;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 15px;
+    }
+    
+    .auth-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .auth-card {
+        padding: 25px 15px;
+        max-height: 85vh;
+        order: 2;
+    }
+    
+    .theme-toggle-register {
+        order: 1;
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+    
+    .social-auth {
+        grid-template-columns: 1fr;
+    }
+    
+    .auth-logo {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .auth-logo h1 {
+        font-size: 1.6rem;
+    }
+    
+    .theme-toggle-register {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .checkbox-container {
+        white-space: normal;
+    }
+    
+    .checkbox-text {
+        white-space: normal;
+        font-size: 0.75rem;
+        line-height: 1.3;
+    }
+    
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 20px 12px;
+    }
+    
+    .auth-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .input-container input {
+        padding: 8px 10px 8px 30px;
+        font-size: 0.85rem;
+    }
+    
+    .auth-submit-btn {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+    
+    .theme-toggle-register {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .theme-toggle-register i {
+        font-size: 18px;
+    }
+    
+    .checkbox-container {
+        font-size: 0.75rem;
+    }
+    
+    .checkmark {
+        width: 16px;
+        height: 16px;
+        min-width: 16px;
+        min-height: 16px;
+    }
+    
+    .checkbox-container input:checked + .checkmark::after {
+        font-size: 10px;
+    }
+}
