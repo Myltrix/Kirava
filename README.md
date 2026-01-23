@@ -11,7 +11,7 @@
       <p style="font-size: 16px;">
         <strong style="color: #d4a574;">Live Website:</strong><br>
         <a href="https://myltrix.github.io/Kirava/" target="_blank" style="color: #b8860b; font-weight: bold; text-decoration: none; font-size: 18px;">
-          https://myltrix.github.io/Kirava/
+          Not yet, coming soon...
         </a>
       </p>
       <p style="font-size: 16px;">
@@ -20,7 +20,7 @@
           <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML5" title="HTML5" width="56" height="56" style="margin-right: 15px; vertical-align: middle; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
           <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS3" title="CSS3" width="56" height="56" style="margin-right: 15px; vertical-align: middle; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
           <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript" title="JavaScript" width="56" height="56" style="margin-right: 15px; vertical-align: middle; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg" alt="Django" title="Django" width="56" height="56" style="vertical-align: middle; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
+          <img src="https://habrastorage.org/getpro/habr/upload_files/abf/be3/6be/abfbe36be43231a20c9e22ea056208a8.png" alt="Django" title="Django" width="56" height="56" style="vertical-align: middle; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
         </div>
       </p>
     </td>
