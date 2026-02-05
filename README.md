@@ -21,6 +21,7 @@
           <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS3" title="CSS3" width="56" height="56" style="margin-right: 15px; vertical-align: middle; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
           <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript" title="JavaScript" width="56" height="56" style="margin-right: 15px; vertical-align: middle; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
           <img src="https://habrastorage.org/getpro/habr/upload_files/abf/be3/6be/abfbe36be43231a20c9e22ea056208a8.png" alt="Django" title="Django" width="56" height="56" style="vertical-align: middle; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
+          <img src="https://e7.pngegg.com/pngimages/890/928/png-clipart-sqlite-logo-sqlite-logo-icons-logos-emojis-tech-companies-thumbnail.png" alt="Django" title="Django" width="56" height="56" style="vertical-align: middle; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
         </div>
       </p>
     </td>
